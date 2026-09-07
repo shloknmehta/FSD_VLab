@@ -385,7 +385,7 @@ export function PretestView({ onNext }) {
 }
 
 // 4. Step-by-Step Visualizer
-export function VisualizerView() {
+export function VisualizerView({ onNext }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(2000);
@@ -1020,23 +1020,104 @@ else:
           </div>
         </div>
       </div>
+
+      {/* Navigation Footer */}
+      {onNext && (
+        <div className="flex justify-end pt-4 border-t border-slate-200">
+          <button
+            onClick={onNext}
+            className="v-button flex items-center gap-2 cursor-pointer"
+          >
+            <span>Proceed to Simulation Workbench</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
 // 5. Simulation / Lab Playground View
-export function SimulationView() {
-  const [formInputs, setFormInputs] = useState({
-    username: 'shlokmehta',
-    email: 'shlok@vlab.edu',
-    age: '21',
-    password: 'Password123',
-    confirm_password: 'Password123',
-  });
+export function SimulationView({ onNext }) {
+  const PRESETS = [
+    {
+      id: 'valid',
+      label: 'All Valid Inputs',
+      badge: 'Success (302)',
+      bg: 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100',
+      data: {
+        username: 'shlokmehta',
+        email: 'shlok@vlab.edu',
+        age: '21',
+        password: 'Password123',
+        confirm_password: 'Password123',
+      },
+    },
+    {
+      id: 'underage',
+      label: 'Underage (< 18)',
+      badge: 'clean_age()',
+      bg: 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100',
+      data: {
+        username: 'rahul_k',
+        email: 'rahul@vlab.edu',
+        age: '15',
+        password: 'Password123',
+        confirm_password: 'Password123',
+      },
+    },
+    {
+      id: 'mismatch',
+      label: 'Password Mismatch',
+      badge: 'clean()',
+      bg: 'bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100',
+      data: {
+        username: 'priya_s',
+        email: 'priya@vlab.edu',
+        age: '22',
+        password: 'Password123',
+        confirm_password: 'DifferentPass123',
+      },
+    },
+    {
+      id: 'email_err',
+      label: 'Invalid Email',
+      badge: 'Built-in Field',
+      bg: 'bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100',
+      data: {
+        username: 'amit_p',
+        email: 'invalid-email-address',
+        age: '20',
+        password: 'Password123',
+        confirm_password: 'Password123',
+      },
+    },
+    {
+      id: 'blank',
+      label: 'Empty Form',
+      badge: 'Required Check',
+      bg: 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200',
+      data: {
+        username: '',
+        email: '',
+        age: '',
+        password: '',
+        confirm_password: '',
+      },
+    },
+  ];
 
+  const [formInputs, setFormInputs] = useState(PRESETS[0].data);
+  const [activePreset, setActivePreset] = useState('valid');
   const [simulationResult, setSimulationResult] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [showCodeModal, setShowCodeModal] = useState(false);
+
+  const handleApplyPreset = (preset) => {
+    setActivePreset(preset.id);
+    setFormInputs(preset.data);
+    setSimulationResult(null);
+  };
 
   const handleRunSimulation = async () => {
     setIsRunning(true);
@@ -1062,11 +1143,18 @@ export function SimulationView() {
       const ageNum = parseInt(formInputs.age, 10);
       const isEmailValid = formInputs.email.includes('@') && formInputs.email.includes('.');
       const isAgeValid = !isNaN(ageNum) && ageNum >= 18;
-      const isPasswordMatch = formInputs.password === formInputs.confirm_password;
+      const isPasswordMatch = formInputs.password && formInputs.password === formInputs.confirm_password;
       const errors = {};
-      if (!isEmailValid) errors.email = ['Enter a valid email address.'];
-      if (!isAgeValid) errors.age = ['Must be at least 18 years old to register.'];
-      if (!isPasswordMatch) errors.__all__ = ['Passwords do not match.'];
+      if (!formInputs.username) errors.username = ['This field is required.'];
+      if (!formInputs.email) errors.email = ['This field is required.'];
+      else if (!isEmailValid) errors.email = ['Enter a valid email address.'];
+
+      if (!formInputs.age) errors.age = ['This field is required.'];
+      else if (!isAgeValid) errors.age = ['Must be at least 18 years old to register.'];
+
+      if (!formInputs.password) errors.password = ['This field is required.'];
+      if (!formInputs.confirm_password) errors.confirm_password = ['This field is required.'];
+      else if (!isPasswordMatch && formInputs.password) errors.__all__ = ['Passwords do not match.'];
 
       const isValid = Object.keys(errors).length === 0;
       setSimulationResult({
@@ -1094,6 +1182,34 @@ export function SimulationView() {
         >
           Submit test inputs to observe validation behavior, error mapping, and cleaned data generation
         </p>
+      </div>
+
+      {/* Preset Scenario Selector */}
+      <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+            <span>⚡ Quick Test Scenarios</span>
+          </span>
+          <span className="text-[11px] text-slate-500 font-medium">Click any scenario to pre-fill inputs</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {PRESETS.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => handleApplyPreset(p)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all flex items-center gap-2 cursor-pointer shadow-2xs ${
+                activePreset === p.id
+                  ? 'ring-2 ring-[#0284c7] font-bold ' + p.bg
+                  : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
+              }`}
+            >
+              <span>{p.label}</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold bg-white/70">
+                {p.badge}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -1355,6 +1471,19 @@ class UserRegistrationForm(forms.Form):
             raise forms.ValidationError("Passwords do not match.")
         return cleaned_data`}
           />
+        </div>
+      )}
+
+      {/* Navigation Footer */}
+      {onNext && (
+        <div className="flex justify-end pt-4 border-t border-slate-200">
+          <button
+            onClick={onNext}
+            className="v-button flex items-center gap-2 cursor-pointer"
+          >
+            <span>Proceed to Code Assessment</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       )}
     </div>
