@@ -1,9 +1,9 @@
 ---
-name: iitg-vlab-ui
-description: Design specifications, brand tokens, and component guidelines for the Indian Institute of Technology Guwahati (IITG) Virtual Labs UI.
+name: kjsse-vlab-ui
+description: Design specifications, brand tokens, and component guidelines for the K. J. Somaiya School of Engineering (KJSSE) Virtual Labs UI.
 ---
 
-# IIT Guwahati Virtual Labs UI Specification
+# KJSSE Virtual Labs UI Specification
 
 ## Color Palette
 - Primary Brand Blue: `#1a365d` (Header & dark accents)
@@ -15,6 +15,6 @@ description: Design specifications, brand tokens, and component guidelines for t
 - Border Neutral: `#e2e8f0` (Card and tab borders)
 
 ## Header Components
-- Official MoE Green Beaker Flask SVG with gears.
-- Dual-line institution text: "Virtual Labs" (bold 20px) + "An MoE Govt of India Initiative" (11px muted).
+- Green Beaker Flask SVG with gears.
+- Dual-line institution text: "Virtual Labs" (bold 20px) + institutional tagline.
 - Right-aligned Action Bar: 5 rating stars, rounded blue buttons for "Rate Me" and "Report a Bug", and RBAC persona selector.

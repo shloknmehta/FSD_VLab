@@ -63,7 +63,7 @@ function LabPlatform() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans text-slate-800">
-      {/* 1. Header with IIT Virtual Labs branding, Stars, Rate Me, Report a Bug & Demo Switcher */}
+      {/* 1. Header with KJSSE Virtual Labs branding, Stars, Rate Me, Report a Bug & Demo Switcher */}
       <Header
         onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
         onOpenRateModal={() => setRateModalOpen(true)}
@@ -71,7 +71,7 @@ function LabPlatform() {
         activeRating={userRating}
       />
 
-      {/* 2. Breadcrumbs matching exact IIT Guwahati styling */}
+      {/* 2. Breadcrumbs matching KJSSE / VLab styling */}
       <Breadcrumbs
         department="Computer Science and Engineering"
         course="Django Web Technologies / Full Stack Development"

@@ -22,8 +22,8 @@ export const DEMO_USERS = {
     id: 'ADM-001',
     name: 'Administrator',
     role: 'ADMIN',
-    email: 'admin.iitg@vlab.co.in',
-    department: 'Virtual Labs System Administration',
+    email: 'admin.kjsse@somaiya.edu',
+    department: 'KJSSE Virtual Labs System Administration',
   },
 };
 

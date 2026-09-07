@@ -73,7 +73,7 @@ export default function RateMeModal({ isOpen, onClose, currentRating = 0, onRati
           <div className="p-8 text-center space-y-3">
             <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto animate-bounce" />
             <h4 className="text-xl font-bold text-slate-800">Thank You!</h4>
-            <p className="text-sm text-slate-600">Your feedback helps improve IIT Guwahati Virtual Labs.</p>
+            <p className="text-sm text-slate-600">Your feedback helps improve KJSSE Virtual Labs.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 space-y-5">

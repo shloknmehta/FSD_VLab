@@ -3,17 +3,17 @@
 [![Django](https://img.shields.io/badge/Django-6.1-green.svg)](https://www.djangoproject.com/)
 [![React](https://img.shields.io/badge/React-19_Vite-blue.svg)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4-cyan.svg)](https://tailwindcss.com/)
-[![Virtual Labs](https://img.shields.io/badge/MoE-Virtual%20Labs%20IITG-orange.svg)](https://www.vlab.co.in/participating-institute-iit-guwahati)
+[![Virtual Labs](https://img.shields.io/badge/VLab-KJSSE%20Somaiya-orange.svg)](https://kjsse.somaiya.edu/)
 
-An authentic, full-stack implementation of the **Indian Institute of Technology Guwahati (IITG) Virtual Labs** platform tailored specifically for Experiment 6: **"Custom Form Validation using `clean()` and `clean_<fieldname>()` in Django"**.
+An authentic, full-stack implementation of the **K. J. Somaiya School of Engineering (KJSSE) Virtual Labs** platform tailored specifically for Experiment 6: **"Custom Form Validation using `clean()` and `clean_<fieldname>()` in Django"**.
 
 ---
 
 ## Architecture & Design Fidelity
 
-This platform replicates the exact aesthetic, functional, and pedagogical standards of the official **IIT Guwahati Virtual Labs portal**:
+This platform adheres to the aesthetic, functional, and pedagogical standards of the **KJSSE Virtual Labs portal**:
 
-- **Official IITG Header Branding**: Green beaker flask icon with MoE subtext ("An MoE Govt of India Initiative"), collapsible hamburger navigation, 5-star interactive rating, "Rate Me" modal, and "Report a Bug" modal.
+- **Official KJSSE Header Branding**: Green beaker flask icon with MoE subtext ("An MoE Govt of India Initiative"), collapsible hamburger navigation, 5-star interactive rating, "Rate Me" modal, and "Report a Bug" modal.
 - **Signature Styling**: Distinctive `#f37021` orange accent divider, cyan breadcrumb navigation (`Computer Science and Engineering > Django Web Technologies > Experiments`), and high-contrast orange active indicator on the sidebar.
 - **Role-Based Access Control (RBAC)**:
   - **Student Persona (`STUDENT`)**: Enrolled student (**Shlok Mehta**, Roll No: `16010124169`, Batch `D3`) with full interactive lab access, real-time code evaluation, pre/post quizzes, and certificate generation.
@@ -53,7 +53,7 @@ To ensure modularity and zero cross-contamination, all features are orchestrated
 4. **`Form-Sandbox-Agent`**: Live form submission workbench and error rendering.
 5. **`Assessment-Runner-Agent`**: Python code sandbox, dynamic AST execution, and test assertion harness.
 6. **`Evaluation-Agent`**: Automated grading, gradebook analytics, and completion certification.
-7. **`IITG-UI-Agent`**: Pixel-perfect replication of IIT Guwahati Virtual Labs branding and responsive design.
+7. **`KJSSE-UI-Agent`**: Replication of KJSSE Virtual Labs branding, layout, and responsive design.
 8. **`Portal-Ops-Agent`**: Bug tracking, feedback pipeline, and administrative controls.
 
 ---

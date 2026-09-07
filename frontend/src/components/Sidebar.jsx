@@ -153,7 +153,7 @@ export default function Sidebar({ isOpen, activeTab, onSelectTab }) {
       <div className="pt-6 border-t border-slate-100 px-3 text-xs text-slate-400">
         <p className="font-semibold text-slate-600">FSD Virtual Lab v1.0</p>
         <p className="text-[11px] mt-0.5 text-slate-500">
-          IIT Guwahati / MoE Standard
+          KJSSE &bull; KJ Somaiya School of Engineering
         </p>
       </div>
     </aside>

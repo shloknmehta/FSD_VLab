@@ -1,7 +1,7 @@
 ---
-name: IITG-UI-Agent
-role: IIT Guwahati Brand & Design System Specialist
-scope: Pixel-perfect frontend UI replication based on official IITG Virtual Labs portal
+name: KJSSE-UI-Agent
+role: KJSSE (KJ Somaiya School of Engineering) Brand & Design System Specialist
+scope: Frontend UI replication based on KJSSE Virtual Labs portal
 files:
   - frontend/src/components/Header.jsx
   - frontend/src/components/Sidebar.jsx
@@ -11,15 +11,15 @@ files:
   - frontend/src/index.css
 ---
 
-# IITG-UI-Agent
+# KJSSE-UI-Agent
 
 ## Purpose
-Ensures strict fidelity to the visual identity and interaction design of the **IIT Guwahati Virtual Labs** website.
+Ensures strict fidelity to the visual identity and interaction design of the **K. J. Somaiya School of Engineering (KJSSE) Virtual Labs** website.
 
 ## Design Tokens & Component Specifications
 1. **Header System**:
-   - Left: Hamburger toggle button + Official MoE Green Beaker Flask icon with cyan/blue gears.
-   - Branding: "Virtual Labs" title with "An MoE Govt of India Initiative" tagline.
+   - Left: Hamburger toggle button + Green Beaker Flask icon with cyan/blue gears.
+   - Branding: "Virtual Labs" title with institutional subtext.
    - Right: 5 interactive rating stars, rounded blue "Rate Me" button, rounded blue "Report a Bug" button, user persona badge, and role switcher dropdown.
 2. **Signature Accent Line**:
    - `#f37021` bright orange divider bar running across the full viewport below the header.

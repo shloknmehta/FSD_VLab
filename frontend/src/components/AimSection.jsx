@@ -4,7 +4,7 @@ import { Clock, BookOpen, CheckCircle2, ArrowRight } from 'lucide-react';
 export default function AimSection({ onNavigateNext }) {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 animate-in fade-in duration-200">
-      {/* Centered Main Title (matching IIT Guwahati reference screenshot) */}
+      {/* Centered Main Title */}
       <div className="text-center mb-10">
         <h1 className="text-3xl sm:text-4xl font-bold text-[#0284c7] tracking-tight">
           Django Custom Form Validation using clean() & clean_&lt;field&gt;()

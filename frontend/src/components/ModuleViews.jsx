@@ -1752,10 +1752,10 @@ export function PosttestView() {
                   Virtual Labs &bull; Ministry of Education, Govt. of India
                 </div>
                 <div className="text-base sm:text-lg font-bold text-[#1a365d] tracking-wide mt-0.5">
-                  INDIAN INSTITUTE OF TECHNOLOGY GUWAHATI
+                  K. J. SOMAIYA SCHOOL OF ENGINEERING (KJSSE)
                 </div>
                 <div className="text-[11px] text-slate-500 font-medium">
-                  Department of Computer Science and Engineering
+                  Department of Computer Engineering
                 </div>
               </div>
 
@@ -1795,7 +1795,7 @@ export function PosttestView() {
 
               {/* Verification Stamp */}
               <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-100">
-                <span>Verification ID: <span className="font-mono text-slate-600 font-medium">IITG-VLAB-EXP06-2026</span></span>
+                <span>Verification ID: <span className="font-mono text-slate-600 font-medium">KJSSE-VLAB-EXP06-2026</span></span>
                 <span className="text-emerald-700 font-semibold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   Recorded in Gradebook
@@ -1859,14 +1859,14 @@ export function ReferencesView() {
         </a>
 
         <a
-          href="https://www.vlab.co.in/participating-institute-iit-guwahati"
+          href="https://kjsse.somaiya.edu/"
           target="_blank"
           rel="noreferrer"
           className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#0284c7] hover:bg-sky-50/50 transition group"
         >
           <div>
-            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#0284c7]">IIT Guwahati Virtual Labs Portal</h4>
-            <p className="text-xs text-slate-500">National Mission on Education through ICT, MoE Government of India</p>
+            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#0284c7]">K. J. Somaiya School of Engineering (KJSSE)</h4>
+            <p className="text-xs text-slate-500">Somaiya Vidyavihar University, Mumbai &bull; Department of Computer Engineering</p>
           </div>
           <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7]" />
         </a>
@@ -2034,7 +2034,7 @@ export function AdminPortalView() {
             <ShieldCheck className="w-6 h-6 text-purple-600" />
             <h1 className="text-2xl font-bold text-slate-800">System Admin Portal</h1>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">IIT Guwahati VLab Platform Governance & Logs</p>
+          <p className="text-xs text-slate-500 mt-0.5">KJSSE VLab Platform Governance & Logs</p>
         </div>
         <span className="text-xs font-bold px-2.5 py-1 rounded bg-purple-100 text-purple-800 uppercase tracking-wide">
           ROOT ADMIN

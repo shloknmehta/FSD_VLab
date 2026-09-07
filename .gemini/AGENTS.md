@@ -1,6 +1,6 @@
 # Virtual Labs (VLab) Agent Architecture Registry
 
-This document defines the agent architecture governing the IIT Guwahati Virtual Labs platform for **Experiment 6: Custom Form Validation using `clean()` and `clean_<fieldname>()` in Django**.
+This document defines the agent architecture governing the KJSSE (K. J. Somaiya School of Engineering) Virtual Labs platform for **Experiment 6: Custom Form Validation using `clean()` and `clean_<fieldname>()` in Django**.
 
 Each feature and sub-system is maintained and operated by a specialized autonomous agent with defined responsibilities, scope, toolchain, and interfaces.
 
@@ -16,7 +16,7 @@ Each feature and sub-system is maintained and operated by a specialized autonomo
 | **`Form-Sandbox-Agent`** | Live form submission workbench with field error & non-field error (`__all__`) rendering. | [form_sandbox_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/form_sandbox_agent.md) | `SimulationView`, `backend/simulator/views.py` |
 | **`Assessment-Runner-Agent`** | Python sandbox test runner for student-submitted validation methods (`clean_age()`, `clean()`). | [assessment_runner_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/assessment_runner_agent.md) | `backend/simulator/engine.py`, `CodeAssessmentView` |
 | **`Evaluation-Agent`** | Grading calculations, pre/post quiz score tracking, and certificate generation. | [evaluation_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/evaluation_agent.md) | `backend/experiments/views.py`, `PosttestView` |
-| **`IITG-UI-Agent`** | IIT Guwahati design fidelity (MoE green beaker logo, `#f37021` divider, cyan breadcrumbs, active sidebar). | [iitg_ui_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/iitg_ui_agent.md) | `frontend/src/components/Header.jsx`, `Sidebar.jsx`, `Breadcrumbs.jsx` |
+| **`KJSSE-UI-Agent`** | KJSSE design fidelity (beaker logo, `#f37021` divider, cyan breadcrumbs, active sidebar). | [kjsse_ui_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/kjsse_ui_agent.md) | `frontend/src/components/Header.jsx`, `Sidebar.jsx`, `Breadcrumbs.jsx` |
 | **`Portal-Ops-Agent`** | Faculty Gradebook portal, Admin bug report pipeline, user registry, and system health. | [portal_ops_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/portal_ops_agent.md) | `backend/portal/`, `FacultyPortalView`, `AdminPortalView` |
 
 ---
@@ -25,7 +25,7 @@ Each feature and sub-system is maintained and operated by a specialized autonomo
 
 ```mermaid
 graph TD
-    User([User Request / Interaction]) --> UI[IITG-UI-Agent]
+    User([User Request / Interaction]) --> UI[KJSSE-UI-Agent]
     UI --> Auth[Auth-Security-Agent]
     UI --> Curr[Curriculum-Agent]
     UI --> Vis[Leyaa-Visualizer-Agent]

@@ -50,7 +50,7 @@ export default function Header({
             <Menu className="w-6 h-6" />
           </button>
 
-          {/* Official IIT Virtual Labs Logo */}
+          {/* Official KJSSE Virtual Labs Logo */}
           <div className="flex items-center gap-2.5 cursor-pointer">
             {/* SVG Beaker + Gear Emblem */}
             <svg
@@ -226,7 +226,7 @@ export default function Header({
                 </div>
 
                 <div className="px-3 pt-2 border-t border-slate-100 text-[10px] text-slate-400 flex items-center justify-between">
-                  <span>IIT Guwahati Lab Standard</span>
+                  <span>KJSSE Lab Standard</span>
                   <span className="font-mono">FSD-VLab</span>
                 </div>
               </div>
@@ -235,7 +235,7 @@ export default function Header({
         </div>
       </div>
 
-      {/* Signature Orange Accent Divider Line (exact match from IIT Guwahati VLab) */}
+      {/* Signature Orange Accent Divider Line (KJSSE VLab) */}
       <div className="h-[4px] w-full bg-[#f37021] shadow-xs" />
     </header>
   );

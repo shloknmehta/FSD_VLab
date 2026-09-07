@@ -1,10 +1,10 @@
-# IIT Guwahati Virtual Labs Project Standard
+# KJSSE (K. J. Somaiya School of Engineering) Virtual Labs Project Standard
 
 ## Topic: Custom Form Validation using `clean()` & `clean_<fieldname>()` in Django
 
 ### Core Architectural Rules
-1. **Design System**: Must strictly adhere to official IIT Guwahati Virtual Labs styling:
-   - Header with MoE Green Beaker Flask logo and blue rounded "Rate Me" / "Report a Bug" action buttons.
+1. **Design System**: Must adhere to official KJSSE / Virtual Labs styling:
+   - Header with Green Beaker Flask logo and blue rounded "Rate Me" / "Report a Bug" action buttons.
    - `#f37021` signature orange horizontal divider.
    - Cyan breadcrumb navigation (`Computer Science and Engineering > Django Web Technologies > Experiments`).
    - Collapsible sidebar navigation with `#2c5282` navy text and bold `#e65100` orange active state.
