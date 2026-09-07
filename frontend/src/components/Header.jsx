@@ -98,6 +98,16 @@ export default function Header({
               </span>
             </div>
           </div>
+
+          {/* Institutional Divider & Official Somaiya KJSSE Logo */}
+          <div className="hidden sm:block h-8 w-[1px] bg-slate-200" />
+          <div className="hidden sm:flex items-center">
+            <img
+              src="/assets/logos/kjsce-formerly.svg"
+              alt="Somaiya Vidyavihar University - KJSSE"
+              className="h-8 md:h-9 w-auto object-contain hover:opacity-95 transition-opacity"
+            />
+          </div>
         </div>
 
         {/* Right Side: Ratings, Buttons, Persona Badge */}

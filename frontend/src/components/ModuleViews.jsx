@@ -1829,7 +1829,12 @@ export function PosttestView() {
           <div className="p-1 max-w-2xl mx-auto rounded-xl bg-gradient-to-b from-slate-200 to-slate-300 shadow-md">
             <div className="border-4 border-double border-[#1a365d] p-6 sm:p-8 bg-[#fdfdfd] rounded-lg text-center space-y-4">
               {/* Institution Header */}
-              <div className="border-b border-slate-200 pb-3">
+              <div className="border-b border-slate-200 pb-3 flex flex-col items-center">
+                <img
+                  src="/assets/logos/kjsce-formerly.svg"
+                  alt="K. J. Somaiya School of Engineering"
+                  className="h-11 sm:h-12 w-auto object-contain mb-2"
+                />
                 <div className="text-xs tracking-widest uppercase font-bold text-slate-500">
                   Virtual Labs &bull; Ministry of Education, Govt. of India
                 </div>
@@ -1837,7 +1842,7 @@ export function PosttestView() {
                   K. J. SOMAIYA SCHOOL OF ENGINEERING (KJSSE)
                 </div>
                 <div className="text-[11px] text-slate-500 font-medium">
-                  Department of Computer Engineering
+                  Department of Computer Engineering &bull; Somaiya Vidyavihar University
                 </div>
               </div>
 
