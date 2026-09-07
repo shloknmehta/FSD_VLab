@@ -22,6 +22,8 @@ import {
   RotateCcw,
   Printer,
   Download,
+  Star,
+  Send,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import VSCodeBlock from './VSCodeBlock';
@@ -2303,39 +2305,188 @@ export function ReferencesView() {
 }
 
 // 10. Feedback View
-export function FeedbackView({ onOpenRateModal }) {
+export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
+  const { currentUser } = useAuth();
+  const [rating, setRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [category, setCategory] = useState('General');
+  const [comments, setComments] = useState('');
+  const [clarityRating, setClarityRating] = useState('Excellent');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const payload = {
+      user_id: currentUser?.id,
+      user_name: currentUser?.name || 'Shlok Mehta',
+      rating,
+      category,
+      clarity: clarityRating,
+      comments,
+      submitted_at: new Date().toISOString(),
+    };
+
+    try {
+      await fetch('http://127.0.0.1:8000/api/portal/feedback/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.warn('Feedback API offline fallback');
+      const queue = JSON.parse(localStorage.getItem('vlab_ratings_queue') || '[]');
+      queue.push(payload);
+      localStorage.setItem('vlab_ratings_queue', JSON.stringify(queue));
+    }
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    onFeedbackSubmitted?.();
+  };
+
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 text-center animate-in fade-in duration-200">
-      <h1
-        className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
-        style={{ fontFamily: "'Raleway', sans-serif" }}
-      >
-        Student Feedback
-      </h1>
-      <p
-        className="text-xs sm:text-sm text-slate-500 font-medium"
-        style={{ fontFamily: "'Raleway', sans-serif" }}
-      >
-        Continuous evaluation and curriculum improvement survey
-      </p>
-      <div className="p-8 border border-slate-200 rounded-xl bg-white max-w-md mx-auto space-y-4 shadow-xs">
-        <MessageSquareHeart className="w-12 h-12 text-[#2c99ce] mx-auto" />
-        <h3
-          className="font-bold text-slate-800 text-base"
+    <div className="max-w-3xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+      <div className="text-center mb-6">
+        <h1
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
-          Experiment Feedback Form
-        </h3>
-        <p className="text-xs text-slate-600 leading-relaxed">
-          Submit your evaluation regarding simulation clarity, exercise difficulty, and concept coverage.
-        </p>
-        <button
-          onClick={onOpenRateModal}
-          className="v-button shadow-xs transition-transform hover:scale-[1.02] cursor-pointer"
+          Continuous Evaluation & Student Feedback
+        </h1>
+        <p
+          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
         >
-          Open Rating & Feedback Modal
-        </button>
+          Your insights directly guide laboratory enhancements for future engineering cohorts
+        </p>
       </div>
+
+      {isSubmitted ? (
+        <div className="p-8 border border-emerald-200 rounded-xl bg-emerald-50/80 text-center space-y-4 shadow-sm animate-in zoom-in-95">
+          <CheckCircle2 className="w-14 h-14 text-emerald-600 mx-auto" />
+          <h2 className="text-xl font-bold text-emerald-950" style={{ fontFamily: "'Raleway', sans-serif" }}>
+            Feedback Recorded Successfully!
+          </h2>
+          <p className="text-xs sm:text-sm text-emerald-800 max-w-md mx-auto leading-relaxed">
+            Thank you, <span className="font-semibold text-emerald-950">{currentUser?.name || 'Shlok Mehta'}</span>. Your evaluation for Experiment 06 has been securely transmitted to the KJSSE Department of Computer Engineering.
+          </p>
+          <div className="pt-2">
+            <button
+              onClick={() => setIsSubmitted(false)}
+              className="px-4 py-2 text-xs font-semibold bg-white border border-emerald-300 text-emerald-800 rounded-lg hover:bg-emerald-100 transition cursor-pointer"
+            >
+              Submit Another Response
+            </button>
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="border border-slate-200 rounded-xl p-6 sm:p-8 bg-white shadow-xs space-y-6">
+          {/* Star Rating Selector */}
+          <div className="flex flex-col items-center justify-center gap-2 pb-4 border-b border-slate-100">
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Overall Experiment Experience Rating
+            </label>
+            <div className="flex items-center gap-2 my-1">
+              {[1, 2, 3, 4, 5].map((star) => {
+                const isFilled = (hoverRating || rating) >= star;
+                return (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    className="p-1 transition-transform hover:scale-125 focus:outline-none cursor-pointer"
+                  >
+                    <Star
+                      className={`w-8 h-8 transition-colors ${
+                        isFilled
+                          ? 'fill-amber-400 text-amber-400 drop-shadow-sm'
+                          : 'text-slate-300 hover:text-amber-300'
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+            <span className="text-xs font-semibold text-slate-600">
+              {rating === 5 && '⭐️ 5/5 — Excellent & Thorough'}
+              {rating === 4 && '👍 4/5 — Very Good & Informative'}
+              {rating === 3 && '👌 3/5 — Good / Average'}
+              {rating === 2 && '👎 2/5 — Needs Improvement'}
+              {rating === 1 && '⚠️ 1/5 — Found Issues'}
+            </span>
+          </div>
+
+          {/* Structured Evaluation Questions */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Feedback Focus Area
+              </label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full text-xs sm:text-sm border border-slate-300 rounded-lg px-3 py-2 bg-white text-slate-800 focus:ring-2 focus:ring-[#0284c7] outline-none"
+              >
+                <option value="General">Entire Experiment Experience</option>
+                <option value="Visualizer">Step-by-Step Execution Visualizer</option>
+                <option value="Simulation">Interactive Form Validation Workbench</option>
+                <option value="CodeSandbox">Code Assessment Sandbox & Test Runner</option>
+                <option value="Quizzes">Pretest & Posttest Concept Questions</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Clarity of Execution Trace
+              </label>
+              <select
+                value={clarityRating}
+                onChange={(e) => setClarityRating(e.target.value)}
+                className="w-full text-xs sm:text-sm border border-slate-300 rounded-lg px-3 py-2 bg-white text-slate-800 focus:ring-2 focus:ring-[#0284c7] outline-none"
+              >
+                <option value="Excellent">Exceptionally Clear & Intuitive</option>
+                <option value="Good">Good, Easy to Follow</option>
+                <option value="Moderate">Moderate, Needed More Explanations</option>
+                <option value="Unclear">Difficult to Follow</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Qualitative Comments */}
+          <div>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Specific Suggestions or Technical Observations (Optional)
+            </label>
+            <textarea
+              value={comments}
+              onChange={(e) => setComments(e.target.value)}
+              placeholder="What part of the validation tracer helped you understand Django form validation best? Any edge cases you'd like to see?"
+              rows={4}
+              className="w-full text-xs sm:text-sm border border-slate-300 rounded-lg p-3 text-slate-800 focus:ring-2 focus:ring-[#0284c7] outline-none resize-none"
+            />
+          </div>
+
+          {/* Submit Action */}
+          <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+            <span className="text-[11px] text-slate-400">
+              Student: {currentUser?.name || 'Shlok Mehta'} &bull; Roll: {currentUser?.roll_or_faculty_id || '16010124169'}
+            </span>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="v-button shadow-xs transition-transform hover:scale-[1.02] cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>{isSubmitting ? 'Submitting Evaluation...' : 'Submit Experiment Feedback'}</span>
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
