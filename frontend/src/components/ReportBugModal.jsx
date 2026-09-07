@@ -7,12 +7,21 @@ export default function ReportBugModal({ isOpen, onClose, activeTab = 'Aim' }) {
   const { currentUser } = useAuth();
   const [title, setTitle] = useState('');
   const [severity, setSeverity] = useState('MEDIUM');
+  const [selectedIssues, setSelectedIssues] = useState([]);
   const [description, setDescription] = useState('');
   const [stepsToReproduce, setStepsToReproduce] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
   if (!isOpen) return null;
+
+  const toggleIssue = (issue) => {
+    if (selectedIssues.includes(issue)) {
+      setSelectedIssues(selectedIssues.filter((i) => i !== issue));
+    } else {
+      setSelectedIssues([...selectedIssues, issue]);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +32,7 @@ export default function ReportBugModal({ isOpen, onClose, activeTab = 'Aim' }) {
       title,
       severity,
       section: activeTab,
+      issues: selectedIssues,
       description,
       stepsToReproduce,
       reporterId: currentUser?.id,
@@ -61,8 +71,13 @@ export default function ReportBugModal({ isOpen, onClose, activeTab = 'Aim' }) {
               <Bug className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-slate-800">Report a Bug / Issue</h3>
-              <p className="text-xs text-slate-500">Help the lab administrators fix glitches and errors</p>
+              <h3
+                className="text-lg font-extrabold text-[#2c99ce]"
+                style={{ fontFamily: "'Raleway', sans-serif" }}
+              >
+                Bug Report
+              </h3>
+              <p className="text-xs text-slate-500">KJSSE Virtual Labs Feedback & Issue Dispatcher</p>
             </div>
           </div>
           <button
@@ -95,8 +110,48 @@ export default function ReportBugModal({ isOpen, onClose, activeTab = 'Aim' }) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., Code editor resets when switching steps"
-                className="w-full text-sm border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#0284c7] focus:border-transparent outline-none transition"
+                className="w-full text-sm border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:ring-2 focus:ring-[#2c99ce] focus:border-transparent outline-none transition"
               />
+            </div>
+
+            {/* Virtual Labs Issue Categories */}
+            <div>
+              <label
+                className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"
+                style={{ fontFamily: "'Raleway', sans-serif" }}
+              >
+                Please select the Issues
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  'Insufficient Content',
+                  'Page Not Loading',
+                  'Content Not Visible',
+                  'Incorrect Content',
+                ].map((issue) => {
+                  const isChecked = selectedIssues.includes(issue);
+                  return (
+                    <button
+                      key={issue}
+                      type="button"
+                      onClick={() => toggleIssue(issue)}
+                      className={`flex items-center gap-2 p-2 rounded-lg border text-xs text-left font-medium transition cursor-pointer ${
+                        isChecked
+                          ? 'border-[#2c99ce] bg-sky-50/80 text-[#2c99ce] font-semibold'
+                          : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => {}}
+                        className="rounded text-[#2c99ce] focus:ring-[#2c99ce] pointer-events-none"
+                      />
+                      <span>{issue}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Severity & Module */}
@@ -176,7 +231,7 @@ export default function ReportBugModal({ isOpen, onClose, activeTab = 'Aim' }) {
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-5 py-2 text-sm font-semibold text-white bg-[#0284c7] hover:bg-[#0369a1] rounded-lg shadow-sm transition flex items-center gap-2 disabled:opacity-50"
+                className="v-button shadow-xs transition-transform hover:scale-[1.02] cursor-pointer disabled:opacity-50"
               >
                 {submitting ? 'Submitting...' : 'Submit Bug Report'}
               </button>

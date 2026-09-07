@@ -26,10 +26,18 @@ import VSCodeBlock from './VSCodeBlock';
 // 1. Overview View
 export function OverviewView({ onNext }) {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-8">
+    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-[#0284c7]">Django Form Validation Architecture</h1>
-        <p className="text-slate-500 mt-1">
+        <h1
+          className="text-3xl sm:text-4xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Django Form Validation Architecture
+        </h1>
+        <p
+          className="text-sm sm:text-base text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Understanding Built-in Validation, Field-Level clean_&lt;field&gt;(), and Form-Level clean()
         </p>
       </div>
@@ -117,7 +125,7 @@ export function OverviewView({ onNext }) {
       <div className="pt-4 flex justify-end">
         <button
           onClick={onNext}
-          className="px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm flex items-center gap-2 transition cursor-pointer"
+          className="v-button shadow-xs transition-transform hover:scale-[1.02] cursor-pointer"
         >
           <span>Take Pretest</span>
           <ArrowRight className="w-4 h-4" />
@@ -130,10 +138,20 @@ export function OverviewView({ onNext }) {
 // 2. Recap View
 export function RecapView() {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6">
+    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Recap: Validation Rules & Syntax</h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">Standard implementation rules in forms.py</p>
+        <h1
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Recap: Validation Rules & Syntax
+        </h1>
+        <p
+          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Standard implementation rules in forms.py
+        </p>
       </div>
 
       <div className="space-y-4">
@@ -278,10 +296,20 @@ export function PretestView({ onNext }) {
   const score = calculateScore();
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6">
+    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Pre-Lab Assessment (Pre-Test)</h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">Answer the following diagnostic questions on Django form handling</p>
+        <h1
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Pre-Lab Assessment (Pre-Test)
+        </h1>
+        <p
+          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Answer the following diagnostic questions on Django form handling
+        </p>
       </div>
 
       <div className="space-y-6">
@@ -330,21 +358,21 @@ export function PretestView({ onNext }) {
           <button
             onClick={handleSubmit}
             disabled={Object.keys(selectedAnswers).length < questions.length || isSubmitting}
-            className="px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm transition disabled:opacity-50 cursor-pointer"
+            className="v-button shadow-xs transition-transform hover:scale-[1.02] disabled:opacity-50 cursor-pointer"
           >
             {isSubmitting ? 'Evaluating...' : 'Submit Pretest'}
           </button>
         ) : (
           <div className="flex items-center justify-between w-full">
-            <div className="text-sm font-semibold text-slate-800">
-              Score: <span className="text-[#0284c7] font-bold text-lg">{score} / {questions.length}</span> ({Math.round((score / questions.length) * 100)}%)
+            <div className="text-sm font-semibold text-slate-800" style={{ fontFamily: "'Raleway', sans-serif" }}>
+              Score: <span className="text-[#2c99ce] font-bold text-lg">{score} / {questions.length}</span> ({Math.round((score / questions.length) * 100)}%)
               <span className={`ml-2 text-xs font-bold px-2 py-0.5 rounded ${score >= 4 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
                 {score >= 4 ? 'Status: Qualified' : 'Status: Review Advised'}
               </span>
             </div>
             <button
               onClick={onNext}
-              className="px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm flex items-center gap-2 transition cursor-pointer"
+              className="v-button shadow-xs transition-transform hover:scale-[1.02] flex items-center gap-2 cursor-pointer"
             >
               <span>Proceed to Visualizer</span>
               <ArrowRight className="w-4 h-4" />
@@ -645,14 +673,23 @@ else:
     <div className="max-w-5xl mx-auto py-8 px-4 sm:px-8 text-slate-800 space-y-6 animate-in fade-in duration-200">
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="inline-flex items-center gap-1.5 bg-sky-100 text-[#0284c7] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+        <div
+          className="inline-flex items-center gap-1.5 bg-sky-100 text-[#2c99ce] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           <PlaySquare className="w-3.5 h-3.5" />
           Interactive Execution Trace
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">
+        <h1
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Django Form Validation Lifecycle Trace
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl mx-auto">
+        <p
+          className="text-xs sm:text-sm text-slate-500 mt-2 max-w-2xl mx-auto font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Trace internal variables (<code className="font-mono text-indigo-700">cleaned_data</code>, <code className="font-mono text-red-600">errors</code>), call stacks, and execution branches in real-time
         </p>
       </div>
@@ -1045,10 +1082,16 @@ export function SimulationView() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">
+        <h1
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Simulation: Form Validation Workbench
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
+        <p
+          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Submit test inputs to observe validation behavior, error mapping, and cleaned data generation
         </p>
       </div>
@@ -1185,7 +1228,7 @@ export function SimulationView() {
             <button
               onClick={handleRunSimulation}
               disabled={isRunning}
-              className="w-full py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg text-sm transition cursor-pointer shadow-sm disabled:opacity-60"
+              className="v-button w-full justify-center shadow-xs transition-transform hover:scale-[1.01] cursor-pointer disabled:opacity-60"
             >
               {isRunning ? 'Running Django full_clean()...' : 'Submit Form / Trigger form.is_valid()'}
             </button>
@@ -1398,8 +1441,16 @@ export function CodeAssessmentView() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Lab Exercise: Custom Validation Methods</h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
+        <h1
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Lab Exercise: Custom Validation Methods
+        </h1>
+        <p
+          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Implement custom validation methods and verify with automated test cases
         </p>
       </div>
@@ -1565,8 +1616,16 @@ export function AnalysisView() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Analysis: Form Validation Lifecycle Table</h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
+        <h1
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Analysis: Form Validation Lifecycle Table
+        </h1>
+        <p
+          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Detailed evaluation matrix and execution sequence for Django form validation
         </p>
       </div>
@@ -1766,8 +1825,16 @@ export function PosttestView() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Post-Lab Assessment (Post-Test)</h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
+        <h1
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Post-Lab Assessment (Post-Test)
+        </h1>
+        <p
+          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Answer the following evaluation questions to verify your understanding of form cleaning and error handling
         </p>
       </div>
@@ -1820,7 +1887,7 @@ export function PosttestView() {
             <button
               onClick={handleSubmit}
               disabled={Object.keys(selectedAnswers).length < questions.length || isSubmitting}
-              className="px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm transition disabled:opacity-50 cursor-pointer"
+              className="v-button shadow-xs transition-transform hover:scale-[1.02] disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? 'Evaluating Submission...' : 'Submit Post-Lab Answers'}
             </button>
@@ -1901,8 +1968,18 @@ export function ReferencesView() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Further Readings & References</h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">Authoritative references, tutorials, and institutional links</p>
+        <h1
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Further Readings & References
+        </h1>
+        <p
+          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Authoritative references, tutorials, and institutional links
+        </p>
       </div>
 
       <div className="space-y-3">
@@ -1910,26 +1987,26 @@ export function ReferencesView() {
           href="https://docs.djangoproject.com/en/stable/ref/forms/validation/"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#0284c7] hover:bg-sky-50/50 transition group"
+          className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#2c99ce] hover:bg-sky-50/50 transition group"
         >
           <div>
-            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#0284c7]">Official Django Documentation: Form and Field Validation</h4>
+            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#2c99ce]">Official Django Documentation: Form and Field Validation</h4>
             <p className="text-xs text-slate-500">Comprehensive guide to full_clean(), clean_&lt;field&gt;(), and clean() methods</p>
           </div>
-          <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7]" />
+          <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#2c99ce]" />
         </a>
 
         <a
-          href="https://leyaa.ai/codefly/learn/django/part-2/django-custom-form-validation-methods/visualize"
+          href="https://docs.djangoproject.com/en/stable/topics/forms/"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#0284c7] hover:bg-sky-50/50 transition group"
+          className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#2c99ce] hover:bg-sky-50/50 transition group"
         >
           <div>
-            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#0284c7]">Interactive Execution Flow: Custom Form Validation Methods in Django</h4>
-            <p className="text-xs text-slate-500">Step-by-step execution diagrams, variable tracking, and flowcharts</p>
+            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#2c99ce]">Django Project: Working with Forms & Validation Lifecycle</h4>
+            <p className="text-xs text-slate-500">Official guide on form workflows, request.POST binding, and form validation lifecycle</p>
           </div>
-          <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7]" />
+          <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#2c99ce]" />
         </a>
 
         <a
@@ -1966,17 +2043,32 @@ export function ReferencesView() {
 export function FeedbackView({ onOpenRateModal }) {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 text-center animate-in fade-in duration-200">
-      <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Student Feedback</h1>
-      <p className="text-xs sm:text-sm text-slate-500">Continuous evaluation and curriculum improvement survey</p>
+      <h1
+        className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+        style={{ fontFamily: "'Raleway', sans-serif" }}
+      >
+        Student Feedback
+      </h1>
+      <p
+        className="text-xs sm:text-sm text-slate-500 font-medium"
+        style={{ fontFamily: "'Raleway', sans-serif" }}
+      >
+        Continuous evaluation and curriculum improvement survey
+      </p>
       <div className="p-8 border border-slate-200 rounded-xl bg-white max-w-md mx-auto space-y-4 shadow-xs">
-        <MessageSquareHeart className="w-12 h-12 text-[#0284c7] mx-auto" />
-        <h3 className="font-bold text-slate-800 text-base">Experiment Feedback Form</h3>
+        <MessageSquareHeart className="w-12 h-12 text-[#2c99ce] mx-auto" />
+        <h3
+          className="font-bold text-slate-800 text-base"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          Experiment Feedback Form
+        </h3>
         <p className="text-xs text-slate-600 leading-relaxed">
           Submit your evaluation regarding simulation clarity, exercise difficulty, and concept coverage.
         </p>
         <button
           onClick={onOpenRateModal}
-          className="px-5 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg text-sm shadow-sm transition cursor-pointer"
+          className="v-button shadow-xs transition-transform hover:scale-[1.02] cursor-pointer"
         >
           Open Rating & Feedback Modal
         </button>
@@ -2015,7 +2107,12 @@ export function FacultyPortalView() {
         <div>
           <div className="flex items-center gap-2">
             <GraduationCap className="w-6 h-6 text-emerald-600" />
-            <h1 className="text-2xl font-bold text-slate-800">Faculty Dashboard & Gradebook</h1>
+            <h1
+              className="text-2xl font-extrabold text-[#2c99ce]"
+              style={{ fontFamily: "'Raleway', sans-serif" }}
+            >
+              Faculty Dashboard & Gradebook
+            </h1>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">Instructor: {currentUser?.name || 'Prof. Sharma'} ({currentUser?.department || 'CSE Dept'})</p>
         </div>
@@ -2119,7 +2216,12 @@ export function AdminPortalView() {
         <div>
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-purple-600" />
-            <h1 className="text-2xl font-bold text-slate-800">System Admin Portal</h1>
+            <h1
+              className="text-2xl font-extrabold text-[#2c99ce]"
+              style={{ fontFamily: "'Raleway', sans-serif" }}
+            >
+              System Admin Portal
+            </h1>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">KJSSE VLab Platform Governance & Logs</p>
         </div>

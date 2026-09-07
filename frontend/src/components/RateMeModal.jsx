@@ -58,7 +58,12 @@ export default function RateMeModal({ isOpen, onClose, currentRating = 0, onRati
             <div className="p-1.5 rounded-lg bg-amber-50 text-amber-500">
               <Star className="w-5 h-5 fill-amber-400 text-amber-500" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-800">Rate Virtual Labs</h3>
+            <h3
+              className="text-lg font-extrabold text-[#2c99ce]"
+              style={{ fontFamily: "'Raleway', sans-serif" }}
+            >
+              Rate this Experiment
+            </h3>
           </div>
           <button
             onClick={onClose}
@@ -151,14 +156,14 @@ export default function RateMeModal({ isOpen, onClose, currentRating = 0, onRati
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition"
+                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-5 py-2 text-sm font-semibold text-white bg-[#0284c7] hover:bg-[#0369a1] rounded-lg shadow-sm transition flex items-center gap-2 disabled:opacity-50"
+                className="v-button shadow-xs transition-transform hover:scale-[1.02] cursor-pointer disabled:opacity-50"
               >
                 {submitting ? 'Submitting...' : 'Submit Rating'}
               </button>
