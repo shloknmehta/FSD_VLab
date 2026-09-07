@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Breadcrumbs from './components/Breadcrumbs';
 import Sidebar from './components/Sidebar';
 import AimSection from './components/AimSection';
+import Footer from './components/Footer';
 import RateMeModal from './components/RateMeModal';
 import ReportBugModal from './components/ReportBugModal';
 import {
@@ -91,7 +92,10 @@ function LabPlatform() {
         </main>
       </div>
 
-      {/* 4. Interactive Modals */}
+      {/* 4. Institutional Footer */}
+      <Footer />
+
+      {/* 5. Interactive Modals */}
       <RateMeModal
         isOpen={rateModalOpen}
         onClose={() => setRateModalOpen(false)}

@@ -99,13 +99,25 @@ export default function Header({
             </div>
           </div>
 
-          {/* Institutional Divider & Official Somaiya KJSSE Logo */}
+          {/* Institutional Divider & Official Somaiya Logos (KJSSE & Somaiya Trust) */}
           <div className="hidden sm:block h-8 w-[1px] bg-slate-200" />
-          <div className="hidden sm:flex items-center">
+          <div className="hidden sm:flex items-center gap-3">
+            {/* KJSSE (K. J. Somaiya School of Engineering) Logo */}
             <img
               src="/assets/logos/kjsce-formerly.svg"
-              alt="Somaiya Vidyavihar University - KJSSE"
+              alt="K. J. Somaiya School of Engineering - Somaiya Vidyavihar University"
               className="h-8 md:h-9 w-auto object-contain hover:opacity-95 transition-opacity"
+              title="K. J. Somaiya School of Engineering (KJSSE)"
+            />
+
+            <div className="hidden md:block h-7 w-[1px] bg-slate-200" />
+
+            {/* Somaiya Trust Logo */}
+            <img
+              src="/assets/logos/somaiya_trust.png"
+              alt="The Somaiya Trust"
+              className="hidden md:block h-8 w-auto object-contain rounded-xs hover:opacity-95 transition-opacity"
+              title="The Somaiya Trust"
             />
           </div>
         </div>
