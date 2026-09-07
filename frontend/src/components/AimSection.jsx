@@ -6,19 +6,28 @@ export default function AimSection({ onNavigateNext }) {
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 animate-in fade-in duration-200">
       {/* Centered Main Title */}
       <div className="text-center mb-10">
-        <h1 className="text-3xl sm:text-4xl font-bold text-[#0284c7] tracking-tight">
+        <h1
+          className="text-3xl sm:text-4xl font-extrabold text-[#2c99ce] tracking-tight"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Django Custom Form Validation using clean() & clean_&lt;field&gt;()
         </h1>
-        <p className="text-sm sm:text-base text-slate-500 mt-2 font-medium">
+        <p
+          className="text-sm sm:text-base text-slate-500 mt-2 font-medium"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Experiment 06: Field-Level and Multi-Field Custom Validation in Django Forms
         </p>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-8 vlabs-content">
         {/* Estimated Time */}
         <section>
-          <h2 className="text-xl font-bold text-slate-800 underline decoration-slate-400 decoration-1 underline-offset-4 mb-2 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-[#0284c7]" />
+          <h2
+            className="text-xl font-bold text-[#2c99ce] underline decoration-slate-300 decoration-1 underline-offset-4 mb-2 flex items-center gap-2"
+            style={{ fontFamily: "'Raleway', sans-serif" }}
+          >
+            <Clock className="w-5 h-5 text-[#2c99ce]" />
             Estimated Time
           </h2>
           <p className="text-base text-slate-700 font-medium pl-1">1 hour</p>

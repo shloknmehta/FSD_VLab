@@ -45,9 +45,12 @@ export default function Sidebar({ isOpen, activeTab, onSelectTab }) {
   if (!isOpen) return null;
 
   return (
-    <aside className="w-64 sm:w-72 shrink-0 bg-white border-r border-slate-200/80 min-h-[calc(100vh-80px)] p-4 select-none flex flex-col justify-between">
+    <aside className="w-64 sm:w-72 shrink-0 bg-white border-r border-[#e8e8e8] min-h-[calc(100vh-80px)] p-4 select-none flex flex-col justify-between">
       <div className="space-y-1">
-        <div className="px-3 pb-2 text-[11px] font-bold tracking-wider uppercase text-slate-400">
+        <div
+          className="px-3 pb-2 text-[11px] font-bold tracking-wider uppercase text-slate-400"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
           Experiment Modules
         </div>
 
@@ -62,16 +65,17 @@ export default function Sidebar({ isOpen, activeTab, onSelectTab }) {
                 onClick={() => onSelectTab(item.id)}
                 className={`w-full text-left px-3 py-2 rounded-lg text-[14.5px] transition-all flex items-center justify-between group cursor-pointer ${
                   isActive
-                    ? 'font-bold text-[#e65100] bg-orange-50/70 shadow-xs'
-                    : 'font-semibold text-[#2c5282] hover:text-[#e65100] hover:bg-slate-50'
+                    ? 'font-bold text-[#ff6600] bg-orange-50/70 border-l-[3px] border-[#ff6600] shadow-xs'
+                    : 'font-bold text-[#3e6389] hover:text-[#ff6600] hover:bg-slate-50'
                 }`}
+                style={{ fontFamily: "'Raleway', sans-serif" }}
               >
                 <div className="flex items-center gap-3">
                   <Icon
                     className={`w-4 h-4 transition-colors ${
                       isActive
-                        ? 'text-[#e65100]'
-                        : 'text-[#2c5282]/70 group-hover:text-[#e65100]'
+                        ? 'text-[#ff6600]'
+                        : 'text-[#3e6389]/70 group-hover:text-[#ff6600]'
                     }`}
                   />
                   <span>{item.label}</span>

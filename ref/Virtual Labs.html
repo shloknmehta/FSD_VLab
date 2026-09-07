@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <!--Google Tag Manager-->
+      <script type="text/javascript" async="" src="./Virtual Labs_files/analytics.js.download"></script><script type="text/javascript" async="" src="./Virtual Labs_files/js"></script><script async="" src="./Virtual Labs_files/gtm.js.download"></script><script class="gtm">
+        var dataLayer = [{
+        'labName': 'Data Structures - 1',
+        'discipline': 'Computer Science and Engineering',
+        'college': 'IIITH',
+        'phase': '3',
+        'expName': 'Bubble Sort',
+        'expShortName': 'bubble-sort'
+        }];
+    
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-W59SWTR');
+      </script>
+      <!--End Google Tag Manager-->
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    
+    	<meta name="experiment-short-name" content="bubble-sort">
+    	<meta name="developer-institute" content="IIITH">
+    	<meta name="learning-unit" content="Bubble Sort">
+    	<meta name="task-name" content="Aim">
+    
+    <!-- For iPhone -->
+    <meta name="msapplication-TileColor" content="#4076e0">
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#4076e0">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#4076e0">
+    <title>Virtual Labs</title>
+    <link rel="shortcut icon" href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/assets/images/favicon.ico">
+    <link rel="stylesheet" href="./Virtual Labs_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./Virtual Labs_files/github-markdown.min.css" integrity="sha512-Oy18vBnbSJkXTndr2n6lDMO5NN31UljR8e/ICzVPrGpSud4Gkckb8yUpqhKuUNoE+o9gAb4O/rAxxw1ojyUVzg==" crossorigin="anonymous">
+    <link href="./Virtual Labs_files/css2" rel="stylesheet">
+    <link rel="stylesheet" href="./Virtual Labs_files/font-awesome.min.css">
+    <link rel="stylesheet" href="./Virtual Labs_files/github-markdown(1).min.css">
+    <link rel="stylesheet" href="./Virtual Labs_files/vlabs-style.css">
+    <link rel="stylesheet" href="./Virtual Labs_files/toast.css">
+    <link rel="stylesheet" href="./Virtual Labs_files/katex.min.css">
+    
+    <script src="./Virtual Labs_files/jquery-3.4.1.slim.min.js.download"></script>
+    <script src="./Virtual Labs_files/popper.min.js.download" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="./Virtual Labs_files/bootstrap.min.js.download" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    <script src="./Virtual Labs_files/sweetalert2@11"></script><style>:root{--swal2-outline: 0 0 0 3px rgba(100, 150, 200, 0.5);--swal2-container-padding: 0.625em;--swal2-backdrop: rgba(0, 0, 0, 0.4);--swal2-backdrop-transition: background-color 0.15s;--swal2-width: 32em;--swal2-padding: 0 0 1.25em;--swal2-border: none;--swal2-border-radius: 0.3125rem;--swal2-background: white;--swal2-color: #545454;--swal2-show-animation: swal2-show 0.3s;--swal2-hide-animation: swal2-hide 0.15s forwards;--swal2-icon-zoom: 1;--swal2-title-padding: 0.8em 1em 0;--swal2-html-container-padding: 1em 1.6em 0.3em;--swal2-input-border: 1px solid #d9d9d9;--swal2-input-border-radius: 0.1875em;--swal2-input-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-background: transparent;--swal2-input-transition: border-color 0.2s, box-shadow 0.2s;--swal2-input-hover-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-focus-border: 1px solid #b4dbed;--swal2-input-focus-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px rgba(100, 150, 200, 0.5);--swal2-progress-step-background: #add8e6;--swal2-validation-message-background: #f0f0f0;--swal2-validation-message-color: #666;--swal2-footer-border-color: #eee;--swal2-footer-background: transparent;--swal2-footer-color: inherit;--swal2-timer-progress-bar-background: rgba(0, 0, 0, 0.3);--swal2-close-button-position: initial;--swal2-close-button-inset: auto;--swal2-close-button-font-size: 2.5em;--swal2-close-button-color: #ccc;--swal2-close-button-transition: color 0.2s, box-shadow 0.2s;--swal2-close-button-outline: initial;--swal2-close-button-box-shadow: inset 0 0 0 3px transparent;--swal2-close-button-focus-box-shadow: inset var(--swal2-outline);--swal2-close-button-hover-transform: none;--swal2-actions-justify-content: center;--swal2-actions-width: auto;--swal2-actions-margin: 1.25em auto 0;--swal2-actions-padding: 0;--swal2-actions-border-radius: 0;--swal2-actions-background: transparent;--swal2-action-button-transition: background-color 0.2s, box-shadow 0.2s;--swal2-action-button-hover: black 10%;--swal2-action-button-active: black 10%;--swal2-confirm-button-box-shadow: none;--swal2-confirm-button-border-radius: 0.25em;--swal2-confirm-button-background-color: #7066e0;--swal2-confirm-button-color: #fff;--swal2-deny-button-box-shadow: none;--swal2-deny-button-border-radius: 0.25em;--swal2-deny-button-background-color: #dc3741;--swal2-deny-button-color: #fff;--swal2-cancel-button-box-shadow: none;--swal2-cancel-button-border-radius: 0.25em;--swal2-cancel-button-background-color: #6e7881;--swal2-cancel-button-color: #fff;--swal2-toast-show-animation: swal2-toast-show 0.5s;--swal2-toast-hide-animation: swal2-toast-hide 0.1s forwards;--swal2-toast-border: none;--swal2-toast-box-shadow: 0 0 1px hsl(0deg 0% 0% / 0.075), 0 1px 2px hsl(0deg 0% 0% / 0.075), 1px 2px 4px hsl(0deg 0% 0% / 0.075), 1px 3px 8px hsl(0deg 0% 0% / 0.075), 2px 4px 16px hsl(0deg 0% 0% / 0.075)}[data-swal2-theme=dark]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}@media(prefers-color-scheme: dark){[data-swal2-theme=auto]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto !important}body.swal2-no-backdrop .swal2-container{background-color:rgba(0,0,0,0) !important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:auto}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px var(--swal2-backdrop)}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:rgba(0,0,0,0);pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{inset:0 auto auto 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{inset:0 0 auto auto}body.swal2-toast-shown .swal2-container.swal2-top-start,body.swal2-toast-shown .swal2-container.swal2-top-left{inset:0 auto auto 0}body.swal2-toast-shown .swal2-container.swal2-center-start,body.swal2-toast-shown .swal2-container.swal2-center-left{inset:50% auto auto 0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{inset:50% auto auto 50%;transform:translate(-50%, -50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{inset:50% 0 auto auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-start,body.swal2-toast-shown .swal2-container.swal2-bottom-left{inset:auto auto 0 0}body.swal2-toast-shown .swal2-container.swal2-bottom{inset:auto auto 0 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{inset:auto 0 0 auto}@media print{body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow-y:scroll !important}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown) .swal2-container{position:static !important}}div:where(.swal2-container){display:grid;position:fixed;z-index:1060;inset:0;box-sizing:border-box;grid-template-areas:"top-start     top            top-end" "center-start  center         center-end" "bottom-start  bottom-center  bottom-end";grid-template-rows:minmax(min-content, auto) minmax(min-content, auto) minmax(min-content, auto);height:100%;padding:var(--swal2-container-padding);overflow-x:hidden;transition:var(--swal2-backdrop-transition);-webkit-overflow-scrolling:touch}div:where(.swal2-container).swal2-backdrop-show,div:where(.swal2-container).swal2-noanimation{background:var(--swal2-backdrop)}div:where(.swal2-container).swal2-backdrop-hide{background:rgba(0,0,0,0) !important}div:where(.swal2-container).swal2-top-start,div:where(.swal2-container).swal2-center-start,div:where(.swal2-container).swal2-bottom-start{grid-template-columns:minmax(0, 1fr) auto auto}div:where(.swal2-container).swal2-top,div:where(.swal2-container).swal2-center,div:where(.swal2-container).swal2-bottom{grid-template-columns:auto minmax(0, 1fr) auto}div:where(.swal2-container).swal2-top-end,div:where(.swal2-container).swal2-center-end,div:where(.swal2-container).swal2-bottom-end{grid-template-columns:auto auto minmax(0, 1fr)}div:where(.swal2-container).swal2-top-start>.swal2-popup{align-self:start}div:where(.swal2-container).swal2-top>.swal2-popup{grid-column:2;place-self:start center}div:where(.swal2-container).swal2-top-end>.swal2-popup,div:where(.swal2-container).swal2-top-right>.swal2-popup{grid-column:3;place-self:start end}div:where(.swal2-container).swal2-center-start>.swal2-popup,div:where(.swal2-container).swal2-center-left>.swal2-popup{grid-row:2;align-self:center}div:where(.swal2-container).swal2-center>.swal2-popup{grid-column:2;grid-row:2;place-self:center center}div:where(.swal2-container).swal2-center-end>.swal2-popup,div:where(.swal2-container).swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;place-self:center end}div:where(.swal2-container).swal2-bottom-start>.swal2-popup,div:where(.swal2-container).swal2-bottom-left>.swal2-popup{grid-column:1;grid-row:3;align-self:end}div:where(.swal2-container).swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;place-self:end center}div:where(.swal2-container).swal2-bottom-end>.swal2-popup,div:where(.swal2-container).swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;place-self:end end}div:where(.swal2-container).swal2-grow-row>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-column:1/4;width:100%}div:where(.swal2-container).swal2-grow-column>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}div:where(.swal2-container).swal2-no-transition{transition:none !important}div:where(.swal2-container)[popover]{width:auto;border:0}div:where(.swal2-container) div:where(.swal2-popup){display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0, 100%);width:var(--swal2-width);max-width:100%;padding:var(--swal2-padding);border:var(--swal2-border);border-radius:var(--swal2-border-radius);background:var(--swal2-background);color:var(--swal2-color);font-family:inherit;font-size:1rem}div:where(.swal2-container) div:where(.swal2-popup):focus{outline:none}div:where(.swal2-container) div:where(.swal2-popup).swal2-loading{overflow-y:hidden}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable{cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable div:where(.swal2-icon){cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging{cursor:grabbing}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging div:where(.swal2-icon){cursor:grabbing}div:where(.swal2-container) h2:where(.swal2-title){position:relative;max-width:100%;margin:0;padding:var(--swal2-title-padding);color:inherit;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;overflow-wrap:break-word;cursor:initial}div:where(.swal2-container) div:where(.swal2-actions){display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:var(--swal2-actions-justify-content);width:var(--swal2-actions-width);margin:var(--swal2-actions-margin);padding:var(--swal2-actions-padding);border-radius:var(--swal2-actions-border-radius);background:var(--swal2-actions-background)}div:where(.swal2-container) div:where(.swal2-loader){display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 rgba(0,0,0,0) #2778c4 rgba(0,0,0,0)}div:where(.swal2-container) button:where(.swal2-styled){margin:.3125em;padding:.625em 1.1em;transition:var(--swal2-action-button-transition);border:none;box-shadow:0 0 0 3px rgba(0,0,0,0);font-weight:500}div:where(.swal2-container) button:where(.swal2-styled):not([disabled]){cursor:pointer}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){border-radius:var(--swal2-confirm-button-border-radius);background:initial;background-color:var(--swal2-confirm-button-background-color);box-shadow:var(--swal2-confirm-button-box-shadow);color:var(--swal2-confirm-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):hover{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):active{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny){border-radius:var(--swal2-deny-button-border-radius);background:initial;background-color:var(--swal2-deny-button-background-color);box-shadow:var(--swal2-deny-button-box-shadow);color:var(--swal2-deny-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):hover{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):active{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel){border-radius:var(--swal2-cancel-button-border-radius);background:initial;background-color:var(--swal2-cancel-button-background-color);box-shadow:var(--swal2-cancel-button-box-shadow);color:var(--swal2-cancel-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):hover{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):active{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):focus-visible{outline:none;box-shadow:var(--swal2-action-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-styled)[disabled]:not(.swal2-loading){opacity:.4}div:where(.swal2-container) button:where(.swal2-styled)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-footer){margin:1em 0 0;padding:1em 1em 0;border-top:1px solid var(--swal2-footer-border-color);background:var(--swal2-footer-background);color:var(--swal2-footer-color);font-size:1em;text-align:center;cursor:initial}div:where(.swal2-container) .swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto !important;overflow:hidden;border-bottom-right-radius:var(--swal2-border-radius);border-bottom-left-radius:var(--swal2-border-radius)}div:where(.swal2-container) div:where(.swal2-timer-progress-bar){width:100%;height:.25em;background:var(--swal2-timer-progress-bar-background)}div:where(.swal2-container) img:where(.swal2-image){max-width:100%;margin:2em auto 1em;cursor:initial}div:where(.swal2-container) button:where(.swal2-close){position:var(--swal2-close-button-position);inset:var(--swal2-close-button-inset);z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:var(--swal2-close-button-transition);border:none;border-radius:var(--swal2-border-radius);outline:var(--swal2-close-button-outline);background:rgba(0,0,0,0);color:var(--swal2-close-button-color);font-family:monospace;font-size:var(--swal2-close-button-font-size);cursor:pointer;justify-self:end}div:where(.swal2-container) button:where(.swal2-close):hover{transform:var(--swal2-close-button-hover-transform);background:rgba(0,0,0,0);color:#f27474}div:where(.swal2-container) button:where(.swal2-close):focus-visible{outline:none;box-shadow:var(--swal2-close-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-close)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-html-container){z-index:1;justify-content:center;margin:0;padding:var(--swal2-html-container-padding);overflow:auto;color:inherit;font-size:1.125em;font-weight:normal;line-height:normal;text-align:center;overflow-wrap:break-word;word-break:break-word;cursor:initial}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea),div:where(.swal2-container) select:where(.swal2-select),div:where(.swal2-container) div:where(.swal2-radio),div:where(.swal2-container) label:where(.swal2-checkbox){margin:1em 2em 3px}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea){box-sizing:border-box;width:auto;transition:var(--swal2-input-transition);border:var(--swal2-input-border);border-radius:var(--swal2-input-border-radius);background:var(--swal2-input-background);box-shadow:var(--swal2-input-box-shadow);color:inherit;font-size:1.125em}div:where(.swal2-container) input:where(.swal2-input).swal2-inputerror,div:where(.swal2-container) input:where(.swal2-file).swal2-inputerror,div:where(.swal2-container) textarea:where(.swal2-textarea).swal2-inputerror{border-color:#f27474 !important;box-shadow:0 0 2px #f27474 !important}div:where(.swal2-container) input:where(.swal2-input):hover,div:where(.swal2-container) input:where(.swal2-file):hover,div:where(.swal2-container) textarea:where(.swal2-textarea):hover{box-shadow:var(--swal2-input-hover-box-shadow)}div:where(.swal2-container) input:where(.swal2-input):focus,div:where(.swal2-container) input:where(.swal2-file):focus,div:where(.swal2-container) textarea:where(.swal2-textarea):focus{border:var(--swal2-input-focus-border);outline:none;box-shadow:var(--swal2-input-focus-box-shadow)}div:where(.swal2-container) input:where(.swal2-input)::placeholder,div:where(.swal2-container) input:where(.swal2-file)::placeholder,div:where(.swal2-container) textarea:where(.swal2-textarea)::placeholder{color:#ccc}div:where(.swal2-container) .swal2-range{margin:1em 2em 3px;background:var(--swal2-background)}div:where(.swal2-container) .swal2-range input{width:80%}div:where(.swal2-container) .swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}div:where(.swal2-container) .swal2-range input,div:where(.swal2-container) .swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}div:where(.swal2-container) .swal2-input{height:2.625em;padding:0 .75em}div:where(.swal2-container) .swal2-file{width:75%;margin-right:auto;margin-left:auto;background:var(--swal2-input-background);font-size:1.125em}div:where(.swal2-container) .swal2-textarea{height:6.75em;padding:.75em}div:where(.swal2-container) .swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:var(--swal2-input-background);color:inherit;font-size:1.125em}div:where(.swal2-container) .swal2-radio,div:where(.swal2-container) .swal2-checkbox{align-items:center;justify-content:center;background:var(--swal2-background);color:inherit}div:where(.swal2-container) .swal2-radio label,div:where(.swal2-container) .swal2-checkbox label{margin:0 .6em;font-size:1.125em}div:where(.swal2-container) .swal2-radio input,div:where(.swal2-container) .swal2-checkbox input{flex-shrink:0;margin:0 .4em}div:where(.swal2-container) label:where(.swal2-input-label){display:flex;justify-content:center;margin:1em auto 0}div:where(.swal2-container) div:where(.swal2-validation-message){align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:var(--swal2-validation-message-background);color:var(--swal2-validation-message-color);font-size:1em;font-weight:300}div:where(.swal2-container) div:where(.swal2-validation-message)::before{content:"!";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}div:where(.swal2-container) .swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:rgba(0,0,0,0);font-weight:600}div:where(.swal2-container) .swal2-progress-steps li{display:inline-block;position:relative}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:var(--swal2-progress-step-background);color:#fff}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:var(--swal2-progress-step-background)}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}div:where(.swal2-icon){position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;zoom:var(--swal2-icon-zoom);border:.25em solid rgba(0,0,0,0);border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;user-select:none}div:where(.swal2-icon) .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}div:where(.swal2-icon).swal2-error{border-color:#f27474;color:#f27474}div:where(.swal2-icon).swal2-error .swal2-x-mark{position:relative;flex-grow:1}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-error.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-error.swal2-icon-show .swal2-x-mark{animation:swal2-animate-error-x-mark .5s}div:where(.swal2-icon).swal2-warning{border-color:#f8bb86;color:#f8bb86}div:where(.swal2-icon).swal2-warning.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-warning.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .5s}div:where(.swal2-icon).swal2-info{border-color:#3fc3ee;color:#3fc3ee}div:where(.swal2-icon).swal2-info.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-info.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .8s}div:where(.swal2-icon).swal2-question{border-color:#87adbd;color:#87adbd}div:where(.swal2-icon).swal2-question.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-question.swal2-icon-show .swal2-icon-content{animation:swal2-animate-question-mark .8s}div:where(.swal2-icon).swal2-success{border-color:#a5dc86;color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;border-radius:50%}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}div:where(.swal2-icon).swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-0.25em;left:-0.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}div:where(.swal2-icon).swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-animate-success-line-tip .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-animate-success-line-long .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-circular-line-right{animation:swal2-rotate-success-circular-line 4.25s ease-in}[class^=swal2]{-webkit-tap-highlight-color:rgba(0,0,0,0)}.swal2-show{animation:var(--swal2-show-animation)}.swal2-hide{animation:var(--swal2-hide-animation)}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}.swal2-toast{box-sizing:border-box;grid-column:1/4 !important;grid-row:1/4 !important;grid-template-columns:min-content auto min-content;padding:1em;overflow-y:hidden;border:var(--swal2-toast-border);background:var(--swal2-background);box-shadow:var(--swal2-toast-box-shadow);pointer-events:auto}.swal2-toast>*{grid-column:2}.swal2-toast h2:where(.swal2-title){margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-toast .swal2-loading{justify-content:center}.swal2-toast input:where(.swal2-input){height:2em;margin:.5em;font-size:1em}.swal2-toast .swal2-validation-message{font-size:1em}.swal2-toast div:where(.swal2-footer){margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-toast button:where(.swal2-close){grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-toast div:where(.swal2-html-container){margin:.5em 1em;padding:0;overflow:initial;font-size:1em;text-align:initial}.swal2-toast div:where(.swal2-html-container):empty{padding:0}.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:bold}.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-toast div:where(.swal2-actions){justify-content:flex-start;height:auto;margin:0;margin-top:.5em;padding:0 .5em}.swal2-toast button:where(.swal2-styled){margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;border-radius:50%}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.8em;left:-0.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-toast-animate-success-line-tip .75s}.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-toast-animate-success-line-long .75s}.swal2-toast.swal2-show{animation:var(--swal2-toast-show-animation)}.swal2-toast.swal2-hide{animation:var(--swal2-toast-hide-animation)}@keyframes swal2-show{0%{transform:translate3d(0, -50px, 0) scale(0.9);opacity:0}100%{transform:translate3d(0, 0, 0) scale(1);opacity:1}}@keyframes swal2-hide{0%{transform:translate3d(0, 0, 0) scale(1);opacity:1}100%{transform:translate3d(0, -50px, 0) scale(0.9);opacity:0}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-0.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(0.4);opacity:0}50%{margin-top:1.625em;transform:scale(0.4);opacity:0}80%{margin-top:-0.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0deg);opacity:1}}@keyframes swal2-rotate-loading{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes swal2-animate-question-mark{0%{transform:rotateY(-360deg)}100%{transform:rotateY(0)}}@keyframes swal2-animate-i-mark{0%{transform:rotateZ(45deg);opacity:0}25%{transform:rotateZ(-25deg);opacity:.4}50%{transform:rotateZ(15deg);opacity:.8}75%{transform:rotateZ(-5deg);opacity:1}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-toast-show{0%{transform:translateY(-0.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(0.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0deg)}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-0.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}</style>
+    <style>
+      h1 {
+      font-size: 1.8rem;
+      }
+      h2 {
+      font-size: 1.4rem;
+      }
+      h3 {
+      font-size: 1.2rem;
+      }
+
+      h2, h3 {
+      font-weight: 800;
+      }
+    </style>
+    
+  <link rel="stylesheet" href="./Virtual Labs_files/all.min.css"><link rel="stylesheet" type="text/javascript" href="./Virtual Labs_files/index.js.download"></head>
+  <body class="p-0 container-fluid vlabs-page d-flex flex-column justify-content-between">
+      <!--Google Tag Manager (noscript)-->
+      <noscript class="gtm">
+        <iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-W59SWTR" style="display:none;visibility:hidden" width="0">
+        </iframe>
+      </noscript>
+      <!--End Google Tag Manager (noscript)-->
+  
+      <header class="vlabs-header sticky-top bg-white">
+        <nav class="p-0 navbar navbar-light d-flex align-items-stretch">
+          
+          <button class="navbar-toggler px-4" type="button" onclick="toggle()">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <div class="d-flex justify-content-center">        
+            <a href="https://vlab.co.in/" class="navbar-brand">
+              <img src="./Virtual Labs_files/vlabs-color-small-moe.jpg" alt="vlabs logo" class="vlabs-logo">
+            </a>
+          </div>
+          
+          <div id="headerNavbar" class="d-none border-top flex-grow-1 d-lg-flex align-items-center justify-content-end">
+            <div class="svc-rating-display">
+                <rating-display spreadsheetid="1x12nhpp0QvnsA6x-O1sV4IA9SAbfVsq_wiexWkutOmU" sheetname="Exp-Rating-Clean" columnname="Experiment Short Name" columnvalue="bubble-sort" imagesdirectory="https://virtual-labs.github.io/svc-rating/"><template shadowrootmode="open"><!----><div>
+      <h3><!--?lit$064715464$--></h3>
+      <div class="star-div"><!--?lit$064715464$--><!----><img class="star-images empty-star" src="https://virtual-labs.github.io/svc-rating/empty-star.svg"><!----><!----><img class="star-images empty-star" src="https://virtual-labs.github.io/svc-rating/empty-star.svg"><!----><!----><img class="star-images empty-star" src="https://virtual-labs.github.io/svc-rating/empty-star.svg"><!----><!----><img class="star-images empty-star" src="https://virtual-labs.github.io/svc-rating/empty-star.svg"><!----><!----><img class="star-images empty-star" src="https://virtual-labs.github.io/svc-rating/empty-star.svg"><!----></div>
+    </div></template>
+                </rating-display>
+            </div>      <div class="svc-rating-submit">
+                <rating-submit title="Rate" this="" experiment=""><template shadowrootmode="open"><!---->
+      <div class="rating-page">
+    
+          <div class=" modal">
+            <div class="modal-content">
+              <div class="rating-header">
+              <img src="data:image/png;base64,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">
+                <span class="close">×</span>
+              </div>
+               <h1 id="title"><!--?lit$064715464$-->Rate</h1>
+               <div class="rating-div">
+                 <rating-element rating="5"><template shadowrootmode="open"><!---->
+      <div class="star-div">
+        <!--?lit$064715464$--><!---->
+              <input type="radio" name="stars" id="star-5">
+              <label for="star-5"></label>
+            <!----><!---->
+              <input type="radio" name="stars" id="star-4">
+              <label for="star-4"></label>
+            <!----><!---->
+              <input type="radio" name="stars" id="star-3">
+              <label for="star-3"></label>
+            <!----><!---->
+              <input type="radio" name="stars" id="star-2">
+              <label for="star-2"></label>
+            <!----><!---->
+              <input type="radio" name="stars" id="star-1">
+              <label for="star-1"></label>
+            <!---->
+      </div>
+    </template></rating-element>
+               </div>
+              <div class="button-div">
+                <button id="submit-button">
+                  Submit
+                </button>
+                <button id="cancel-button">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <button class="v-button rating-button" id="rating-button">
+            Rate Me
+          </button>
+          <button class="vl-mobile-rating-button" id="rating-button">
+            Rate Me
+          </button>
+      </div>
+    </template>
+                </rating-submit>
+            </div>      <bug-report id="bug-report" title="[BUG REPORT] Bubble Sort" page-type="text" context-info="{&quot;organisation&quot;:&quot;Virtual Labs&quot;,&quot;developer_institute&quot;:&quot;IIITH&quot;,&quot;expname&quot;:&quot;Bubble Sort&quot;,&quot;labname&quot;:&quot;Data Structures - 1&quot;,&quot;phase&quot;:3}" checkbox-json="{&quot;text&quot;:[&quot;Insufficient Content&quot;],&quot;video&quot;:[&quot;Insufficient Content&quot;],&quot;assesment&quot;:[&quot;Incorrect Options&quot;,&quot;Incorrect Answer&quot;,&quot;Incorrect Question&quot;],&quot;assessment&quot;:[&quot;Incorrect Options&quot;,&quot;Incorrect Answer&quot;,&quot;Incorrect Question&quot;],&quot;simulation&quot;:[&quot;Simulation Not Working&quot;,&quot;Incorrect Results/Observations&quot;,&quot;Insufficient/Incorrect Instructions&quot;],&quot;DEFAULT&quot;:[&quot;Page Not Loading&quot;,&quot;Content Not Visible&quot;,&quot;Incorrect Content&quot;]}" button_style="border: none; color: #fff; background-color: #288ec8; text-align: center; font-size: 1.05rem; border-radius: 1em;padding: 0.6em 1.2em; margin: 0 10px" position="override" custom_button_class="v-button"><template shadowrootmode="open"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <style>
+  #exampleModal {
+    display: none;
+  }
+
+  .d-flex {
+    flex-grow: 1;
+  }
+
+  /* #bug-report-button {
+    
+  } */
+</style>
+<!-- Button trigger modal -->
+<button id="bug-report-button" type="button" class="v-button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="border-width: medium; border-style: none; border-color: currentcolor; border-image: none; color: rgb(255, 255, 255); background-color: rgb(40, 142, 200); text-align: center; font-size: 1.05rem; border-radius: 1em; padding: 0.6em 1.2em; margin: 0px 10px;">
+  Report a Bug
+</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="d-flex bd-highlight">
+          <div class="p-2 bd-highlight">
+            <img class="border rounded-3" style="min-width: 60px; width: 60%; height: auto" src="data:image/gif;base64,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">
+          </div>
+          <div class="p-2 flex-grow-1 bd-highlight align-self-center mx-auto">
+            <h3 class="modal-title" style="color: #2c99ce" id="exampleModalLabel">
+              Bug Report
+            </h3>
+          </div>
+
+          <div class="p-2 bd-highlight float-right">
+            <button id="close_x_button" type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <h3 id="custom-issues" style="display: block;">Please select the Issues</h3>
+        <div class="container">
+          <div id="checkboxes-question" class="row"><div class="form-check"><input id="option1" class="form-check-input" type="checkbox"><label class="form-check-label" for="option1">Insufficient Content</label></div><div class="form-check"><input id="option2" class="form-check-input" type="checkbox"><label class="form-check-label" for="option2">Page Not Loading</label></div><div class="form-check"><input id="option3" class="form-check-input" type="checkbox"><label class="form-check-label" for="option3">Content Not Visible</label></div><div class="form-check"><input id="option4" class="form-check-input" type="checkbox"><label class="form-check-label" for="option4">Incorrect Content</label></div></div>
+        </div>
+        <div id="description" class="form-group" style="margin-bottom: 10px; margin-top: 10px">
+          <label for="tf_description">Please describe your issue</label>
+          <textarea class="form-control" id="tf_description" rows="3" placeholder="Enter description here"></textarea>
+        </div>
+        <div id="email" class="form-group" style="margin-bottom: 10px; margin-top: 10px">
+          <label for="tf_email">Please enter your email (Optional)</label>
+          <input type="email" class="form-control" id="tf_email" placeholder="Enter email here for communication">
+        </div>
+        <hr class="mt-2 mb-3">
+        <div id="ss-div" class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="ss-checkbox">
+          <label class="form-check-label" for="ss-checkbox">
+            Include Screenshot
+          </label>
+        </div>
+        <div id="image-container"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal" id="close-button">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" id="submit">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div></template></bug-report>
+          </div>
+        </nav>
+      </header>
+      <div class="container-fluid flex-fill d-flex flex-column vlabs-page-main">
+        <div class="row d-flex justify-content-between">
+          <div class="flex-column">
+            
+            <div class="row py-4 px-4 breadcrumbs">
+              <a href="http://vlab.co.in/broad-area-computer-science-and-engineering">
+                Computer Science and Engineering               
+              </a>
+              <span class="mx-2">
+                <i aria-hidden="true" class="fa fa-angle-right"></i>
+              </span>
+              <a href="https://ds1-iiith.vlabs.ac.in/"> 
+              Data Structures - 1
+              </a>
+              <span class="mx-2">
+                <i aria-hidden="true" class="fa fa-angle-right"></i>
+              </span>
+              <a href="https://ds1-iiith.vlabs.ac.in/List%20of%20experiments.html">
+              Experiments
+              </a>
+            </div>
+            
+          </div>
+        </div>
+        <div class="row flex-grow-1 d-flex flex-nowrap flex-column flex-lg-row">
+          <div class="modal fade popupmenu" id="popupMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">
+                              <a href="https://vlab.co.in/" class="navbar-brand">
+                                  <img src="./Virtual Labs_files/vlabs-color-small-moe.jpg" alt="vlabs logo" class="vlabs-logo">
+                              </a>
+                          </h5>
+                          <button type="button" class="btn-close align-self-center" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body nav-menu">
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/index.html" class="p-2  current-item ">
+                                      Aim
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/overview.html" class="p-2 ">
+                                      Overview
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/recap.html" class="p-2 ">
+                                      Recap
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/pretest.html" class="p-2 ">
+                                      Pretest
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      
+                                      <a data-bs-toggle="collapse" href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/index.html#t-bubble-sort" class="p-2 ">
+                                      Bubble Sort
+                                      </a>
+                                      <button class="btn btn-white" type="button" data-bs-toggle="collapse" data-bs-target="#t-bubble-sort" aria-controls="bubble-sort"> 
+                                          <i class="fa fa-angle-down"></i>
+                                      </button>
+                                  </div>
+                                  <div id="t-bubble-sort" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/index.html" class="py-1 "> Aim </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/basic-concept.html" class="py-1 "> Concept </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bsalgo.html" class="py-1 "> Algorithm </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bsdemo.html" class="py-1 "> Demo </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bspractice.html" class="py-1 "> Practice </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bsexercise.html" class="py-1 "> Exercise </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bubble-sort-quiz.html" class="py-1 "> Quiz </a>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      
+                                      <a data-bs-toggle="collapse" href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/index.html#t-optimized-bubble-sort" class="p-2 ">
+                                      Optimized Bubble Sort
+                                      </a>
+                                      <button class="btn btn-white" type="button" data-bs-toggle="collapse" data-bs-target="#t-optimized-bubble-sort" aria-controls="optimized-bubble-sort"> 
+                                          <i class="fa fa-angle-down"></i>
+                                      </button>
+                                  </div>
+                                  <div id="t-optimized-bubble-sort" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/index.html" class="py-1 "> Aim </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/optimization-technique.html" class="py-1 "> Optimization Technique </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/opt-bs-demo.html" class="py-1 "> Demo </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/opt-bs-practice.html" class="py-1 "> Practice </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/opt-bs-exercise.html" class="py-1 "> Exercise </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/opt-bs-quiz.html" class="py-1 "> Quiz </a>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/code-assessment.html" class="p-2 ">
+                                      Code Assessment
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      
+                                      <a data-bs-toggle="collapse" href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/index.html#t-analysis" class="p-2 ">
+                                      Analysis
+                                      </a>
+                                      <button class="btn btn-white" type="button" data-bs-toggle="collapse" data-bs-target="#t-analysis" aria-controls="analysis"> 
+                                          <i class="fa fa-angle-down"></i>
+                                      </button>
+                                  </div>
+                                  <div id="t-analysis" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/index.html" class="py-1 "> Aim </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/overview.html" class="py-1 "> Overview </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/time-and-space-complexity-of-bubble-sort.html" class="py-1 "> Time and Space Complexity </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/time-and-spce-complexity.html" class="py-1 "> Time and Space Complexity Demo </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/stability-of-bubble-sort.html" class="py-1 "> Stability of Bubble Sort </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/comparison-with-other-algorithms.html" class="py-1 "> Comparison with other Algorithms </a>
+                                          <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/analysis-quiz.html" class="py-1 "> Quiz </a>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/posttest.html" class="p-2 ">
+                                      Posttest
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/further-reading-and-references.html" class="p-2 ">
+                                      Further Readings/References
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/feedback.html" class="p-2 ">
+                                      Feedback
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="nav flex-column sidebar nav-menu flex-shrink-0 px-lg-4 align-items-center align-items-lg-start hidden d-none d-lg-flex" id="menu">
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/index.html" class="p-2  current-item ">
+                        Aim
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/overview.html" class="p-2 ">
+                        Overview
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/recap.html" class="p-2 ">
+                        Recap
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/pretest.html" class="p-2 ">
+                        Pretest
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        
+                        <a data-bs-toggle="collapse" href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/index.html#t-bubble-sort" class="p-2 ">
+                        Bubble Sort
+                        </a>
+                        <button class="btn btn-white" type="button" data-bs-toggle="collapse" data-bs-target="#t-bubble-sort" aria-controls="bubble-sort"> 
+                            <i class="fa fa-angle-down"></i>
+                        </button>
+                    </div>
+                    <div id="t-bubble-sort" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/index.html" class="py-1 "> Aim </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/basic-concept.html" class="py-1 "> Concept </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bsalgo.html" class="py-1 "> Algorithm </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bsdemo.html" class="py-1 "> Demo </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bspractice.html" class="py-1 "> Practice </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bsexercise.html" class="py-1 "> Exercise </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/bubble-sort/bubble-sort-quiz.html" class="py-1 "> Quiz </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        
+                        <a data-bs-toggle="collapse" href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/index.html#t-optimized-bubble-sort" class="p-2 ">
+                        Optimized Bubble Sort
+                        </a>
+                        <button class="btn btn-white" type="button" data-bs-toggle="collapse" data-bs-target="#t-optimized-bubble-sort" aria-controls="optimized-bubble-sort"> 
+                            <i class="fa fa-angle-down"></i>
+                        </button>
+                    </div>
+                    <div id="t-optimized-bubble-sort" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/index.html" class="py-1 "> Aim </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/optimization-technique.html" class="py-1 "> Optimization Technique </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/opt-bs-demo.html" class="py-1 "> Demo </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/opt-bs-practice.html" class="py-1 "> Practice </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/opt-bs-exercise.html" class="py-1 "> Exercise </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/optimized-bubblesort/opt-bs-quiz.html" class="py-1 "> Quiz </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/code-assessment.html" class="p-2 ">
+                        Code Assessment
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        
+                        <a data-bs-toggle="collapse" href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/index.html#t-analysis" class="p-2 ">
+                        Analysis
+                        </a>
+                        <button class="btn btn-white" type="button" data-bs-toggle="collapse" data-bs-target="#t-analysis" aria-controls="analysis"> 
+                            <i class="fa fa-angle-down"></i>
+                        </button>
+                    </div>
+                    <div id="t-analysis" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/index.html" class="py-1 "> Aim </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/overview.html" class="py-1 "> Overview </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/time-and-space-complexity-of-bubble-sort.html" class="py-1 "> Time and Space Complexity </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/time-and-spce-complexity.html" class="py-1 "> Time and Space Complexity Demo </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/stability-of-bubble-sort.html" class="py-1 "> Stability of Bubble Sort </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/comparison-with-other-algorithms.html" class="py-1 "> Comparison with other Algorithms </a>
+                            <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/analysis/analysis-quiz.html" class="py-1 "> Quiz </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/posttest.html" class="p-2 ">
+                        Posttest
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/further-reading-and-references.html" class="p-2 ">
+                        Further Readings/References
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="https://ds1-iiith.vlabs.ac.in/exp/bubble-sort/feedback.html" class="p-2 ">
+                        Feedback
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+          </div>          <div class="vlabs-page-content px-5 pb-4 flex-grow-1 markdown-body">
+            <div class="text-center fix-spacing">
+              <h1 id="bubble-sort">Bubble Sort</h1>
+          
+            </div>
+              <h3 id="estimated-time">Estimated Time</h3>
+          <p>1 hour</p>
+          <h3 id="learning-objectives-of-the-experiment">Learning Objectives of the Experiment</h3>
+          <p>In this experiment, we will be able to do the following:</p>
+          <ul>
+          <li><p>Given an unsorted array of numbers, generate a sorted array of numbers by applying Bubble Sort.</p>
+          </li>
+          <li><p>Optimise the Bubble Sort algorithm to achieve better performance.</p>
+          </li>
+          <li><p>Demonstrate knowledge of time complexity of Bubble Sort by counting the number of operations involved in each iteration.</p>
+          </li>
+          <li><p>Compare Bubble Sort with other sorting algorithms and realise Bubble Sort as a stable comparison sorting algorithm.</p>
+          </li>
+          </ul>
+          
+          </div>
+          <div class="bug-report-mobile">
+              <bug-report id="bug-report" title="[BUG REPORT] Bubble Sort" page-type="text" context-info="{&quot;organisation&quot;:&quot;Virtual Labs&quot;,&quot;developer_institute&quot;:&quot;IIITH&quot;,&quot;expname&quot;:&quot;Bubble Sort&quot;,&quot;labname&quot;:&quot;Data Structures - 1&quot;,&quot;phase&quot;:3}" checkbox-json="{&quot;text&quot;:[&quot;Insufficient Content&quot;],&quot;video&quot;:[&quot;Insufficient Content&quot;],&quot;assesment&quot;:[&quot;Incorrect Options&quot;,&quot;Incorrect Answer&quot;,&quot;Incorrect Question&quot;],&quot;assessment&quot;:[&quot;Incorrect Options&quot;,&quot;Incorrect Answer&quot;,&quot;Incorrect Question&quot;],&quot;simulation&quot;:[&quot;Simulation Not Working&quot;,&quot;Incorrect Results/Observations&quot;,&quot;Insufficient/Incorrect Instructions&quot;],&quot;DEFAULT&quot;:[&quot;Page Not Loading&quot;,&quot;Content Not Visible&quot;,&quot;Incorrect Content&quot;]}" position="override" button_style="
+                          position: fixed; 
+                          bottom: 20px;
+                          right: 20px;
+                          z-index: 1;
+                          font-size: 0;
+                          padding: 25px;
+                          border-radius: 50%;
+                          border: none;
+                          background-color: #0fc0ff;
+                          background-image: url(data:image/png;base64,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);
+                          background-repeat: no-repeat;
+                          background-position: center;
+                          background-size: 30px;
+                          filter: invert(1);"><template shadowrootmode="open"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <style>
+  #exampleModal {
+    display: none;
+  }
+
+  .d-flex {
+    flex-grow: 1;
+  }
+
+  /* #bug-report-button {
+    
+  } */
+</style>
+<!-- Button trigger modal -->
+<button id="bug-report-button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="position: fixed; bottom: 20px; right: 20px; z-index: 1; font-size: 0px; padding: 25px; border-radius: 50%; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; background-color: rgb(15, 192, 255); background-image: url(&quot;data:image/png;base64,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&quot;); background-repeat: no-repeat; background-position: center center; background-size: 30px auto; filter: invert(1);">
+  Report a Bug
+</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="d-flex bd-highlight">
+          <div class="p-2 bd-highlight">
+            <img class="border rounded-3" style="min-width: 60px; width: 60%; height: auto" src="data:image/gif;base64,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">
+          </div>
+          <div class="p-2 flex-grow-1 bd-highlight align-self-center mx-auto">
+            <h3 class="modal-title" style="color: #2c99ce" id="exampleModalLabel">
+              Bug Report
+            </h3>
+          </div>
+
+          <div class="p-2 bd-highlight float-right">
+            <button id="close_x_button" type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <h3 id="custom-issues" style="display: block;">Please select the Issues</h3>
+        <div class="container">
+          <div id="checkboxes-question" class="row"><div class="form-check"><input id="option1" class="form-check-input" type="checkbox"><label class="form-check-label" for="option1">Insufficient Content</label></div><div class="form-check"><input id="option2" class="form-check-input" type="checkbox"><label class="form-check-label" for="option2">Page Not Loading</label></div><div class="form-check"><input id="option3" class="form-check-input" type="checkbox"><label class="form-check-label" for="option3">Content Not Visible</label></div><div class="form-check"><input id="option4" class="form-check-input" type="checkbox"><label class="form-check-label" for="option4">Incorrect Content</label></div></div>
+        </div>
+        <div id="description" class="form-group" style="margin-bottom: 10px; margin-top: 10px">
+          <label for="tf_description">Please describe your issue</label>
+          <textarea class="form-control" id="tf_description" rows="3" placeholder="Enter description here"></textarea>
+        </div>
+        <div id="email" class="form-group" style="margin-bottom: 10px; margin-top: 10px">
+          <label for="tf_email">Please enter your email (Optional)</label>
+          <input type="email" class="form-control" id="tf_email" placeholder="Enter email here for communication">
+        </div>
+        <hr class="mt-2 mb-3">
+        <div id="ss-div" class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="ss-checkbox">
+          <label class="form-check-label" for="ss-checkbox">
+            Include Screenshot
+          </label>
+        </div>
+        <div id="image-container"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal" id="close-button">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" id="submit">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div></template>
+              </bug-report>
+          </div>        </div>
+      </div>
+      <footer class="text-light pt-2 vlabs-footer d-flex flex-column">
+        <div class="row px-5 mx-0">
+          <div class="col d-flex flex-column">
+            <span class="font-weight-bold vlabs-footer-sect-name pb-2 mb-3">Community Links</span>
+            <a href="https://www.sakshat.ac.in/" class="text-light">Sakshat Portal</a>
+            <a href="http://outreach.vlabs.ac.in/" class="text-light">Outreach Portal</a>
+            <a href="https://vlab.co.in/faq" class="text-light">FAQ: Virtual Labs</a>
+          </div>
+          <div class="col d-flex flex-column">
+            <span class="font-weight-bold vlabs-footer-sect-name pb-2 mb-3">Contact Us</span>
+            <span> Phone: General Information: 011-26582050 </span>
+            <span> Email: support@vlabs.ac.in </span>
+          </div>
+          <div class="col d-flex flex-column">
+            <span class="font-weight-bold vlabs-footer-sect-name pb-2 mb-3">Follow Us</span>
+            <div class="social-links">
+      	<a class="p-2 mt-1 mr-2 d-inline-flex justify-content-center align-items-center" style="background: #55acee;" href="https://twitter.com/TheVirtualLabs">
+      	  <i class="fab fa-twitter"></i>
+      	</a>
+      	<a class="p-2 mt-1 mr-2 d-inline-flex justify-content-center align-items-center" style="background: #3b5998;" href="https://www.facebook.com/Virtual-Labs-IIT-Delhi-301510159983871/">
+      	  <i class="fab fa-facebook"></i>
+      	</a>
+      	<a class="p-2 mt-1 mr-2 d-inline-flex justify-content-center align-items-center" style="background: #e52d27;" href="https://www.youtube.com/watch?v=asxRaOgk6a0">
+      	  <i class="fab fa-youtube"></i>
+      	</a>
+      	<a class="p-2 mt-1 mr-2 d-inline-flex justify-content-center align-items-center" style="background: #2867B2;" href="https://in.linkedin.com/in/virtual-labs-008ba9136">
+      	  <i class="fab fa-linkedin"></i>
+      	</a>
+            </div>
+          </div>
+        </div>
+        <div class="m-0 py-2 text-center" style="font-family: &quot;Open Sans&quot;, sans-serif; background: #212121;">
+          <a class="text-primary font-weight-bold" href="https://www.gnu.org/licenses/agpl-3.0.en.html"> AGPL 3.0 </a>
+          &nbsp;&amp;&nbsp;
+          <a class="text-primary font-weight-bold" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"> Creative Commons (CC BY-NC-SA 4.0) </a>
+        </div>
+      </footer>
+    <script src="./Virtual Labs_files/toggleSidebar.js.download"></script>
+    <script src="./Virtual Labs_files/event-handler.js.download"></script>
+
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register("sw.js");
+        });
+      }
+    </script>
+  
+
+<script type="module" src="./Virtual Labs_files/vlabs-bug-report.js.download"></script><script type="module" src="./Virtual Labs_files/index(1).js.download"></script><script type="module" src="./Virtual Labs_files/config.js.download"></script><script type="module" src="./Virtual Labs_files/api.js.download"></script></body></html>

@@ -37,7 +37,7 @@ export default function Header({
   };
 
   return (
-    <header className="bg-white sticky top-0 z-40 shadow-xs select-none">
+    <header className="bg-white sticky top-0 z-40 border-b-[8px] border-[#ff6600] font-['Raleway',sans-serif] shadow-xs select-none">
       {/* Main Bar */}
       <div className="w-full px-4 sm:px-6 py-2.5 flex items-center justify-between">
         {/* Left: Hamburger & Virtual Labs Brand */}
@@ -140,19 +140,19 @@ export default function Header({
           {/* Rate Me Button */}
           <button
             onClick={onOpenRateModal}
-            className="px-3.5 py-1.5 text-xs sm:text-sm font-medium text-white bg-[#0284c7] hover:bg-[#0369a1] rounded-md shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
+            className="v-button shadow-xs transition-transform hover:scale-[1.02]"
           >
-            <Star className="w-3.5 h-3.5 fill-white/80" />
-            Rate Me
+            <Star className="w-3.5 h-3.5 fill-white/90" />
+            <span>Rate Me</span>
           </button>
 
           {/* Report a Bug Button */}
           <button
             onClick={onOpenBugModal}
-            className="px-3.5 py-1.5 text-xs sm:text-sm font-medium text-white bg-[#0284c7] hover:bg-[#0369a1] rounded-md shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
+            className="v-button shadow-xs transition-transform hover:scale-[1.02]"
           >
             <Bug className="w-3.5 h-3.5" />
-            Report a Bug
+            <span>Report a Bug</span>
           </button>
 
           {/* Active User Persona Dropdown */}
@@ -245,8 +245,6 @@ export default function Header({
         </div>
       </div>
 
-      {/* Signature Orange Accent Divider Line (KJSSE VLab) */}
-      <div className="h-[4px] w-full bg-[#f37021] shadow-xs" />
     </header>
   );
 }

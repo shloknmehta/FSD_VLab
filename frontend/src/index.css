@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #2d3748;
   background-color: #ffffff;
 }
@@ -12,7 +12,63 @@ body {
   min-height: 100vh;
   background-color: #ffffff;
   color: #2d3748;
+  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Official Virtual Labs Heading & Font Typography */
+h1, h2, h3, .vlabs-heading {
+  font-family: 'Raleway', sans-serif;
+  color: #2c99ce;
+  font-weight: 800;
+}
+
+/* Official Virtual Labs Header */
+.vlabs-header {
+  border-bottom: 8px solid #ff6600;
+  font-family: 'Raleway', sans-serif;
+}
+
+/* Official Virtual Labs Breadcrumbs */
+.breadcrumbs {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.4rem;
+  color: #337ab7;
+}
+
+/* Official .v-button from Virtual Labs ref */
+.v-button {
+  border: none;
+  color: #ffffff;
+  background-color: #288ec8;
+  text-align: center;
+  font-size: 0.95rem;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  border-radius: 1.25rem;
+  padding: 0.45rem 1.15rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.v-button:hover {
+  background-color: #2075a5;
+}
+
+.v-button:disabled {
+  background-color: #a9a9a9;
+  cursor: not-allowed;
+}
+
+/* Text Justify and Typography for Educational Content */
+.vlabs-content {
+  font-family: 'Open Sans', sans-serif;
+  color: #1f2937;
+  text-align: justify;
+  line-height: 1.7;
 }
 
 #root {
