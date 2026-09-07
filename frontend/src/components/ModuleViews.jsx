@@ -21,6 +21,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import VSCodeBlock from './VSCodeBlock';
 
 // 1. Overview View
 export function OverviewView({ onNext }) {
@@ -145,13 +146,16 @@ export function RecapView() {
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
             Target a single field. Retrieve the pre-sanitized value from <code className="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">self.cleaned_data['fieldname']</code>, inspect it against your rule, raise <code className="bg-slate-100 px-1.5 py-0.5 rounded text-red-600 font-mono">forms.ValidationError("...")</code> if invalid, and <strong>MUST return the cleaned value</strong>!
           </p>
-          <pre className="p-3 bg-slate-900 text-emerald-400 rounded-lg text-xs font-mono overflow-x-auto">
-{`def clean_age(self):
+          <VSCodeBlock
+            filename="forms.py"
+            breadcrumbs="forms.py > UserRegistrationForm > clean_age()"
+            language="python"
+            code={`def clean_age(self):
     age = self.cleaned_data.get('age')
     if age is not None and age < 18:
         raise forms.ValidationError("Must be 18 or older to register.")
     return age  # CRITICAL: Always return the value!`}
-          </pre>
+          />
         </div>
 
         {/* Rule 2 */}
@@ -163,8 +167,11 @@ export function RecapView() {
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
             Target multiple interdependent fields. Always call <code className="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">cleaned_data = super().clean()</code> first, access both fields safely using <code className="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">.get()</code>, raise <code className="bg-slate-100 px-1.5 py-0.5 rounded text-red-600 font-mono">forms.ValidationError</code> for mismatches, and <strong>MUST return cleaned_data</strong>!
           </p>
-          <pre className="p-3 bg-slate-900 text-emerald-400 rounded-lg text-xs font-mono overflow-x-auto">
-{`def clean(self):
+          <VSCodeBlock
+            filename="forms.py"
+            breadcrumbs="forms.py > UserRegistrationForm > clean()"
+            language="python"
+            code={`def clean(self):
     cleaned_data = super().clean()
     password = cleaned_data.get('password')
     confirm_password = cleaned_data.get('confirm_password')
@@ -172,7 +179,7 @@ export function RecapView() {
     if password and confirm_password and password != confirm_password:
         raise forms.ValidationError("Passwords do not match.")
     return cleaned_data  # CRITICAL: Always return cleaned_data!`}
-          </pre>
+          />
         </div>
 
         {/* Rule 3 */}
@@ -836,9 +843,14 @@ else:
                   {activeStepObj.highlight}
                 </span>
               </div>
-              <pre className="p-3.5 bg-slate-900 text-emerald-400 rounded-lg text-xs font-mono overflow-x-auto shadow-inner leading-relaxed">
-                {activeStepObj.code}
-              </pre>
+              <VSCodeBlock
+                filename={activeStepObj.code.includes('views.py') ? 'views.py' : 'forms.py'}
+                breadcrumbs={activeStepObj.code.includes('views.py') ? 'views.py > register_view()' : 'forms.py > UserRegistrationForm'}
+                language="python"
+                code={activeStepObj.code}
+                activeTargetPattern={activeStepObj.highlight.includes('->') ? null : activeStepObj.highlight}
+                maxHeight="320px"
+              />
             </div>
 
             {/* Explanatory Note */}
@@ -941,9 +953,13 @@ else:
                 {Object.keys(activeStepObj.cleanedDataState).length} items
               </span>
             </div>
-            <pre className="p-3 bg-slate-900 text-sky-300 rounded-lg text-xs font-mono overflow-x-auto min-h-[70px]">
-              {JSON.stringify(activeStepObj.cleanedDataState, null, 2)}
-            </pre>
+            <VSCodeBlock
+              filename="cleaned_data.json"
+              breadcrumbs="Debugger > self.cleaned_data"
+              language="json"
+              code={JSON.stringify(activeStepObj.cleanedDataState, null, 2)}
+              maxHeight="160px"
+            />
           </div>
 
           {/* Variable State: self.errors */}
@@ -957,13 +973,13 @@ else:
                 {Object.keys(activeStepObj.errorsState).length} errors
               </span>
             </div>
-            <pre className={`p-3 rounded-lg text-xs font-mono overflow-x-auto min-h-[70px] ${
-              Object.keys(activeStepObj.errorsState).length > 0
-                ? 'bg-red-950/40 text-red-400 border border-red-900/50'
-                : 'bg-slate-900 text-slate-400'
-            }`}>
-              {JSON.stringify(activeStepObj.errorsState, null, 2)}
-            </pre>
+            <VSCodeBlock
+              filename="errors.json"
+              breadcrumbs="Debugger > self.errors"
+              language="json"
+              code={JSON.stringify(activeStepObj.errorsState, null, 2)}
+              maxHeight="160px"
+            />
           </div>
         </div>
       </div>
@@ -1210,9 +1226,13 @@ export function SimulationView() {
                   <span className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider block mb-1">
                     form.cleaned_data:
                   </span>
-                  <pre className="p-3 bg-slate-900 text-emerald-400 rounded-lg text-xs font-mono overflow-x-auto max-h-40">
-                    {JSON.stringify(simulationResult.cleanedData, null, 2)}
-                  </pre>
+                  <VSCodeBlock
+                    language="json"
+                    filename="form.cleaned_data.json"
+                    breadcrumbs="django.forms > bound_form > cleaned_data"
+                    code={JSON.stringify(simulationResult.cleanedData, null, 2)}
+                    maxHeight="200px"
+                  />
                 </div>
 
                 {/* Errors */}
@@ -1220,9 +1240,13 @@ export function SimulationView() {
                   <span className="text-[11px] font-bold text-red-600 uppercase tracking-wider block mb-1">
                     form.errors (ErrorDict):
                   </span>
-                  <pre className="p-3 bg-slate-900 text-red-400 rounded-lg text-xs font-mono overflow-x-auto max-h-40">
-                    {JSON.stringify(simulationResult.errors, null, 2)}
-                  </pre>
+                  <VSCodeBlock
+                    language="json"
+                    filename="form.errors.json"
+                    breadcrumbs="django.forms > bound_form > errors"
+                    code={JSON.stringify(simulationResult.errors, null, 2)}
+                    maxHeight="200px"
+                  />
                 </div>
               </div>
             ) : (
@@ -1247,15 +1271,22 @@ export function SimulationView() {
 
       {/* Code Modal */}
       {showCodeModal && (
-        <div className="border border-slate-300 rounded-xl p-4 bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto animate-in fade-in">
-          <div className="flex items-center justify-between text-slate-400 pb-2 border-b border-slate-800 mb-2">
-            <span>forms.py Source Reference</span>
-            <button onClick={() => setShowCodeModal(false)} className="text-white hover:text-red-400 cursor-pointer">
+        <div className="border border-[#333333] rounded-xl overflow-hidden shadow-2xl animate-in fade-in">
+          <div className="flex items-center justify-between px-3 py-2 bg-[#252526] text-slate-300 text-xs font-mono border-b border-[#333333]">
+            <span className="font-semibold text-slate-200">forms.py &mdash; Full Source Code Reference</span>
+            <button
+              onClick={() => setShowCodeModal(false)}
+              className="text-slate-400 hover:text-white px-2 py-0.5 rounded hover:bg-[#383838] transition cursor-pointer"
+            >
               Close &times;
             </button>
           </div>
-          <pre className="text-emerald-400 leading-relaxed">
-{`from django import forms
+          <VSCodeBlock
+            language="python"
+            filename="forms.py"
+            breadcrumbs="vlab_core > simulator > forms.py"
+            maxHeight="380px"
+            code={`from django import forms
 
 class UserRegistrationForm(forms.Form):
     username = forms.CharField(max_length=50, required=True)
@@ -1280,7 +1311,7 @@ class UserRegistrationForm(forms.Form):
         if password and confirm_password and password != confirm_password:
             raise forms.ValidationError("Passwords do not match.")
         return cleaned_data`}
-          </pre>
+          />
         </div>
       )}
     </div>
@@ -1406,30 +1437,81 @@ export function CodeAssessmentView() {
         </button>
       </div>
 
-      {/* Code Editor Container */}
-      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
-        <div className="bg-slate-800 px-4 py-2.5 text-xs font-mono text-slate-300 flex items-center justify-between">
-          <span className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-            <span>forms.py &mdash; {activeChallenge === 'clean_age' ? 'clean_age(self)' : 'clean(self)'}</span>
-          </span>
-          <button
-            onClick={handleRunAssessment}
-            disabled={isEvaluating}
-            className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition cursor-pointer disabled:opacity-50"
-          >
-            {isEvaluating ? 'Evaluating Code...' : 'Run Test Suite'}
-          </button>
+      {/* VS Code Code Editor Container */}
+      <div className="border border-[#333333] rounded-xl overflow-hidden bg-[#1e1e1e] shadow-xl">
+        {/* Top Tab Bar */}
+        <div className="bg-[#252526] px-2 pt-1 border-b border-[#1e1e1e] flex items-center justify-between select-none">
+          <div className="flex items-center">
+            <div className="bg-[#1e1e1e] text-[#d4d4d4] px-3 py-1.5 text-xs font-mono rounded-t flex items-center gap-2 border-t-2 border-[#007acc]">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#3572A5] inline-block" />
+              <span className="text-[#ffffff] font-medium">forms.py</span>
+              <span className="text-[10px] text-[#858585] ml-1">&mdash; {activeChallenge === 'clean_age' ? 'clean_age(self)' : 'clean(self)'}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 pb-1 pr-1">
+            <button
+              onClick={handleRunAssessment}
+              disabled={isEvaluating}
+              className="px-3 py-1 bg-[#16825d] hover:bg-[#1b9a6e] text-white rounded text-xs font-mono font-medium transition cursor-pointer disabled:opacity-50 flex items-center gap-1.5 shadow-xs"
+            >
+              <span>▶</span>
+              <span>{isEvaluating ? 'Evaluating Code...' : 'Run Test Suite'}</span>
+            </button>
+          </div>
         </div>
-        <textarea
-          value={activeChallenge === 'clean_age' ? codeAge : codeClean}
-          onChange={(e) => {
-            if (activeChallenge === 'clean_age') setCodeAge(e.target.value);
-            else setCodeClean(e.target.value);
-          }}
-          rows={12}
-          className="w-full font-mono text-xs sm:text-sm p-4 bg-slate-900 text-emerald-400 outline-none resize-none leading-relaxed"
-        />
+
+        {/* VS Code Breadcrumb Bar */}
+        <div className="bg-[#1e1e1e] px-3 py-1 text-[11px] font-mono text-[#858585] border-b border-[#2d2d2d] flex items-center gap-1.5 select-none">
+          <span>vlab_core</span>
+          <span>&gt;</span>
+          <span>simulator</span>
+          <span>&gt;</span>
+          <span>forms.py</span>
+          <span>&gt;</span>
+          <span className="text-[#cccccc]">{activeChallenge === 'clean_age' ? 'UserRegistrationForm > clean_age' : 'UserRegistrationForm > clean'}</span>
+        </div>
+
+        {/* Editor Area with Line Numbers Gutter */}
+        <div
+          className="flex bg-[#1e1e1e] font-mono text-[12.5px] leading-[1.55]"
+          style={{ fontFamily: "'Consolas', 'Fira Code', 'Courier New', monospace" }}
+        >
+          {/* Gutter */}
+          <div className="py-3 px-3 text-right text-[#858585] bg-[#1e1e1e] border-r border-[#2d2d2d] select-none text-xs min-w-[42px]">
+            {(activeChallenge === 'clean_age' ? codeAge : codeClean).split('\n').map((_, idx) => (
+              <div key={idx} className="h-[19.38px] leading-[19.38px]">{idx + 1}</div>
+            ))}
+          </div>
+
+          {/* Textarea Editor */}
+          <textarea
+            value={activeChallenge === 'clean_age' ? codeAge : codeClean}
+            onChange={(e) => {
+              if (activeChallenge === 'clean_age') setCodeAge(e.target.value);
+              else setCodeClean(e.target.value);
+            }}
+            rows={12}
+            spellCheck="false"
+            className="w-full py-3 px-3 bg-[#1e1e1e] text-[#d4d4d4] outline-none resize-none overflow-x-auto selection:bg-[#264f78] leading-[1.55]"
+            style={{
+              fontFamily: "'Consolas', 'Fira Code', 'Courier New', monospace",
+              lineHeight: '19.38px',
+            }}
+          />
+        </div>
+
+        {/* Bottom Status Bar */}
+        <div className="bg-[#007acc] text-white text-[10px] px-3 py-0.5 flex items-center justify-between select-none font-sans font-medium">
+          <div className="flex items-center gap-3">
+            <span>Spaces: 4</span>
+            <span>UTF-8</span>
+            <span>LF</span>
+            <span>Python 3.12 (Virtual Labs Engine)</span>
+          </div>
+          <div>
+            <span>Django Form Validator</span>
+          </div>
+        </div>
       </div>
 
       {/* Test Results Output */}
