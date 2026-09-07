@@ -22,7 +22,7 @@ export const NAV_ITEMS = [
   { id: 'overview', label: 'Overview', icon: BookOpen },
   { id: 'recap', label: 'Recap', icon: RotateCcw },
   { id: 'pretest', label: 'Pretest', icon: HelpCircle },
-  { id: 'visualizer', label: 'Step-by-Step Visualizer', badge: 'Leyaa.ai', icon: PlaySquare },
+  { id: 'visualizer', label: 'Step-by-Step Visualizer', icon: PlaySquare },
   { id: 'simulation', label: 'Simulation / Lab Playground', icon: FlaskConical },
   { id: 'code_assessment', label: 'Code Assessment', icon: Code2 },
   { id: 'analysis', label: 'Analysis', icon: BarChart2 },

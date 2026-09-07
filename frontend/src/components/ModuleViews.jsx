@@ -356,7 +356,7 @@ export function PretestView({ onNext }) {
   );
 }
 
-// 4. Step-by-Step Visualizer (Leyaa.ai style)
+// 4. Step-by-Step Visualizer
 export function VisualizerView() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -421,7 +421,7 @@ export function VisualizerView() {
   const isPasswordMatch = formData.password === formData.confirm_password;
   const isUsernameAlpha = /^[a-zA-Z0-9]+$/.test(formData.username);
 
-  // 7-Stage Execution Steps matching Leyaa.ai & ProgrammingEmpire
+  // 7-Stage Validation Execution Steps
   const steps = [
     {
       stepNum: 1,
@@ -1567,7 +1567,7 @@ export function AnalysisView() {
       <div className="text-center mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Analysis: Form Validation Lifecycle Table</h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Detailed evaluation matrix matching Leyaa.ai and ProgrammingEmpire standards
+          Detailed evaluation matrix and execution sequence for Django form validation
         </p>
       </div>
 
@@ -1921,7 +1921,7 @@ export function ReferencesView() {
           className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#0284c7] hover:bg-sky-50/50 transition group"
         >
           <div>
-            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#0284c7]">Leyaa.ai: Custom Form Validation Methods in Django (Visualized)</h4>
+            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#0284c7]">Interactive Execution Flow: Custom Form Validation Methods in Django</h4>
             <p className="text-xs text-slate-500">Step-by-step execution diagrams, variable tracking, and flowcharts</p>
           </div>
           <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7]" />

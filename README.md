@@ -31,12 +31,12 @@ This platform adheres to the aesthetic, functional, and pedagogical standards of
 | 2 | **Overview** | Detailed architectural breakdown of Django validation pipeline (`to_python()`, `validate()`, `run_validators()`), built-in vs custom validation, and lifecycle flowcharts. |
 | 3 | **Recap** | The "Golden Rules" of Django validation: raising `forms.ValidationError`, returning `cleaned_data`, and cross-field synchronization. |
 | 4 | **Pretest** | 5-question conceptual diagnostic quiz with instant feedback and scoring. |
-| 5 | **Step-by-Step Visualizer** | Interactive Leyaa.ai-style execution tracer displaying real-time call stack, source code highlighting, and live variable watcher (`self.cleaned_data`, `self.errors`) across 7 validation phases. |
+| 5 | **Step-by-Step Visualizer** | Interactive execution tracer displaying real-time call stack, source code highlighting, and live variable watcher (`self.cleaned_data`, `self.errors`) across 7 validation phases. |
 | 6 | **Simulation Playground** | Live form testing workbench with real-time field errors, form-wide non-field errors (`__all__`), and toggleable `forms.py` source code preview. |
 | 7 | **Code Assessment** | In-browser Python IDE with sandbox automated test runner for student-submitted `clean_age()` and `clean()` logic. |
 | 8 | **Analysis** | Comparative analysis matrix (Built-in vs Field-level vs Form-level validation) and execution order reference tables. |
 | 9 | **Posttest & Certificate** | 5-question certification test with automated certificate issuance upon passing. |
-| 10 | **References** | Authoritative citations to Django official documentation, Leyaa.ai, and MoE Virtual Labs. |
+| 10 | **References** | Authoritative citations to Django official documentation and MoE Virtual Labs. |
 | 11 | **Feedback** | Direct 5-star feedback and qualitative survey submission stored in the database. |
 | 12 | **Faculty Portal** | Real-time gradebook for Batch D3 with average score metrics and CSV export. |
 | 13 | **Admin Portal** | System issue tracker with severity filters and user registry. |
@@ -49,7 +49,7 @@ To ensure modularity and zero cross-contamination, all features are orchestrated
 
 1. **`Auth-Security-Agent`**: Custom user model, token/session authentication, and RBAC enforcement.
 2. **`Curriculum-Agent`**: Pedagogical content, aims, overviews, recaps, quizzes, and reference citations.
-3. **`Leyaa-Visualizer-Agent`**: 7-step execution trace engine modeling `form.is_valid()`.
+3. **`Visualizer-Trace-Agent`**: 7-step execution trace engine modeling `form.is_valid()`.
 4. **`Form-Sandbox-Agent`**: Live form submission workbench and error rendering.
 5. **`Assessment-Runner-Agent`**: Python code sandbox, dynamic AST execution, and test assertion harness.
 6. **`Evaluation-Agent`**: Automated grading, gradebook analytics, and completion certification.
