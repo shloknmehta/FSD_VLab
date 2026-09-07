@@ -20,6 +20,8 @@ import {
   Layers,
   ArrowRight,
   RotateCcw,
+  Printer,
+  Download,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import VSCodeBlock from './VSCodeBlock';
@@ -1909,7 +1911,7 @@ export function AnalysisView() {
 }
 
 // 8. Posttest View
-export function PosttestView() {
+export function PosttestView({ onNext, onQuizPassed }) {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -1986,6 +1988,9 @@ export function PosttestView() {
     return score;
   };
 
+  const score = calculateScore();
+  const percentage = Math.round((score / questions.length) * 100);
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -2003,10 +2008,42 @@ export function PosttestView() {
     }
     setSubmitted(true);
     setIsSubmitting(false);
+    onQuizPassed?.();
   };
 
-  const score = calculateScore();
-  const percentage = Math.round((score / questions.length) * 100);
+  const handleDownloadReport = () => {
+    const reportData = {
+      institution: "K. J. Somaiya School of Engineering (KJSSE)",
+      university: "Somaiya Vidyavihar University",
+      trust: "The Somaiya Trust",
+      student: {
+        name: currentUser?.name || 'Shlok Mehta',
+        roll_no: currentUser?.roll_or_faculty_id || '16010124169',
+        batch: currentUser?.batch || 'D3',
+        department: currentUser?.department || 'Computer Engineering',
+      },
+      experiment: {
+        number: "06",
+        title: "Custom Form Validation using clean() and clean_<fieldname>() in Django",
+        course: "Django Web Technologies / Full Stack Development",
+        status: "COMPLETED",
+        score: `${score} / ${questions.length}`,
+        percentage: `${percentage}%`,
+        completion_date: new Date().toISOString(),
+        verification_id: "KJSSE-VLAB-EXP06-2026",
+      }
+    };
+
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `16010124169_FSD_Exp06_Report.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
@@ -2079,76 +2116,108 @@ export function PosttestView() {
             </button>
           </div>
         ) : (
-          <div className="p-1 max-w-2xl mx-auto rounded-xl bg-gradient-to-b from-slate-200 to-slate-300 shadow-md">
-            <div className="border-4 border-double border-[#1a365d] p-6 sm:p-8 bg-[#fdfdfd] rounded-lg text-center space-y-4">
-              {/* Institution Header */}
-              <div className="border-b border-slate-200 pb-3 flex flex-col items-center">
-                <div className="flex items-center gap-3 mb-2">
-                  <img
-                    src="/assets/logos/kjsce-formerly.svg"
-                    alt="K. J. Somaiya School of Engineering"
-                    className="h-10 sm:h-12 w-auto object-contain"
-                  />
-                  <div className="h-8 w-[1px] bg-slate-300" />
-                  <img
-                    src="/assets/logos/somaiya_trust.png"
-                    alt="The Somaiya Trust"
-                    className="h-8 sm:h-9 w-auto object-contain rounded-xs"
-                  />
+          <div className="space-y-4">
+            <div className="printable-cert-wrapper p-1 max-w-2xl mx-auto rounded-xl bg-gradient-to-b from-slate-200 to-slate-300 shadow-md">
+              <div className="printable-cert-card border-4 border-double border-[#1a365d] p-6 sm:p-8 bg-[#fdfdfd] rounded-lg text-center space-y-4">
+                {/* Institution Header */}
+                <div className="border-b border-slate-200 pb-3 flex flex-col items-center">
+                  <div className="flex items-center gap-3 mb-2">
+                    <img
+                      src="/assets/logos/kjsce-formerly.svg"
+                      alt="K. J. Somaiya School of Engineering"
+                      className="h-10 sm:h-12 w-auto object-contain"
+                    />
+                    <div className="h-8 w-[1px] bg-slate-300" />
+                    <img
+                      src="/assets/logos/somaiya_trust.png"
+                      alt="The Somaiya Trust"
+                      className="h-8 sm:h-9 w-auto object-contain rounded-xs"
+                    />
+                  </div>
+                  <div className="text-xs tracking-widest uppercase font-bold text-slate-500">
+                    Virtual Labs &bull; Ministry of Education, Govt. of India
+                  </div>
+                  <div className="text-base sm:text-lg font-bold text-[#1a365d] tracking-wide mt-0.5">
+                    K. J. SOMAIYA SCHOOL OF ENGINEERING (KJSSE)
+                  </div>
+                  <div className="text-[11px] text-slate-500 font-medium">
+                    Department of Computer Engineering &bull; Somaiya Vidyavihar University &bull; The Somaiya Trust
+                  </div>
                 </div>
-                <div className="text-xs tracking-widest uppercase font-bold text-slate-500">
-                  Virtual Labs &bull; Ministry of Education, Govt. of India
+
+                {/* Certificate Title */}
+                <div className="pt-1">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 px-3 py-1 rounded border border-amber-200">
+                    Certificate of Laboratory Completion
+                  </span>
+                  <p className="text-xs text-slate-600 mt-3 italic">This is to certify that</p>
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
+                    {currentUser?.name || 'Shlok Mehta'}
+                  </h2>
+                  <div className="text-xs text-slate-600 font-medium mt-1">
+                    Roll No: <span className="font-semibold text-slate-800">{currentUser?.roll_or_faculty_id || '16010124169'}</span> &bull; Batch: <span className="font-semibold text-slate-800">{currentUser?.batch || 'D3'}</span>
+                  </div>
                 </div>
-                <div className="text-base sm:text-lg font-bold text-[#1a365d] tracking-wide mt-0.5">
-                  K. J. SOMAIYA SCHOOL OF ENGINEERING (KJSSE)
+
+                <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
+                  has successfully performed and submitted all evaluations for <span className="font-semibold text-slate-800">Experiment 06: Custom Form Validation using clean() and clean_&lt;fieldname&gt;() in Django</span> with the score recorded below.
+                </p>
+
+                {/* Score Box */}
+                <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto py-2 px-3 bg-slate-50 border border-slate-200 rounded-lg text-xs">
+                  <div>
+                    <div className="text-[10px] text-slate-500 uppercase font-medium">Score</div>
+                    <div className="font-bold text-[#0284c7] text-sm">{score} / {questions.length}</div>
+                  </div>
+                  <div>
+                    <div className="text-[10px] text-slate-500 uppercase font-medium">Percentage</div>
+                    <div className="font-bold text-slate-800 text-sm">{percentage}%</div>
+                  </div>
+                  <div>
+                    <div className="text-[10px] text-slate-500 uppercase font-medium">Result</div>
+                    <div className="font-bold text-emerald-700 text-sm">{percentage >= 80 ? 'Pass' : 'Pass'}</div>
+                  </div>
                 </div>
-                <div className="text-[11px] text-slate-500 font-medium">
-                  Department of Computer Engineering &bull; Somaiya Vidyavihar University &bull; The Somaiya Trust
+
+                {/* Verification Stamp */}
+                <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-100">
+                  <span>Verification ID: <span className="font-mono text-slate-600 font-medium">KJSSE-VLAB-EXP06-2026</span></span>
+                  <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Recorded in Gradebook
+                  </span>
                 </div>
               </div>
+            </div>
 
-              {/* Certificate Title */}
-              <div className="pt-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 px-3 py-1 rounded border border-amber-200">
-                  Certificate of Laboratory Completion
-                </span>
-                <p className="text-xs text-slate-600 mt-3 italic">This is to certify that</p>
-                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
-                  {currentUser?.name || 'Shlok Mehta'}
-                </h2>
-                <div className="text-xs text-slate-600 font-medium mt-1">
-                  Roll No: <span className="font-semibold text-slate-800">{currentUser?.roll_or_faculty_id || '16010124169'}</span> &bull; Batch: <span className="font-semibold text-slate-800">{currentUser?.batch || 'D3'}</span>
-                </div>
+            {/* Certificate Actions (hidden during print) */}
+            <div className="no-print flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => window.print()}
+                  className="px-4 py-2 bg-[#1a365d] hover:bg-[#2a4365] text-white rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer flex items-center gap-2 shadow-xs"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Print / Save Certificate (PDF)</span>
+                </button>
+                <button
+                  onClick={handleDownloadReport}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer flex items-center gap-2 border border-slate-300 shadow-2xs"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Export Lab Report (.JSON)</span>
+                </button>
               </div>
 
-              <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-                has successfully performed and submitted all evaluations for <span className="font-semibold text-slate-800">Experiment 06: Custom Form Validation using clean() and clean_&lt;fieldname&gt;() in Django</span> with the score recorded below.
-              </p>
-
-              {/* Score Box */}
-              <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto py-2 px-3 bg-slate-50 border border-slate-200 rounded-lg text-xs">
-                <div>
-                  <div className="text-[10px] text-slate-500 uppercase font-medium">Score</div>
-                  <div className="font-bold text-[#0284c7] text-sm">{score} / {questions.length}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-slate-500 uppercase font-medium">Percentage</div>
-                  <div className="font-bold text-slate-800 text-sm">{percentage}%</div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-slate-500 uppercase font-medium">Result</div>
-                  <div className="font-bold text-emerald-700 text-sm">{percentage >= 80 ? 'Pass' : 'Pass'}</div>
-                </div>
-              </div>
-
-              {/* Verification Stamp */}
-              <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-100">
-                <span>Verification ID: <span className="font-mono text-slate-600 font-medium">KJSSE-VLAB-EXP06-2026</span></span>
-                <span className="text-emerald-700 font-semibold flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  Recorded in Gradebook
-                </span>
-              </div>
+              {onNext && (
+                <button
+                  onClick={onNext}
+                  className="v-button flex items-center gap-2 cursor-pointer"
+                >
+                  <span>Proceed to References</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              )}
             </div>
           </div>
         )}

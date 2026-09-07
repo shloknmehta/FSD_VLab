@@ -126,13 +126,34 @@ function LabPlatform() {
       />
 
       {/* 3. Main Workspace Area: Left Sidebar + Right Content */}
-      <div className="flex-1 flex overflow-hidden">
-        <Sidebar
-          isOpen={sidebarOpen}
-          activeTab={activeTab}
-          onSelectTab={handleSelectTab}
-          completedModules={completedModules}
-        />
+      <div className="flex-1 flex overflow-hidden relative">
+        {/* Mobile Backdrop */}
+        {sidebarOpen && (
+          <div
+            onClick={() => setSidebarOpen(false)}
+            className="md:hidden fixed inset-0 bg-slate-900/40 z-30 transition-opacity"
+          />
+        )}
+
+        {/* Sidebar: Offcanvas on mobile, static on desktop */}
+        <div
+          className={`z-40 ${
+            sidebarOpen ? 'fixed md:static inset-y-0 left-0 shadow-2xl md:shadow-none' : 'hidden md:block'
+          } shrink-0 bg-white`}
+        >
+          <Sidebar
+            isOpen={true}
+            onClose={() => setSidebarOpen(false)}
+            activeTab={activeTab}
+            onSelectTab={(tabId) => {
+              handleSelectTab(tabId);
+              if (window.innerWidth < 768) {
+                setSidebarOpen(false);
+              }
+            }}
+            completedModules={completedModules}
+          />
+        </div>
 
         <main className="flex-1 overflow-y-auto bg-white p-4 sm:p-8">
           {renderActiveTabContent()}

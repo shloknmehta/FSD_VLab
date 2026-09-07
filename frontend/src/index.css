@@ -94,3 +94,46 @@ h1, h2, h3, .vlabs-heading {
   background: #94a3b8;
 }
 
+/* Print optimization for Laboratory Certificate */
+@media print {
+  header,
+  footer,
+  aside,
+  nav,
+  .no-print,
+  .breadcrumbs,
+  button {
+    display: none !important;
+  }
+
+  body, #root, main {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: auto !important;
+  }
+
+  .printable-cert-wrapper {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .printable-cert-card {
+    border: 3px double #1a365d !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    padding: 24px !important;
+    margin: 0 auto !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 15mm;
+  }
+}
+

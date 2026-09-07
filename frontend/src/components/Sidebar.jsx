@@ -40,7 +40,7 @@ export const ADMIN_ITEMS = [
   { id: 'admin_portal', label: 'Admin Portal', icon: ShieldCheck, requires: 'ADMIN' },
 ];
 
-export default function Sidebar({ isOpen, activeTab, onSelectTab, completedModules = [] }) {
+export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, completedModules = [] }) {
   const { isFaculty, isAdmin } = useAuth();
 
   if (!isOpen) return null;
@@ -55,7 +55,18 @@ export default function Sidebar({ isOpen, activeTab, onSelectTab, completedModul
         <div className="px-3 space-y-1.5">
           <div className="flex items-center justify-between text-[11px] font-bold tracking-wider uppercase text-slate-400" style={{ fontFamily: "'Raleway', sans-serif" }}>
             <span>Experiment Modules</span>
-            <span className="text-[#2c99ce] font-mono">{completedCount}/{NAV_ITEMS.length}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-[#2c99ce] font-mono">{completedCount}/{NAV_ITEMS.length}</span>
+              {onClose && (
+                <button
+                  onClick={onClose}
+                  className="md:hidden text-slate-400 hover:text-slate-600 px-1.5 py-0.5 rounded text-sm font-bold cursor-pointer"
+                  title="Close sidebar"
+                >
+                  &times;
+                </button>
+              )}
+            </div>
           </div>
           {/* Progress Bar */}
           <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
