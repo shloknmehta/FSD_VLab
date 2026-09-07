@@ -14,6 +14,7 @@ import {
   GraduationCap,
   ShieldCheck,
   ChevronRight,
+  CheckCircle2,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -39,25 +40,37 @@ export const ADMIN_ITEMS = [
   { id: 'admin_portal', label: 'Admin Portal', icon: ShieldCheck, requires: 'ADMIN' },
 ];
 
-export default function Sidebar({ isOpen, activeTab, onSelectTab }) {
+export default function Sidebar({ isOpen, activeTab, onSelectTab, completedModules = [] }) {
   const { isFaculty, isAdmin } = useAuth();
 
   if (!isOpen) return null;
 
+  const completedCount = NAV_ITEMS.filter((item) => completedModules.includes(item.id)).length;
+  const progressPercent = Math.round((completedCount / NAV_ITEMS.length) * 100);
+
   return (
     <aside className="w-64 sm:w-72 shrink-0 bg-white border-r border-[#e8e8e8] min-h-[calc(100vh-80px)] p-4 select-none flex flex-col justify-between">
-      <div className="space-y-1">
-        <div
-          className="px-3 pb-2 text-[11px] font-bold tracking-wider uppercase text-slate-400"
-          style={{ fontFamily: "'Raleway', sans-serif" }}
-        >
-          Experiment Modules
+      <div className="space-y-3">
+        {/* Header & Lab Completion Progress */}
+        <div className="px-3 space-y-1.5">
+          <div className="flex items-center justify-between text-[11px] font-bold tracking-wider uppercase text-slate-400" style={{ fontFamily: "'Raleway', sans-serif" }}>
+            <span>Experiment Modules</span>
+            <span className="text-[#2c99ce] font-mono">{completedCount}/{NAV_ITEMS.length}</span>
+          </div>
+          {/* Progress Bar */}
+          <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+            <div
+              className="bg-emerald-500 h-full rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
         </div>
 
         {/* Core Student Modules */}
         <nav className="space-y-0.5">
           {NAV_ITEMS.map((item) => {
             const isActive = activeTab === item.id;
+            const isCompleted = completedModules.includes(item.id);
             const Icon = item.icon;
             return (
               <button
@@ -78,13 +91,21 @@ export default function Sidebar({ isOpen, activeTab, onSelectTab }) {
                         : 'text-[#3e6389]/70 group-hover:text-[#ff6600]'
                     }`}
                   />
-                  <span>{item.label}</span>
+                  <span className="truncate">{item.label}</span>
                 </div>
-                {item.badge && (
-                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-100 text-sky-700 tracking-wide">
-                    {item.badge}
-                  </span>
-                )}
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {isCompleted && (
+                    <CheckCircle2
+                      className="w-3.5 h-3.5 text-emerald-500"
+                      title="Module completed"
+                    />
+                  )}
+                  {item.badge && (
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-100 text-sky-700 tracking-wide">
+                      {item.badge}
+                    </span>
+                  )}
+                </div>
               </button>
             );
           })}

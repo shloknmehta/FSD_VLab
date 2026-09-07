@@ -28,37 +28,83 @@ function LabPlatform() {
   const [rateModalOpen, setRateModalOpen] = useState(false);
   const [bugModalOpen, setBugModalOpen] = useState(false);
   const [userRating, setUserRating] = useState(5);
+  const [completedModules, setCompletedModules] = useState(() => {
+    try {
+      const saved = localStorage.getItem('fsd_vlab_completed_modules');
+      return saved ? JSON.parse(saved) : ['aim'];
+    } catch {
+      return ['aim'];
+    }
+  });
+
+  const markModuleCompleted = (modId) => {
+    setCompletedModules((prev) => {
+      if (prev.includes(modId)) return prev;
+      const updated = [...prev, modId];
+      try {
+        localStorage.setItem('fsd_vlab_completed_modules', JSON.stringify(updated));
+      } catch (e) {
+        console.error(e);
+      }
+      return updated;
+    });
+  };
+
+  const handleSelectTab = (tabId) => {
+    setActiveTab(tabId);
+    markModuleCompleted(tabId);
+  };
 
   const renderActiveTabContent = () => {
     switch (activeTab) {
       case 'aim':
-        return <AimSection onNavigateNext={() => setActiveTab('overview')} />;
+        return <AimSection onNavigateNext={() => handleSelectTab('overview')} />;
       case 'overview':
-        return <OverviewView onNext={() => setActiveTab('pretest')} />;
+        return <OverviewView onNext={() => handleSelectTab('pretest')} />;
       case 'recap':
-        return <RecapView />;
+        return <RecapView onNext={() => handleSelectTab('pretest')} />;
       case 'pretest':
-        return <PretestView onNext={() => setActiveTab('visualizer')} />;
+        return (
+          <PretestView
+            onNext={() => handleSelectTab('visualizer')}
+            onQuizPassed={() => markModuleCompleted('pretest')}
+          />
+        );
       case 'visualizer':
-        return <VisualizerView />;
+        return <VisualizerView onNext={() => handleSelectTab('simulation')} />;
       case 'simulation':
-        return <SimulationView />;
+        return <SimulationView onNext={() => handleSelectTab('code_assessment')} />;
       case 'code_assessment':
-        return <CodeAssessmentView />;
+        return (
+          <CodeAssessmentView
+            onNext={() => handleSelectTab('analysis')}
+            onChallengeSolved={() => markModuleCompleted('code_assessment')}
+          />
+        );
       case 'analysis':
-        return <AnalysisView />;
+        return <AnalysisView onNext={() => handleSelectTab('posttest')} />;
       case 'posttest':
-        return <PosttestView />;
+        return (
+          <PosttestView
+            onNext={() => handleSelectTab('references')}
+            onQuizPassed={() => markModuleCompleted('posttest')}
+          />
+        );
       case 'references':
-        return <ReferencesView />;
+        return <ReferencesView onNext={() => handleSelectTab('feedback')} />;
       case 'feedback':
-        return <FeedbackView onOpenRateModal={() => setRateModalOpen(true)} />;
+        return (
+          <FeedbackView
+            onOpenRateModal={() => setRateModalOpen(true)}
+            onFeedbackSubmitted={() => markModuleCompleted('feedback')}
+          />
+        );
       case 'faculty_portal':
         return <FacultyPortalView />;
       case 'admin_portal':
         return <AdminPortalView />;
       default:
-        return <AimSection onNavigateNext={() => setActiveTab('overview')} />;
+        return <AimSection onNavigateNext={() => handleSelectTab('overview')} />;
     }
   };
 
@@ -84,7 +130,8 @@ function LabPlatform() {
         <Sidebar
           isOpen={sidebarOpen}
           activeTab={activeTab}
-          onSelectTab={(tabId) => setActiveTab(tabId)}
+          onSelectTab={handleSelectTab}
+          completedModules={completedModules}
         />
 
         <main className="flex-1 overflow-y-auto bg-white p-4 sm:p-8">
