@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, Star, ChevronDown, UserCheck, ShieldAlert, GraduationCap, Bug, Sparkles } from 'lucide-react';
+import { Menu, Star, ChevronDown, UserCheck, ShieldAlert, GraduationCap, Bug } from 'lucide-react';
 import { useAuth, DEMO_USERS } from '../context/AuthContext';
 
 export default function Header({

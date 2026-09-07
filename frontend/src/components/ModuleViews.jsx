@@ -37,12 +37,12 @@ export function OverviewView({ onNext }) {
       <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <ShieldCheck className="w-5 h-5 text-[#0284c7]" />
-          Why Django Form Validation Matters
+          Introduction & Theory
         </h2>
         <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
-          When a web application accepts user input through an HTTP POST request, incoming data is raw and unverified.
-          Django provides a robust, defense-in-depth validation pipeline that guarantees data integrity, security against injection,
-          and domain rule compliance before any data reaches your database models or views.
+          When a web application accepts user input through an HTTP POST request, incoming data arrives as unverified strings.
+          Django passes this data through a structured validation pipeline to cast data types, verify field constraints,
+          and execute custom business logic before the data is committed to the database or processed in views.
         </p>
       </div>
 
@@ -131,8 +131,8 @@ export function RecapView() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Quick Recap: Golden Rules of Custom Validation</h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">Core syntax and conventions from forms.py in Django</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Recap: Validation Rules & Syntax</h1>
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">Standard implementation rules in forms.py</p>
       </div>
 
       <div className="space-y-4">
@@ -273,8 +273,8 @@ export function PretestView({ onNext }) {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Pretest: Form Validation Fundamentals</h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">Assess your prerequisite understanding of Django forms before starting the simulation</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Pre-Lab Assessment (Pre-Test)</h1>
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">Answer the following diagnostic questions on Django form handling</p>
       </div>
 
       <div className="space-y-6">
@@ -332,7 +332,7 @@ export function PretestView({ onNext }) {
             <div className="text-sm font-semibold text-slate-800">
               Score: <span className="text-[#0284c7] font-bold text-lg">{score} / {questions.length}</span> ({Math.round((score / questions.length) * 100)}%)
               <span className={`ml-2 text-xs font-bold px-2 py-0.5 rounded ${score >= 4 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                {score >= 4 ? 'Mastery Achieved' : 'Review Recommended'}
+                {score >= 4 ? 'Status: Qualified' : 'Status: Review Advised'}
               </span>
             </div>
             <button
@@ -638,9 +638,9 @@ else:
     <div className="max-w-5xl mx-auto py-8 px-4 sm:px-8 text-slate-800 space-y-6 animate-in fade-in duration-200">
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="inline-flex items-center gap-1.5 bg-sky-100 text-[#0284c7] px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+        <div className="inline-flex items-center gap-1.5 bg-sky-100 text-[#0284c7] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
           <PlaySquare className="w-3.5 h-3.5" />
-          Leyaa.ai Style Step-by-Step Execution Visualizer
+          Interactive Execution Trace
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">
           Django Form Validation Lifecycle Trace
@@ -1030,10 +1030,10 @@ export function SimulationView() {
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">
-          Interactive Form Validation Playground
+          Simulation: Form Validation Workbench
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Submit live test values into Django's form processing pipeline and inspect error mapping
+          Submit test inputs to observe validation behavior, error mapping, and cleaned data generation
         </p>
       </div>
 
@@ -1043,7 +1043,7 @@ export function SimulationView() {
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <h2 className="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2">
               <FlaskConical className="w-4 h-4 text-[#0284c7]" />
-              <span>Student Registration Form (Django UI Render)</span>
+              <span>Registration Form Instance</span>
             </h2>
             <button
               onClick={() => setShowCodeModal(!showCodeModal)}
@@ -1367,9 +1367,9 @@ export function CodeAssessmentView() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Coding Challenge & Automated Assessment</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Lab Exercise: Custom Validation Methods</h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Implement custom Django form validation methods and verify against live unit tests
+          Implement custom validation methods and verify with automated test cases
         </p>
       </div>
 
@@ -1387,7 +1387,7 @@ export function CodeAssessmentView() {
           }`}
         >
           <Terminal className="w-4 h-4" />
-          <span>Task 1: Implement clean_age(self)</span>
+          <span>Problem 1: clean_age(self)</span>
         </button>
 
         <button
@@ -1402,7 +1402,7 @@ export function CodeAssessmentView() {
           }`}
         >
           <Layers className="w-4 h-4" />
-          <span>Task 2: Implement clean(self) [Password Match]</span>
+          <span>Problem 2: clean(self) [Cross-Field]</span>
         </button>
       </div>
 
@@ -1684,9 +1684,9 @@ export function PosttestView() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Posttest Certification Evaluation</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Post-Lab Assessment (Post-Test)</h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Verify your complete mastery of Django form validation and custom clean methods
+          Answer the following evaluation questions to verify your understanding of form cleaning and error handling
         </p>
       </div>
 
@@ -1731,7 +1731,7 @@ export function PosttestView() {
         ))}
       </div>
 
-      {/* Submission & Certificate Card */}
+      {/* Submission & Formal Academic Certificate */}
       <div className="pt-4 border-t border-slate-100">
         {!submitted ? (
           <div className="flex justify-end">
@@ -1740,27 +1740,68 @@ export function PosttestView() {
               disabled={Object.keys(selectedAnswers).length < questions.length || isSubmitting}
               className="px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm transition disabled:opacity-50 cursor-pointer"
             >
-              {isSubmitting ? 'Recording Grade...' : 'Submit Posttest for Certification'}
+              {isSubmitting ? 'Evaluating Submission...' : 'Submit Post-Lab Answers'}
             </button>
           </div>
         ) : (
-          <div className="p-8 border-2 border-dashed border-[#0284c7] rounded-2xl bg-sky-50/40 max-w-xl mx-auto text-center space-y-4 shadow-sm animate-in zoom-in-95">
-            <Award className="w-16 h-16 text-amber-500 mx-auto" />
-            <div>
-              <h2 className="text-xl font-bold text-slate-800">Certificate of Lab Completion</h2>
-              <p className="text-xs text-slate-500 mt-1">Virtual Labs &bull; An MoE Govt of India Initiative</p>
-            </div>
+          <div className="p-1 max-w-2xl mx-auto rounded-xl bg-gradient-to-b from-slate-200 to-slate-300 shadow-md">
+            <div className="border-4 border-double border-[#1a365d] p-6 sm:p-8 bg-[#fdfdfd] rounded-lg text-center space-y-4">
+              {/* Institution Header */}
+              <div className="border-b border-slate-200 pb-3">
+                <div className="text-xs tracking-widest uppercase font-bold text-slate-500">
+                  Virtual Labs &bull; Ministry of Education, Govt. of India
+                </div>
+                <div className="text-base sm:text-lg font-bold text-[#1a365d] tracking-wide mt-0.5">
+                  INDIAN INSTITUTE OF TECHNOLOGY GUWAHATI
+                </div>
+                <div className="text-[11px] text-slate-500 font-medium">
+                  Department of Computer Science and Engineering
+                </div>
+              </div>
 
-            <div className="py-3 px-4 bg-white border border-slate-200 rounded-xl font-mono text-xs text-slate-700 space-y-1 text-left max-w-md mx-auto">
-              <p><strong>Student:</strong> {currentUser?.name || 'Shlok Mehta'}</p>
-              <p><strong>Roll Number:</strong> {currentUser?.roll_or_faculty_id || '16010124169'}</p>
-              <p><strong>Experiment:</strong> Django Custom Form Validation (clean / clean_field)</p>
-              <p><strong>Score:</strong> {score} / {questions.length} ({percentage}%) &bull; Grade: {percentage >= 80 ? 'A+ (Distinction)' : 'Pass'}</p>
-            </div>
+              {/* Certificate Title */}
+              <div className="pt-1">
+                <span className="text-xs font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 px-3 py-1 rounded border border-amber-200">
+                  Certificate of Laboratory Completion
+                </span>
+                <p className="text-xs text-slate-600 mt-3 italic">This is to certify that</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
+                  {currentUser?.name || 'Shlok Mehta'}
+                </h2>
+                <div className="text-xs text-slate-600 font-medium mt-1">
+                  Roll No: <span className="font-semibold text-slate-800">{currentUser?.roll_or_faculty_id || '16010124169'}</span> &bull; Batch: <span className="font-semibold text-slate-800">{currentUser?.batch || 'D3'}</span>
+                </div>
+              </div>
 
-            <span className="inline-block text-xs font-bold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
-              Recorded into Faculty Gradebook
-            </span>
+              <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
+                has successfully performed and submitted all evaluations for <span className="font-semibold text-slate-800">Experiment 06: Custom Form Validation using clean() and clean_&lt;fieldname&gt;() in Django</span> with the score recorded below.
+              </p>
+
+              {/* Score Box */}
+              <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto py-2 px-3 bg-slate-50 border border-slate-200 rounded-lg text-xs">
+                <div>
+                  <div className="text-[10px] text-slate-500 uppercase font-medium">Score</div>
+                  <div className="font-bold text-[#0284c7] text-sm">{score} / {questions.length}</div>
+                </div>
+                <div>
+                  <div className="text-[10px] text-slate-500 uppercase font-medium">Percentage</div>
+                  <div className="font-bold text-slate-800 text-sm">{percentage}%</div>
+                </div>
+                <div>
+                  <div className="text-[10px] text-slate-500 uppercase font-medium">Result</div>
+                  <div className="font-bold text-emerald-700 text-sm">{percentage >= 80 ? 'Pass' : 'Pass'}</div>
+                </div>
+              </div>
+
+              {/* Verification Stamp */}
+              <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-100">
+                <span>Verification ID: <span className="font-mono text-slate-600 font-medium">IITG-VLAB-EXP06-2026</span></span>
+                <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Recorded in Gradebook
+                </span>
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -1838,13 +1879,13 @@ export function ReferencesView() {
 export function FeedbackView({ onOpenRateModal }) {
   return (
     <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 text-center animate-in fade-in duration-200">
-      <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Student Lab Feedback</h1>
-      <p className="text-xs sm:text-sm text-slate-500">Your inputs directly assist IIT Guwahati lab instructors and developers</p>
+      <h1 className="text-2xl sm:text-3xl font-bold text-[#0284c7]">Student Feedback</h1>
+      <p className="text-xs sm:text-sm text-slate-500">Continuous evaluation and curriculum improvement survey</p>
       <div className="p-8 border border-slate-200 rounded-xl bg-white max-w-md mx-auto space-y-4 shadow-xs">
         <MessageSquareHeart className="w-12 h-12 text-[#0284c7] mx-auto" />
-        <h3 className="font-bold text-slate-800 text-base">We Value Your Review</h3>
+        <h3 className="font-bold text-slate-800 text-base">Experiment Feedback Form</h3>
         <p className="text-xs text-slate-600 leading-relaxed">
-          Please provide your star rating and qualitative feedback regarding simulation clarity, visualizer usefulness, and lab difficulty.
+          Submit your evaluation regarding simulation clarity, exercise difficulty, and concept coverage.
         </p>
         <button
           onClick={onOpenRateModal}
