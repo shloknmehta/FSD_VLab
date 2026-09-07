@@ -19,6 +19,7 @@ import {
   Database,
   Layers,
   ArrowRight,
+  RotateCcw,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import VSCodeBlock from './VSCodeBlock';
@@ -1490,11 +1491,8 @@ class UserRegistrationForm(forms.Form):
   );
 }
 
-// 6. Code Assessment View
-export function CodeAssessmentView() {
-  const [activeChallenge, setActiveChallenge] = useState('clean_age');
-  const [codeAge, setCodeAge] = useState(
-`def clean_age(self):
+const STARTER_TEMPLATES = {
+  clean_age: `def clean_age(self):
     # TODO: Retrieve 'age' from self.cleaned_data
     # If age < 18, raise forms.ValidationError("Applicant must be 18 or older.")
     # Always return the cleaned age value!
@@ -1502,11 +1500,8 @@ export function CodeAssessmentView() {
     if age is not None and age < 18:
         raise forms.ValidationError("Applicant must be 18 or older.")
     return age
-`
-  );
-
-  const [codeClean, setCodeClean] = useState(
-`def clean(self):
+`,
+  clean_form: `def clean(self):
     # TODO: Call super().clean()
     # Check if 'password' and 'confirm_password' match
     # If they don't match, raise forms.ValidationError("Passwords do not match.")
@@ -1517,11 +1512,40 @@ export function CodeAssessmentView() {
     if pwd and conf and pwd != conf:
         raise forms.ValidationError("Passwords do not match.")
     return cleaned_data
-`
-  );
+`,
+};
+
+// 6. Code Assessment View
+export function CodeAssessmentView({ onNext, onChallengeSolved }) {
+  const [activeChallenge, setActiveChallenge] = useState('clean_age');
+  const [codeAge, setCodeAge] = useState(() => {
+    return localStorage.getItem('fsd_vlab_draft_clean_age') || STARTER_TEMPLATES.clean_age;
+  });
+
+  const [codeClean, setCodeClean] = useState(() => {
+    return localStorage.getItem('fsd_vlab_draft_clean_form') || STARTER_TEMPLATES.clean_form;
+  });
 
   const [testResult, setTestResult] = useState(null);
   const [isEvaluating, setIsEvaluating] = useState(false);
+
+  const updateCode = (newCode) => {
+    if (activeChallenge === 'clean_age') {
+      setCodeAge(newCode);
+      try { localStorage.setItem('fsd_vlab_draft_clean_age', newCode); } catch {}
+    } else {
+      setCodeClean(newCode);
+      try { localStorage.setItem('fsd_vlab_draft_clean_form', newCode); } catch {}
+    }
+  };
+
+  const handleResetStarter = () => {
+    if (window.confirm('Reset this challenge back to the original starter template?')) {
+      const template = STARTER_TEMPLATES[activeChallenge];
+      updateCode(template);
+      setTestResult(null);
+    }
+  };
 
   const handleRunAssessment = async () => {
     setIsEvaluating(true);
@@ -1539,6 +1563,9 @@ export function CodeAssessmentView() {
       if (response.ok) {
         const data = await response.json();
         setTestResult(data);
+        if (data.passed) {
+          onChallengeSolved?.();
+        }
       } else {
         throw new Error('Assessment API error');
       }
@@ -1557,12 +1584,16 @@ export function CodeAssessmentView() {
           ? 'All unit test cases passed! Proper validation exception raised and cleaned value returned.'
           : 'Check that you raise forms.ValidationError and return the cleaned value!',
         testCases: [
-          { input: 'age = 21', expected: 'Passed (21 returned)', status: 'PASSED' },
-          { input: 'age = 15', expected: 'ValidationError raised', status: passed ? 'PASSED' : 'FAILED' },
-          { input: 'age = 18', expected: 'Passed (18 returned)', status: 'PASSED' },
-          { input: 'age = 0', expected: 'ValidationError raised', status: passed ? 'PASSED' : 'FAILED' },
+          { input: 'age = 21', expected: 'Passed (21 returned)', status: 'PASSED', latency: '0.8ms' },
+          { input: 'age = 15', expected: 'ValidationError raised', status: passed ? 'PASSED' : 'FAILED', latency: '1.1ms' },
+          { input: 'age = 18', expected: 'Passed (18 returned)', status: 'PASSED', latency: '0.9ms' },
+          { input: 'age = 0', expected: 'ValidationError raised', status: passed ? 'PASSED' : 'FAILED', latency: '1.2ms' },
         ],
       });
+
+      if (passed) {
+        onChallengeSolved?.();
+      }
     }
     setIsEvaluating(false);
   };
@@ -1630,6 +1661,14 @@ export function CodeAssessmentView() {
           </div>
           <div className="flex items-center gap-2 pb-1 pr-1">
             <button
+              onClick={handleResetStarter}
+              title="Reset code to original starter template"
+              className="px-2.5 py-1 bg-[#333333] hover:bg-[#3e3e42] text-[#cccccc] hover:text-white rounded text-xs font-mono transition cursor-pointer flex items-center gap-1 border border-[#454545]"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset Starter</span>
+            </button>
+            <button
               onClick={handleRunAssessment}
               disabled={isEvaluating}
               className="px-3 py-1 bg-[#16825d] hover:bg-[#1b9a6e] text-white rounded text-xs font-mono font-medium transition cursor-pointer disabled:opacity-50 flex items-center gap-1.5 shadow-xs"
@@ -1666,10 +1705,7 @@ export function CodeAssessmentView() {
           {/* Textarea Editor */}
           <textarea
             value={activeChallenge === 'clean_age' ? codeAge : codeClean}
-            onChange={(e) => {
-              if (activeChallenge === 'clean_age') setCodeAge(e.target.value);
-              else setCodeClean(e.target.value);
-            }}
+            onChange={(e) => updateCode(e.target.value)}
             rows={12}
             spellCheck="false"
             className="w-full py-3 px-3 bg-[#1e1e1e] text-[#d4d4d4] outline-none resize-none overflow-x-auto selection:bg-[#264f78] leading-[1.55]"
@@ -1723,17 +1759,38 @@ export function CodeAssessmentView() {
 
           {/* Test case rows */}
           {testResult.testCases && (
-            <div className="space-y-1 pt-2 border-t border-slate-200 font-mono text-xs">
+            <div className="space-y-1.5 pt-2 border-t border-slate-200 font-mono text-xs">
               {testResult.testCases.map((tc, idx) => (
-                <div key={idx} className="flex items-center justify-between p-1.5 bg-white rounded border border-slate-100">
-                  <span className="text-slate-600">Test {idx + 1}: {tc.input}</span>
-                  <span className={`font-bold px-2 py-0.5 rounded text-[10px] ${tc.status === 'PASSED' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
-                    {tc.status}
-                  </span>
+                <div key={idx} className="flex items-center justify-between p-2 bg-white rounded border border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-slate-700">Case {idx + 1}:</span>
+                    <span className="text-slate-600">{tc.input}</span>
+                    <span className="text-slate-400">&rarr;</span>
+                    <span className="text-slate-500 font-sans text-[11px]">{tc.expected}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {tc.latency && <span className="text-[10px] text-slate-400 font-mono">{tc.latency}</span>}
+                    <span className={`font-bold px-2 py-0.5 rounded text-[10px] ${tc.status === 'PASSED' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
+                      {tc.status}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* Navigation Footer */}
+      {onNext && (
+        <div className="flex justify-end pt-4 border-t border-slate-200">
+          <button
+            onClick={onNext}
+            className="v-button flex items-center gap-2 cursor-pointer"
+          >
+            <span>Proceed to Analysis & Complexity</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       )}
     </div>
