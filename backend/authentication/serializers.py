@@ -1,10 +1,10 @@
-﻿from rest_framework import serializers
+from rest_framework import serializers
 from .models import CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'department', 'roll_or_faculty_id', 'is_staff', 'is_superuser']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'department', 'roll_or_faculty_id', 'batch', 'is_staff', 'is_superuser']
         read_only_fields = ['id', 'is_staff', 'is_superuser']
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -12,7 +12,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'password', 'first_name', 'last_name', 'role', 'department', 'roll_or_faculty_id']
+        fields = ['id', 'username', 'email', 'password', 'first_name', 'last_name', 'role', 'department', 'roll_or_faculty_id', 'batch']
 
     def create(self, validated_data):
         password = validated_data.pop('password')
