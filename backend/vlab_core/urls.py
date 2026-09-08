@@ -41,4 +41,8 @@ urlpatterns = [
     path('api/experiments/', include('experiments.urls')),
     path('api/simulator/', include('simulator.urls')),
     path('api/portal/', include('portal.urls')),
+    path('auth/', include('authentication.urls')),
+    path('experiments/', include('experiments.urls')),
+    path('simulator/', include('simulator.urls')),
+    path('portal/', include('portal.urls')),
 ]

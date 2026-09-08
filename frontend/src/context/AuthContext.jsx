@@ -60,11 +60,26 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  // Switch demo persona instantly
-  const switchDemoRole = (newRole) => {
+  const switchDemoRole = async (newRole) => {
     const targetUser = DEMO_USERS[newRole] || DEMO_USERS.STUDENT;
     setCurrentUser(targetUser);
     setRole(targetUser.role);
+
+    try {
+      const res = await api.post('/auth/switch-demo-role/', { role: newRole });
+      if (res.data && res.data.token) {
+        setToken(res.data.token);
+        localStorage.setItem('vlab_token', res.data.token);
+        if (res.data.user) {
+          setCurrentUser(res.data.user);
+          localStorage.setItem('vlab_user', JSON.stringify(res.data.user));
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('Backend switch-role offline, using local persona');
+    }
+
     const mockToken = `demo-${newRole.toLowerCase()}-token`;
     setToken(mockToken);
     localStorage.setItem('vlab_token', mockToken);

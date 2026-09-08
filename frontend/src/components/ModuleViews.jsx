@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BookOpen,
   HelpCircle,
@@ -2501,6 +2501,27 @@ export function FacultyPortalView() {
     { roll_number: '16010124172', name: 'Rohan Deshmukh', batch: 'Batch D3', pretest: '3 / 5', posttest: '4 / 5', codeAssessment: 'PENDING', rating: '4 ★', grade: 'B+' },
   ]);
 
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/portal/gradebook/')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.gradebook?.length) {
+          const mapped = data.gradebook.map((s) => ({
+            roll_number: s.roll_number || '16010124169',
+            name: s.fullname || s.username,
+            batch: 'Batch D3',
+            pretest: `${s.pretest?.score || 0} / ${s.pretest?.total || 5}`,
+            posttest: `${s.posttest?.score || 0} / ${s.posttest?.total || 5}`,
+            codeAssessment: s.code_assessment?.status === 'COMPLETED' ? 'PASSED' : (s.code_assessment?.status || 'PENDING'),
+            rating: '5 ★',
+            grade: (s.posttest?.score >= 5 ? 'A+' : (s.posttest?.score >= 4 ? 'A' : 'B+'))
+          }));
+          setGradebook(mapped);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const handleExportCSV = () => {
     const csvContent = 'data:text/csv;charset=utf-8,' +
       ['Roll Number,Student Name,Batch,Pretest,Posttest,Code Assessment,Rating,Grade'].concat(
@@ -2616,12 +2637,41 @@ export function AdminPortalView() {
     { id: 2, title: 'PasswordInput widget autocomplete styling', reporter: 'student16@vlab.edu', severity: 'MEDIUM', status: 'OPEN' },
   ]);
 
-  const toggleStatus = (id) => {
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/portal/bug-reports/')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setBugReports(
+            data.map((b) => ({
+              id: b.id,
+              title: b.title,
+              reporter: b.username || b.user_fullname || 'student@vlab.edu',
+              severity: b.severity || 'MEDIUM',
+              status: b.status || 'OPEN',
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const toggleStatus = async (id) => {
+    const target = bugReports.find((b) => b.id === id);
+    const newStatus = target?.status === 'OPEN' ? 'RESOLVED' : 'OPEN';
     setBugReports(
       bugReports.map((b) =>
-        b.id === id ? { ...b, status: b.status === 'OPEN' ? 'RESOLVED' : 'OPEN' } : b
+        b.id === id ? { ...b, status: newStatus } : b
       )
     );
+
+    try {
+      await fetch(`http://127.0.0.1:8000/api/portal/bug-reports/${id}/`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+    } catch {}
   };
 
   return (
