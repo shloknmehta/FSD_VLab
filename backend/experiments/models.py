@@ -1,4 +1,4 @@
-﻿from django.db import models
+from django.db import models
 from django.conf import settings
 
 class Experiment(models.Model):
@@ -10,6 +10,7 @@ class Experiment(models.Model):
     analysis = models.TextField(blank=True, default='')
     references = models.TextField(blank=True, default='')
     estimated_time = models.CharField(max_length=50, default='45 Minutes')
+    estimated_minutes = models.PositiveIntegerField(default=45)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
