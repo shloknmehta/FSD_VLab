@@ -1,36 +1,10 @@
 import sys
 import copy
+import ast
+import textwrap
 from django import forms
 from django.core.exceptions import ValidationError
-
-class StandardRegistrationForm(forms.Form):
-    username = forms.CharField(max_length=50, required=True)
-    email = forms.EmailField(required=True)
-    age = forms.IntegerField(required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
-    confirm_password = forms.CharField(widget=forms.PasswordInput, required=True)
-
-    def clean_age(self):
-        age = self.cleaned_data.get('age')
-        if age is not None and age < 18:
-            raise forms.ValidationError("Must be at least 18 years old to register.")
-        return age
-
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if username and not username.isalnum():
-            raise forms.ValidationError("Username must contain only alphanumeric characters.")
-        return username
-
-    def clean(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
-
-        if password and confirm_password:
-            if password != confirm_password:
-                raise forms.ValidationError("Passwords do not match.")
-        return cleaned_data
+from .forms import StandardRegistrationForm
 
 def run_validation_trace(raw_data, custom_field_config=None):
     """
@@ -303,32 +277,74 @@ def evaluate_code_submission(challenge_id, user_code):
     """
     Safely executes and tests student validation methods against automated test cases.
     """
-    challenge = CHALLENGES.get(challenge_id)
+    cid = str(challenge_id or '').strip().lower()
+    if cid in ['clean_age', 'challenge_clean_age', 'age']:
+        effective_cid = 'challenge_clean_age'
+    elif cid in ['clean_form', 'clean', 'challenge_clean_passwords', 'passwords', 'clean_passwords']:
+        effective_cid = 'challenge_clean_passwords'
+    else:
+        effective_cid = challenge_id
+
+    challenge = CHALLENGES.get(effective_cid)
     if not challenge:
         return {
             "success": False,
+            "passed": False,
+            "all_passed": False,
             "error": f"Unknown challenge ID: {challenge_id}. Available challenges: {list(CHALLENGES.keys())}"
+        }
+
+    # AST Security Validation
+    try:
+        parsed_ast = ast.parse(user_code)
+        for node in ast.walk(parsed_ast):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    if alias.name in ['os', 'sys', 'subprocess', 'shutil', 'pathlib', 'socket']:
+                        return {
+                            "success": False,
+                            "passed": False,
+                            "all_passed": False,
+                            "error": f"Security restriction: Import of '{alias.name}' is not permitted."
+                        }
+            elif isinstance(node, ast.ImportFrom):
+                if node.module in ['os', 'sys', 'subprocess', 'shutil', 'pathlib', 'socket']:
+                    return {
+                        "success": False,
+                        "passed": False,
+                        "all_passed": False,
+                        "error": f"Security restriction: Import from '{node.module}' is not permitted."
+                    }
+            elif isinstance(node, ast.Call):
+                if isinstance(node.func, ast.Name) and node.func.id in ['__import__', 'open', 'eval', 'exec']:
+                    return {
+                        "success": False,
+                        "passed": False,
+                        "all_passed": False,
+                        "error": f"Security restriction: Direct call to '{node.func.id}()' is not permitted."
+                    }
+    except SyntaxError as se:
+        return {
+            "success": False,
+            "passed": False,
+            "all_passed": False,
+            "syntax_error": str(se),
+            "error": f"Python syntax error in submitted code: {str(se)}"
         }
 
     test_results = []
     passed_count = 0
     total_tests = len(challenge['test_cases'])
 
-    # Prepare execution environment
-    # Dynamically build a form class with student's method
     safe_namespace = {
         'forms': forms,
         'ValidationError': ValidationError
     }
 
-    import textwrap
-
     try:
-        if challenge_id == "challenge_clean_age":
-            # If user provided just function or body, wrap in class
+        if effective_cid == "challenge_clean_age":
             if "class " in user_code:
                 exec(user_code, safe_namespace)
-                # find form class
                 FormClass = next((v for v in safe_namespace.values() if isinstance(v, type) and issubclass(v, forms.Form) and v is not forms.Form), None)
             else:
                 wrapped_code = f"class EvaluatedForm(forms.Form):\n    age = forms.IntegerField(required=True)\n\n" + textwrap.indent(user_code.strip(), "    ")
@@ -338,8 +354,9 @@ def evaluate_code_submission(challenge_id, user_code):
             if not FormClass or not hasattr(FormClass, 'clean_age'):
                 return {
                     "success": False,
-                    "error": "Method 'clean_age(self)' was not found in submitted code.",
-                    "all_passed": False
+                    "passed": False,
+                    "all_passed": False,
+                    "error": "Method 'clean_age(self)' was not found in submitted code."
                 }
 
             for tc in challenge['test_cases']:
@@ -351,14 +368,16 @@ def evaluate_code_submission(challenge_id, user_code):
 
                 test_results.append({
                     "description": tc['description'],
-                    "input": tc['input'],
+                    "input": str(tc['input']),
                     "expected_valid": tc['expected_valid'],
+                    "expected": "Validation Passed" if tc['expected_valid'] else "ValidationError raised",
+                    "status": "PASSED" if passed else "FAILED",
                     "got_valid": is_valid,
                     "passed": passed,
                     "errors": {k: [str(e) for e in v] for k, v in form.errors.items()} if not is_valid else {}
                 })
 
-        elif challenge_id == "challenge_clean_passwords":
+        elif effective_cid == "challenge_clean_passwords":
             if "class " in user_code:
                 exec(user_code, safe_namespace)
                 FormClass = next((v for v in safe_namespace.values() if isinstance(v, type) and issubclass(v, forms.Form) and v is not forms.Form), None)
@@ -370,8 +389,9 @@ def evaluate_code_submission(challenge_id, user_code):
             if not FormClass or FormClass.clean is forms.Form.clean:
                 return {
                     "success": False,
-                    "error": "Method 'clean(self)' was not found or overridden in submitted code.",
-                    "all_passed": False
+                    "passed": False,
+                    "all_passed": False,
+                    "error": "Method 'clean(self)' was not found or overridden in submitted code."
                 }
 
             for tc in challenge['test_cases']:
@@ -383,8 +403,10 @@ def evaluate_code_submission(challenge_id, user_code):
 
                 test_results.append({
                     "description": tc['description'],
-                    "input": tc['input'],
+                    "input": str(tc['input']),
                     "expected_valid": tc['expected_valid'],
+                    "expected": "Validation Passed" if tc['expected_valid'] else "ValidationError raised",
+                    "status": "PASSED" if passed else "FAILED",
                     "got_valid": is_valid,
                     "passed": passed,
                     "errors": {k: [str(e) for e in v] for k, v in form.errors.items()} if not is_valid else {}
@@ -392,22 +414,31 @@ def evaluate_code_submission(challenge_id, user_code):
     except Exception as e:
         return {
             "success": False,
+            "passed": False,
+            "all_passed": False,
             "syntax_error": str(e),
             "passed_tests": 0,
+            "testsPassed": 0,
             "total_tests": total_tests,
-            "all_passed": False,
+            "totalTests": total_tests,
             "message": f"Execution error: {str(e)}"
         }
 
     all_passed = (passed_count == total_tests)
+    score = round((passed_count / total_tests) * 100, 1) if total_tests > 0 else 0.0
 
     return {
         "success": True,
+        "passed": all_passed,
+        "all_passed": all_passed,
+        "testsPassed": passed_count,
+        "passed_tests": passed_count,
+        "totalTests": total_tests,
+        "total_tests": total_tests,
+        "score": score,
         "challenge_id": challenge_id,
         "challenge_title": challenge['title'],
-        "passed_tests": passed_count,
-        "total_tests": total_tests,
-        "all_passed": all_passed,
+        "testCases": test_results,
         "test_results": test_results,
-        "feedback": "All test cases passed! Outstanding grasp of Django form validation." if all_passed else f"{passed_count} of {total_tests} test cases passed. Review failing test cases above."
+        "feedback": "All test cases passed! Proper validation exception raised and cleaned value returned." if all_passed else f"{passed_count} of {total_tests} test cases passed. Review failing test cases above."
     }
