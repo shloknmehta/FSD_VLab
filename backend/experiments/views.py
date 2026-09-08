@@ -1,4 +1,4 @@
-﻿from rest_framework.views import APIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -77,9 +77,29 @@ class QuizSubmitView(APIView):
         detailed_results = []
 
         for q in questions:
-            user_choice = str(submitted_answers.get(str(q.id)) or submitted_answers.get(q.id) or "").strip()
+            raw_user_choice = submitted_answers.get(str(q.id))
+            if raw_user_choice is None:
+                raw_user_choice = submitted_answers.get(q.id)
+
+            user_choice_str = str(raw_user_choice if raw_user_choice is not None else "").strip()
             correct_choice = str(q.correct_answer).strip()
-            is_correct = (user_choice.lower() == correct_choice.lower())
+
+            is_correct = False
+            selected_display = user_choice_str
+
+            if user_choice_str.lower() == correct_choice.lower():
+                is_correct = True
+            elif user_choice_str.isdigit() and isinstance(q.options_json, list):
+                idx = int(user_choice_str)
+                if 0 <= idx < len(q.options_json):
+                    selected_display = str(q.options_json[idx])
+                    if selected_display.strip().lower() == correct_choice.lower():
+                        is_correct = True
+            elif correct_choice.isdigit() and isinstance(q.options_json, list):
+                idx = int(correct_choice)
+                if 0 <= idx < len(q.options_json):
+                    if user_choice_str.lower() == str(q.options_json[idx]).strip().lower():
+                        is_correct = True
 
             if is_correct:
                 score += 1
@@ -87,7 +107,7 @@ class QuizSubmitView(APIView):
             detailed_results.append({
                 "question_id": q.id,
                 "question_text": q.question_text,
-                "selected_answer": user_choice,
+                "selected_answer": selected_display,
                 "correct_answer": correct_choice,
                 "is_correct": is_correct,
                 "explanation": q.explanation
