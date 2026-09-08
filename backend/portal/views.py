@@ -25,14 +25,21 @@ class FeedbackView(APIView):
             user = CustomUser.objects.filter(role='STUDENT').first()
 
         rating = request.data.get('rating', 5)
-        feedback_text = request.data.get('feedback_text', '')
+        category = request.data.get('category', 'General')
+        feedback_text = (
+            request.data.get('feedback_text') or
+            request.data.get('comments') or
+            request.data.get('feedback') or
+            ''
+        ).strip()
 
-        if not feedback_text.strip():
-            return Response({"error": "Feedback text cannot be empty"}, status=status.HTTP_400_BAD_REQUEST)
+        if not feedback_text:
+            feedback_text = f"Student rating: {rating} stars"
 
         feedback = FeedbackSubmission.objects.create(
             user=user,
             rating=rating,
+            category=category,
             feedback_text=feedback_text
         )
         return Response(FeedbackSerializer(feedback).data, status=status.HTTP_201_CREATED)
@@ -52,7 +59,11 @@ class BugReportView(APIView):
 
         title = request.data.get('title', '').strip()
         description = request.data.get('description', '').strip()
-        steps = request.data.get('steps_to_reproduce', '').strip()
+        severity = request.data.get('severity', 'MEDIUM').upper()
+        if severity not in ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']:
+            severity = 'MEDIUM'
+        section = request.data.get('section', 'Aim')
+        steps = (request.data.get('steps_to_reproduce') or request.data.get('stepsToReproduce') or '').strip()
 
         if not title or not description:
             return Response({"error": "Title and description are required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -60,6 +71,8 @@ class BugReportView(APIView):
         bug = BugReport.objects.create(
             user=user,
             title=title,
+            severity=severity,
+            section=section,
             description=description,
             steps_to_reproduce=steps
         )

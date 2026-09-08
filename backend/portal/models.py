@@ -1,10 +1,11 @@
-﻿from django.db import models
+from django.db import models
 from django.conf import settings
 
 class FeedbackSubmission(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='feedbacks', null=True, blank=True)
     rating = models.IntegerField(default=5)
-    feedback_text = models.TextField()
+    category = models.CharField(max_length=50, default='General', blank=True)
+    feedback_text = models.TextField(blank=True, default='')
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -16,9 +17,17 @@ class BugReport(models.Model):
         ('OPEN', 'Open'),
         ('RESOLVED', 'Resolved'),
     ]
+    SEVERITY_CHOICES = [
+        ('LOW', 'Low'),
+        ('MEDIUM', 'Medium'),
+        ('HIGH', 'High'),
+        ('CRITICAL', 'Critical'),
+    ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bug_reports', null=True, blank=True)
     title = models.CharField(max_length=255)
+    severity = models.CharField(max_length=20, choices=SEVERITY_CHOICES, default='MEDIUM')
+    section = models.CharField(max_length=100, default='Aim', blank=True)
     description = models.TextField()
     steps_to_reproduce = models.TextField(blank=True, default='')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='OPEN')
@@ -32,7 +41,9 @@ class CodeSubmission(models.Model):
     challenge_id = models.CharField(max_length=100)
     code = models.TextField()
     passed_tests = models.IntegerField(default=0)
-    total_tests = models.IntegerField(default=0)
+    total_tests = models.IntegerField(default=4)
+    score = models.FloatField(default=0.0)
+    is_passed = models.BooleanField(default=False)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
