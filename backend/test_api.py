@@ -1,4 +1,4 @@
-﻿import os
+import os
 import django
 import json
 
@@ -52,24 +52,24 @@ def test_suite():
     log_test("GET /api/experiments/details/", resp.status_code == 200, f"Title: {resp.data.get('title')[:35]}...")
 
     # Experiments Pretest
-    resp = client.get('/api/experiments/quiz/?type=PRETEST')
-    q_count = len(resp.data.get('questions', []))
-    log_test("GET /api/experiments/quiz/?type=PRETEST", resp.status_code == 200 and q_count == 5, f"Questions count: {q_count}")
+    pre_resp = client.get('/api/experiments/quiz/?type=PRETEST')
+    q_count = len(pre_resp.data.get('questions', []))
+    log_test("GET /api/experiments/quiz/?type=PRETEST", pre_resp.status_code == 200 and q_count == 5, f"Questions count: {q_count}")
 
     # Experiments Posttest
-    resp = client.get('/api/experiments/quiz/?type=POSTTEST')
-    q_count_post = len(resp.data.get('questions', []))
-    log_test("GET /api/experiments/quiz/?type=POSTTEST", resp.status_code == 200 and q_count_post == 5, f"Questions count: {q_count_post}")
+    post_resp = client.get('/api/experiments/quiz/?type=POSTTEST')
+    q_count_post = len(post_resp.data.get('questions', []))
+    log_test("GET /api/experiments/quiz/?type=POSTTEST", post_resp.status_code == 200 and q_count_post == 5, f"Questions count: {q_count_post}")
 
     # Experiments Quiz Submit
-    q1 = resp.data['questions'][0]['id']
+    q1 = pre_resp.data['questions'][0]['id']
     resp = client.post('/api/experiments/quiz/submit/', {
         "quiz_type": "PRETEST",
         "answers": {
             str(q1): "form.is_valid()"
         }
     }, format='json')
-    log_test("POST /api/experiments/quiz/submit/", resp.status_code == 200, f"Score: {resp.data.get('score')}/{resp.data.get('total_questions')}")
+    log_test("POST /api/experiments/quiz/submit/", resp.status_code == 200 and resp.data.get('score') >= 1, f"Score: {resp.data.get('score')}/{resp.data.get('total_questions')}")
 
     # 4. Simulator Trace
     sample_trace_input = {
