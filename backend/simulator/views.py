@@ -1,4 +1,4 @@
-﻿from rest_framework.views import APIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -10,8 +10,12 @@ class SimulatorTraceView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        raw_data = request.data or {}
-        # Default sample if empty
+        payload = request.data or {}
+        if isinstance(payload, dict) and 'raw_data' in payload and isinstance(payload['raw_data'], dict):
+            raw_data = payload['raw_data']
+        else:
+            raw_data = payload
+
         if not raw_data:
             raw_data = {
                 "username": "coder123",
@@ -22,7 +26,16 @@ class SimulatorTraceView(APIView):
             }
 
         trace_result = run_validation_trace(raw_data)
-        return Response(trace_result, status=status.HTTP_200_OK)
+        response_data = {
+            "is_valid": trace_result.get("is_valid", False),
+            "cleaned_data": trace_result.get("cleaned_data", {}),
+            "final_cleaned_data": trace_result.get("cleaned_data", {}),
+            "errors": trace_result.get("errors", {}),
+            "final_errors": trace_result.get("errors", {}),
+            "total_steps": len(trace_result.get("steps", [])),
+            "steps": trace_result.get("steps", []),
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
 
 class SimulatorChallengesView(APIView):
     permission_classes = [AllowAny]
