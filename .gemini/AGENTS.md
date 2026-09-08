@@ -18,6 +18,7 @@ Each feature and sub-system is maintained and operated by a specialized autonomo
 | **`Evaluation-Agent`** | Grading calculations, pre/post quiz score tracking, and certificate generation. | [evaluation_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/evaluation_agent.md) | `backend/experiments/views.py`, `PosttestView` |
 | **`KJSSE-UI-Agent`** | KJSSE design fidelity (beaker logo, `#f37021` divider, cyan breadcrumbs, active sidebar). | [kjsse_ui_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/kjsse_ui_agent.md) | `frontend/src/components/Header.jsx`, `Sidebar.jsx`, `Breadcrumbs.jsx` |
 | **`Portal-Ops-Agent`** | Faculty Gradebook portal, Admin bug report pipeline, user registry, and system health. | [portal_ops_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/portal_ops_agent.md) | `backend/portal/`, `FacultyPortalView`, `AdminPortalView` |
+| **`Code-Quality-Agent`** | Code legibility and clean human standards without AI boilerplate. | [code_quality_agent.md](file:///c:/Users/snmeh/Documents/TY/DJangoLab/Mini_Project/FSD_VLab/.gemini/agents/code_quality_agent.md) | `backend/`, `frontend/src/` |
 
 ---
 

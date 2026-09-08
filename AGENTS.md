@@ -14,6 +14,7 @@ This document outlines the specialized agents responsible for each core feature 
 | **6. Quizzes & Certification** | Evaluation-Agent | Pretest & Posttest MCQ runners, automated scoring, instant answer explanations, student completion certificate. | backend/experiments/views.py, frontend/src/components/ModuleViews.jsx (PretestView, PosttestView) |
 | **7. KJSSE UI Brand & Chrome** | KJSSE-UI-Agent | Beaker badge, dual-tone typography, 5-star rating widget, Rate Me modal, Report Bug modal, orange divider, collapsible sidebar. | frontend/src/components/Header.jsx, frontend/src/components/Breadcrumbs.jsx, frontend/src/components/Sidebar.jsx |
 | **8. Faculty & Admin Portals** | Portal-Ops-Agent | Batch D3 Gradebook, student submission tracking, CSV export, ticket/bug tracker, system health monitor. | backend/portal/, frontend/src/components/ModuleViews.jsx (FacultyPortalView, AdminPortalView) |
+| **9. Code Quality & Human Standards** | Code-Quality-Agent | Enforces readable, idiomatic code without unnecessary comments, boilerplate, or dead code. | backend/, frontend/src/ |
 
 ## 2. Principle of Clean Isolation
 All project code, models, serializers, tests, components, and assets are kept strictly within FSD_VLab/ (project root). No temporary project files are written to .gemini or external folders.
