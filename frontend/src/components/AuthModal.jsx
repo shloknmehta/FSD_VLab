@@ -114,7 +114,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
       confirm_password: regConfirmPassword,
       first_name: firstName.trim(),
       last_name: lastName.trim(),
-      role: regRole,
+      role: 'STUDENT',
       roll_or_faculty_id: regRollOrId.trim(),
       batch: regBatch.trim(),
       department: regDepartment.trim(),
@@ -304,37 +304,20 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
           ) : (
             /* ===================== REGISTER FORM ===================== */
             <form onSubmit={handleRegisterSubmit} className="space-y-3.5">
-              {/* Role Selection */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Account Type <span className="text-red-500">*</span>
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setRegRole('STUDENT')}
-                    className={`p-2 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer ${
-                      regRole === 'STUDENT'
-                        ? 'border-blue-500 bg-blue-50 text-blue-800 ring-1 ring-blue-400'
-                        : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
-                  >
-                    <GraduationCap className="w-4 h-4 text-blue-600" />
-                    <span>Student</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setRegRole('FACULTY')}
-                    className={`p-2 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer ${
-                      regRole === 'FACULTY'
-                        ? 'border-emerald-500 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-400'
-                        : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
-                  >
-                    <Briefcase className="w-4 h-4 text-emerald-600" />
-                    <span>Faculty</span>
-                  </button>
+              {/* Role: Student Default Notice */}
+              <div className="p-2.5 rounded-lg bg-blue-50/80 border border-blue-200 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="p-1 rounded-md bg-[#0284c7] text-white">
+                    <GraduationCap className="w-3.5 h-3.5" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-blue-950">Default Role: Student</span>
+                    <p className="text-[10px] text-blue-700">Faculty & Admin roles are assigned by the Administrator.</p>
+                  </div>
                 </div>
+                <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-blue-200/70 text-blue-900 uppercase tracking-wider">
+                  STUDENT
+                </span>
               </div>
 
               {/* Names */}
@@ -406,13 +389,14 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    {regRole === 'STUDENT' ? 'Roll Number' : 'Faculty ID'}
+                    Roll Number / Student ID <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
+                    required
                     value={regRollOrId}
                     onChange={(e) => setRegRollOrId(e.target.value)}
-                    placeholder={regRole === 'STUDENT' ? '16010124169' : 'FAC-CS-204'}
+                    placeholder="e.g. 16010124169"
                     className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0284c7]"
                   />
                 </div>

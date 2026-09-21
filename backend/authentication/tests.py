@@ -43,6 +43,7 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertIn('token', response.data)
         self.assertEqual(response.data['user']['username'], 'newuser')
+        self.assertEqual(response.data['user']['role'], 'STUDENT')
 
     def test_logout_endpoint(self):
         # Login first to get token
