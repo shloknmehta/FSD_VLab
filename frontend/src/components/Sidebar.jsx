@@ -185,29 +185,6 @@ export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, compl
         )}
       </div>
 
-      {/* Institutional Branding in Sidebar Footer */}
-      <div className="pt-4 border-t border-slate-100 px-3 space-y-2.5">
-        <div className="flex items-center gap-2.5">
-          <img
-            src="/assets/logos/somaiya_trust.png"
-            alt="The Somaiya Trust"
-            className="h-6 w-auto object-contain rounded-xs"
-            title="The Somaiya Trust"
-          />
-          <div className="h-5 w-[1px] bg-slate-200" />
-          <img
-            src="/assets/logos/svu.png"
-            alt="Somaiya Vidyavihar University"
-            className="h-6 w-auto object-contain"
-            title="Somaiya Vidyavihar University"
-          />
-        </div>
-        <div className="text-[11px] text-slate-500 leading-tight">
-          <p className="font-bold text-slate-700">KJSSE Virtual Lab v1.0</p>
-          <p className="text-[10.5px] font-medium text-slate-600">K. J. Somaiya School of Engineering</p>
-          <p className="text-[9.5px] text-slate-400">Somaiya Vidyavihar University &bull; Somaiya Trust</p>
-        </div>
-      </div>
     </aside>
   );
 }
