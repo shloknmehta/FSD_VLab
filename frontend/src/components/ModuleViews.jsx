@@ -304,7 +304,7 @@ export function PretestView({ onNext }) {
       {/* Exact Virtual Labs Centered Heading */}
       <div className="text-center mb-3">
         <h1
-          className="text-[1.7rem] font-medium text-[#2c99ce] tracking-normal"
+          className="text-lg sm:text-2xl md:text-[1.7rem] font-medium text-[#2c99ce] tracking-normal break-words"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Django Custom Form Validation Lifecycle
@@ -2058,7 +2058,7 @@ export function PosttestView({ onNext, onQuizPassed }) {
       {/* Exact Virtual Labs Centered Heading */}
       <div className="text-center mb-3">
         <h1
-          className="text-[1.7rem] font-medium text-[#2c99ce] tracking-normal"
+          className="text-lg sm:text-2xl md:text-[1.7rem] font-medium text-[#2c99ce] tracking-normal break-words"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Django Form Validation Posttest Assessment

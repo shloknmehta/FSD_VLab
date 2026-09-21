@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Bug } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import Breadcrumbs from './components/Breadcrumbs';
@@ -124,42 +125,63 @@ function LabPlatform() {
       {/* 2. Breadcrumbs matching KJSSE / VLab styling */}
       <Breadcrumbs
         department="Computer Science and Engineering"
-        course="Django Web Technologies / Full Stack Development"
+        course="Full Stack Development"
         section="Experiments"
       />
 
       {/* 3. Main Workspace Area: Left Sidebar + Right Content */}
       <div className="flex-1 flex flex-col md:flex-row w-full bg-white relative">
-        {/* Mobile Backdrop - anchored below header */}
+        {/* Mobile Backdrop */}
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden fixed inset-0 top-[68px] bg-slate-900/40 z-30 transition-opacity"
+            className="md:hidden fixed inset-0 bg-slate-900/50 z-50 backdrop-blur-xs transition-opacity"
           />
         )}
 
-        {/* Sidebar: Normal document flow on desktop, slide drawer below header on mobile */}
+        {/* Mobile Sidebar: Slide-over Drawer */}
         {sidebarOpen && (
-          <div className="fixed md:static top-[68px] bottom-0 left-0 z-40 bg-white shadow-2xl md:shadow-none shrink-0 overflow-y-auto max-h-[calc(100vh-68px)] md:max-h-none">
+          <div className="md:hidden fixed top-0 bottom-0 left-0 z-50 w-72 max-w-[85vw] bg-white shadow-2xl overflow-y-auto">
             <Sidebar
               isOpen={sidebarOpen}
               onClose={() => setSidebarOpen(false)}
               activeTab={activeTab}
               onSelectTab={(tabId) => {
                 handleSelectTab(tabId);
-                if (window.innerWidth < 768) {
-                  setSidebarOpen(false);
-                }
+                setSidebarOpen(false);
               }}
               completedModules={completedModules}
             />
           </div>
         )}
 
-        <main className="flex-1 min-w-0 bg-white p-3 sm:p-6 md:p-8">
+        {/* Desktop Sidebar: In-flow beside main content */}
+        {sidebarOpen && (
+          <div className="hidden md:block shrink-0 w-56 sm:w-60 md:w-64 bg-white border-r border-[#e8e8e8]">
+            <Sidebar
+              isOpen={sidebarOpen}
+              onClose={() => setSidebarOpen(false)}
+              activeTab={activeTab}
+              onSelectTab={(tabId) => handleSelectTab(tabId)}
+              completedModules={completedModules}
+            />
+          </div>
+        )}
+
+        <main className="flex-1 min-w-0 bg-white p-3 sm:p-6 md:p-8 overflow-x-hidden">
           {renderActiveTabContent()}
         </main>
       </div>
+
+      {/* Mobile Floating Bug Report Button (Virtual Labs standard) */}
+      <button
+        onClick={() => setBugModalOpen(true)}
+        className="sm:hidden fixed bottom-4 right-4 z-40 w-12 h-12 rounded-full bg-[#0fc0ff] hover:bg-[#0284c7] text-white shadow-lg flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
+        title="Report a Bug"
+        aria-label="Report a Bug"
+      >
+        <Bug className="w-5 h-5 text-white" />
+      </button>
 
       {/* 4. Institutional Footer */}
       <Footer />

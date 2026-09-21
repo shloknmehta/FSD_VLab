@@ -7,7 +7,7 @@ export default function AimSection({ onNavigateNext }) {
       {/* Centered Main Title matching official Virtual Labs */}
       <div className="text-center mb-3">
         <h1
-          className="text-[1.7rem] font-medium text-[#2c99ce] tracking-normal"
+          className="text-lg sm:text-2xl md:text-[1.7rem] font-medium text-[#2c99ce] tracking-normal break-words"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Django Custom Form Validation using clean() & clean_&lt;field&gt;()

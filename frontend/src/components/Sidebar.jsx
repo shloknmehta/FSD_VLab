@@ -47,20 +47,20 @@ export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, compl
   if (!isOpen) return null;
 
   return (
-    <aside className="w-56 sm:w-64 shrink-0 bg-white border-r border-[#e8e8e8] h-full overflow-y-auto py-4 px-4 sm:px-6 select-none flex flex-col justify-between">
+    <aside className="w-full h-full overflow-y-auto py-4 px-4 sm:px-6 select-none flex flex-col justify-between">
       <div className="space-y-1">
         {/* Mobile Close Bar */}
         {onClose && (
-          <div className="flex md:hidden items-center justify-between pb-2 mb-2 border-b border-gray-200">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider" style={{ fontFamily: "'Raleway', sans-serif" }}>
-              Navigation
+          <div className="flex md:hidden items-center justify-between pb-3 mb-3 border-b border-gray-200">
+            <span className="text-sm font-bold text-[#2c99ce] tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
+              Virtual <span className="text-[#689f38]">Labs</span> Menu
             </span>
             <button
               onClick={onClose}
-              className="p-1 rounded text-gray-500 hover:text-gray-800 hover:bg-gray-100 cursor-pointer"
+              className="p-1.5 rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 cursor-pointer"
               aria-label="Close Navigation"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
           </div>
         )}

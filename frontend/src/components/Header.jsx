@@ -58,24 +58,24 @@ export default function Header({
   return (
     <header className="bg-white sticky top-0 z-50 border-b-[8px] border-[#ff6600] font-['Raleway',sans-serif] shadow-xs select-none">
       {/* Main Bar */}
-      <div className="w-full px-4 sm:px-6 py-2.5 flex items-center justify-between">
+      <div className="w-full px-2.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 max-w-full">
         {/* Left: Hamburger & Virtual Labs Brand */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           <button
             onClick={onToggleSidebar}
             title={sidebarOpen ? 'Collapse Navigation Menu' : 'Open Navigation Menu'}
             aria-label="Toggle Navigation Menu"
             aria-expanded={sidebarOpen}
-            className="p-2 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+            className="p-1.5 sm:p-2 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
           {/* Official Virtual Labs Logo */}
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div className="flex items-center gap-1.5 sm:gap-2 cursor-pointer">
             {/* SVG Beaker + Gear Emblem */}
             <svg
-              className="w-10 h-10 shrink-0"
+              className="w-7 h-7 sm:w-10 sm:h-10 shrink-0"
               viewBox="0 0 100 100"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -111,18 +111,18 @@ export default function Header({
             {/* Typography */}
             <div className="flex flex-col justify-center leading-none">
               <div className="flex items-baseline font-bold tracking-tight">
-                <span className="text-[25px] text-[#2c99ce] font-['Raleway']">Virtual</span>
-                <span className="text-[25px] text-[#689f38] ml-1 font-['Raleway']">Labs</span>
+                <span className="text-[18px] sm:text-[25px] text-[#2c99ce] font-['Raleway']">Virtual</span>
+                <span className="text-[18px] sm:text-[25px] text-[#689f38] ml-0.5 sm:ml-1 font-['Raleway']">Labs</span>
               </div>
-              <span className="text-[9.5px] font-medium text-slate-500 tracking-wide">
+              <span className="text-[7.5px] sm:text-[9.5px] font-medium text-slate-500 tracking-wide">
                 An MoE Govt of India Initiative
               </span>
             </div>
           </div>
 
           {/* Institutional Divider & Official Somaiya Logos */}
-          <div className="hidden lg:block h-8 w-[1px] bg-slate-200" />
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden xl:block h-8 w-[1px] bg-slate-200" />
+          <div className="hidden xl:flex items-center gap-3">
             <img
               src="/assets/logos/kjsce-formerly.svg"
               alt="K. J. Somaiya School of Engineering"
@@ -133,9 +133,9 @@ export default function Header({
         </div>
 
         {/* Right Side: Ratings, Buttons, User Menu */}
-        <div className="flex items-center gap-3 sm:gap-4">
-          {/* Interactive Stars - Matches screenshot yellow rating */}
-          <div className="flex items-center gap-0.5" title="Rate this experiment">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          {/* Interactive Stars - Visible on desktop/tablet */}
+          <div className="hidden md:flex items-center gap-0.5" title="Rate this experiment">
             {[1, 2, 3, 4, 5].map((star) => {
               const isFilled = (hoverRating || activeRating || 3) >= star;
               return (
@@ -159,31 +159,49 @@ export default function Header({
             })}
           </div>
 
-          {/* Rate Me Button - Matches exact v-button style in screenshot */}
+          {/* Mobile Icon Button: Rate */}
           <button
             onClick={onOpenRateModal}
             title="Rate this experiment"
-            className="v-button shadow-none text-white text-[1.05rem]"
+            className="md:hidden p-1.5 text-[#ffc107] hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+          >
+            <Star className="w-5 h-5 fill-[#ffc107]" />
+          </button>
+
+          {/* Mobile Icon Button: Bug Report */}
+          <button
+            onClick={onOpenBugModal}
+            title="Report a Bug"
+            className="sm:hidden p-1.5 text-[#288ec8] hover:bg-sky-50 rounded-lg transition-colors cursor-pointer"
+          >
+            <Bug className="w-5 h-5" />
+          </button>
+
+          {/* Rate Me Button - Desktop/Tablet */}
+          <button
+            onClick={onOpenRateModal}
+            title="Rate this experiment"
+            className="hidden md:inline-flex v-button shadow-none text-white text-[1.05rem]"
           >
             Rate Me
           </button>
 
-          {/* Report a Bug Button - Matches exact v-button style in screenshot */}
+          {/* Report a Bug Button - Desktop/Tablet */}
           <button
             onClick={onOpenBugModal}
             title="Report a Bug"
-            className="v-button shadow-none text-white text-[1.05rem]"
+            className="hidden sm:inline-flex v-button shadow-none text-white text-[1.05rem]"
           >
             Report a Bug
           </button>
 
           {/* Unauthenticated: Sign In & Register Buttons */}
           {!currentUser ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={openLogin}
                 title="Sign in to your account"
-                className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg bg-[#ff6600] hover:bg-[#e65c00] text-white font-bold text-xs shadow-xs transition cursor-pointer"
+                className="flex items-center gap-1 px-2.5 sm:px-4 py-1.5 rounded-lg bg-[#ff6600] hover:bg-[#e65c00] text-white font-bold text-xs shadow-xs transition cursor-pointer shrink-0"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>Sign In</span>
@@ -191,7 +209,7 @@ export default function Header({
               <button
                 onClick={openRegister}
                 title="Create a new student account"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 font-bold text-xs transition cursor-pointer"
+                className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 font-bold text-xs transition cursor-pointer"
               >
                 <UserPlus className="w-3.5 h-3.5 text-slate-500" />
                 <span>Register</span>

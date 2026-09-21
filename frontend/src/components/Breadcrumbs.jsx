@@ -7,9 +7,9 @@ export default function Breadcrumbs({
   experimentTitle,
 }) {
   return (
-    <div className="w-full bg-white px-4 sm:px-6 md:px-8 py-3 sm:py-4 select-none">
+    <div className="w-full bg-white px-3 sm:px-6 md:px-8 py-2 sm:py-3.5 select-none">
       <nav
-        className="flex items-center flex-wrap gap-x-2 text-[1.15rem] sm:text-[1.4rem] md:text-[1.6rem] font-normal tracking-normal text-[#337ab7]"
+        className="flex items-center flex-wrap gap-x-1 sm:gap-x-2 gap-y-0.5 text-xs sm:text-sm md:text-[1.35rem] lg:text-[1.6rem] font-normal tracking-normal text-[#337ab7]"
         style={{ fontFamily: "'Raleway', sans-serif" }}
       >
         <span className="hover:underline cursor-pointer transition-colors text-[#337ab7]">
