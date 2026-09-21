@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
-import { Menu, Star, ChevronDown, UserCheck, ShieldAlert, GraduationCap, Bug } from 'lucide-react';
+import {
+  Menu,
+  Star,
+  ChevronDown,
+  UserCheck,
+  ShieldAlert,
+  GraduationCap,
+  Bug,
+  LogIn,
+  LogOut,
+  UserPlus,
+  KeyRound,
+  Shield,
+  CheckCircle2,
+} from 'lucide-react';
 import { useAuth, DEMO_USERS } from '../context/AuthContext';
 
 export default function Header({
@@ -9,7 +23,15 @@ export default function Header({
   onOpenBugModal,
   activeRating = 0,
 }) {
-  const { currentUser, role, switchDemoRole } = useAuth();
+  const {
+    currentUser,
+    role,
+    isRealAuth,
+    openLogin,
+    openRegister,
+    logout,
+    switchDemoRole,
+  } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [hoverRating, setHoverRating] = useState(0);
 
@@ -176,6 +198,16 @@ export default function Header({
             <span className="hidden sm:inline">Report a Bug</span>
           </button>
 
+          {/* Sign In button for direct access */}
+          <button
+            onClick={openLogin}
+            title="Sign in with your credentials"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-sky-50 text-[#0284c7] hover:bg-sky-100 font-bold text-xs border border-sky-200 transition cursor-pointer"
+          >
+            <LogIn className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Sign In</span>
+          </button>
+
           {/* Active User Persona Dropdown */}
           <div className="relative">
             <button
@@ -183,11 +215,11 @@ export default function Header({
               className="flex items-center gap-1.5 sm:gap-2 pl-1.5 sm:pl-2 pr-2 sm:pr-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 transition cursor-pointer"
             >
               <div className="w-7 h-7 rounded-full bg-slate-700 text-white flex items-center justify-center font-bold text-xs shrink-0">
-                {currentUser?.name?.charAt(0) || 'U'}
+                {currentUser?.first_name?.charAt(0) || currentUser?.name?.charAt(0) || currentUser?.username?.charAt(0) || 'U'}
               </div>
               <div className="hidden md:flex flex-col text-left leading-tight">
                 <span className="text-xs font-semibold text-slate-800 line-clamp-1">
-                  {currentUser?.name}
+                  {currentUser?.name || `${currentUser?.first_name || ''} ${currentUser?.last_name || ''}`.trim() || currentUser?.username}
                 </span>
                 <span className="text-[10px] text-slate-500 font-medium tracking-wide">
                   {role}
@@ -203,19 +235,86 @@ export default function Header({
               <ChevronDown className="w-3.5 h-3.5 text-slate-500 shrink-0" />
             </button>
 
-            {/* Dropdown Menu for quick role switching */}
+            {/* Dropdown Menu for quick role switching and account management */}
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-64 max-w-[calc(100vw-24px)] bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in zoom-in-95">
-                <div className="px-3 py-2 border-b border-slate-100">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                    Switch Active Persona (RBAC Demo)
+              <div className="absolute right-0 mt-2 w-72 max-w-[calc(100vw-24px)] bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in zoom-in-95">
+                {/* Active User Profile Header */}
+                <div className="px-3.5 py-2.5 border-b border-slate-100 bg-slate-50/50">
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      Active User Profile
+                    </span>
+                    {isRealAuth ? (
+                      <span className="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                        <CheckCircle2 className="w-2.5 h-2.5" /> Live Token
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-[9px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                        <KeyRound className="w-2.5 h-2.5" /> Demo Session
+                      </span>
+                    )}
                   </div>
-                  <div className="text-xs text-slate-500 mt-0.5">
-                    Test different permission levels instantly
+                  <div className="font-bold text-slate-800 text-sm leading-tight">
+                    {currentUser?.name || `${currentUser?.first_name || ''} ${currentUser?.last_name || ''}`.trim() || currentUser?.username}
+                  </div>
+                  <div className="text-xs text-slate-500 font-mono mt-0.5 truncate">
+                    {currentUser?.email || `${currentUser?.username}@vlab.edu`}
+                  </div>
+                  {(currentUser?.roll_or_faculty_id || currentUser?.rollNo) && (
+                    <div className="text-[11px] text-slate-600 mt-1 font-medium flex items-center gap-1.5">
+                      <span className="text-slate-400">ID / Roll:</span>
+                      <span className="font-semibold text-slate-700">
+                        {currentUser?.roll_or_faculty_id || currentUser?.rollNo}
+                      </span>
+                      {currentUser?.batch && (
+                        <span className="text-slate-400">({currentUser.batch})</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Account Actions: Sign In, Register, Sign Out */}
+                <div className="px-2 py-1.5 border-b border-slate-100 space-y-1">
+                  <button
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      openLogin();
+                    }}
+                    className="w-full text-left px-2.5 py-1.5 text-xs text-slate-700 hover:bg-sky-50 hover:text-[#0284c7] rounded-lg transition flex items-center gap-2 cursor-pointer font-medium"
+                  >
+                    <LogIn className="w-3.5 h-3.5 text-[#0284c7]" />
+                    <span>Sign In to Account</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      openRegister();
+                    }}
+                    className="w-full text-left px-2.5 py-1.5 text-xs text-slate-700 hover:bg-emerald-50 hover:text-[#689f38] rounded-lg transition flex items-center gap-2 cursor-pointer font-medium"
+                  >
+                    <UserPlus className="w-3.5 h-3.5 text-[#689f38]" />
+                    <span>Create New Account</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      logout();
+                    }}
+                    className="w-full text-left px-2.5 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded-lg transition flex items-center gap-2 cursor-pointer font-medium"
+                  >
+                    <LogOut className="w-3.5 h-3.5 text-red-500" />
+                    <span>Sign Out / Reset</span>
+                  </button>
+                </div>
+
+                {/* Quick Persona Switch for testing */}
+                <div className="px-3 pt-2 pb-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    Quick Persona Switch (RBAC Demo)
                   </div>
                 </div>
 
-                <div className="py-1">
+                <div className="py-0.5">
                   {Object.entries(DEMO_USERS).map(([key, user]) => {
                     const isActive = role === key;
                     return (
@@ -225,27 +324,27 @@ export default function Header({
                           switchDemoRole(key);
                           setDropdownOpen(false);
                         }}
-                        className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-slate-50 transition cursor-pointer ${
+                        className={`w-full text-left px-3 py-1.5 text-xs flex items-center justify-between hover:bg-slate-50 transition cursor-pointer ${
                           isActive ? 'bg-sky-50 font-semibold text-sky-900' : 'text-slate-700'
                         }`}
                       >
-                        <div className="flex items-center gap-2.5">
+                        <div className="flex items-center gap-2">
                           <div
-                            className={`p-1.5 rounded-md ${
+                            className={`p-1 rounded-md ${
                               isActive ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-600'
                             }`}
                           >
                             {getRoleIcon(key)}
                           </div>
                           <div>
-                            <div className="font-semibold text-slate-800">{user.name}</div>
-                            <div className="text-[11px] text-slate-500">
-                              {key === 'STUDENT' ? `Roll: ${user.rollNo}` : user.department}
+                            <div className="font-semibold text-slate-800 text-[11.5px]">{user.name}</div>
+                            <div className="text-[10px] text-slate-400">
+                              {key === 'STUDENT' ? `Roll: ${user.roll_or_faculty_id}` : user.department}
                             </div>
                           </div>
                         </div>
                         <span
-                          className={`text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase ${getRoleBadgeStyle(
+                          className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded border uppercase ${getRoleBadgeStyle(
                             key
                           )}`}
                         >
@@ -256,7 +355,7 @@ export default function Header({
                   })}
                 </div>
 
-                <div className="px-3 pt-2 border-t border-slate-100 text-[10px] text-slate-400 flex items-center justify-between">
+                <div className="px-3 pt-2 mt-1 border-t border-slate-100 text-[10px] text-slate-400 flex items-center justify-between">
                   <span>KJSSE Lab Standard</span>
                   <span className="font-mono">FSD-VLab</span>
                 </div>

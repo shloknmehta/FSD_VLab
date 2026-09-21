@@ -1,4 +1,4 @@
-﻿from rest_framework.views import APIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -20,13 +20,20 @@ class RegisterView(APIView):
                 "token": token.key,
                 "user": UserSerializer(user).data
             }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Flatten first error message for frontend toast/alert
+        error_msg = "Registration failed."
+        for field, errors in serializer.errors.items():
+            if isinstance(errors, list) and len(errors) > 0:
+                error_msg = f"{field.replace('_', ' ').capitalize()}: {errors[0]}"
+                break
+        return Response({"error": error_msg, "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        username_or_email = request.data.get('username') or request.data.get('email')
+        username_or_email = (request.data.get('username') or request.data.get('email') or '').strip()
         password = request.data.get('password')
 
         if not username_or_email or not password:
@@ -48,7 +55,7 @@ class LoginView(APIView):
 
         if not user:
             return Response(
-                {"error": "Invalid username or password"},
+                {"error": "Invalid username or password. Please check your credentials."},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
@@ -58,6 +65,18 @@ class LoginView(APIView):
             "token": token.key,
             "user": UserSerializer(user).data
         }, status=status.HTTP_200_OK)
+
+class LogoutView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        if request.user and request.user.is_authenticated:
+            if hasattr(request.user, 'auth_token'):
+                try:
+                    request.user.auth_token.delete()
+                except Exception:
+                    pass
+        return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
 
 class MeView(APIView):
     permission_classes = [AllowAny]
@@ -70,17 +89,7 @@ class MeView(APIView):
                 "token": token.key
             })
         
-        # In case frontend calls /me without auth token, return fallback demo student if available
-        demo_student = CustomUser.objects.filter(role='STUDENT').first()
-        if demo_student:
-            token, _ = Token.objects.get_or_create(user=demo_student)
-            return Response({
-                "user": UserSerializer(demo_student).data,
-                "token": token.key,
-                "is_demo_fallback": True
-            })
-
-        return Response({"error": "Unauthenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"error": "Unauthenticated", "user": None}, status=status.HTTP_401_UNAUTHORIZED)
 
 class SwitchDemoRoleView(APIView):
     permission_classes = [AllowAny]

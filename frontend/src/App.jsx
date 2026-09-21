@@ -7,6 +7,7 @@ import AimSection from './components/AimSection';
 import Footer from './components/Footer';
 import RateMeModal from './components/RateMeModal';
 import ReportBugModal from './components/ReportBugModal';
+import AuthModal from './components/AuthModal';
 import {
   OverviewView,
   RecapView,
@@ -23,6 +24,7 @@ import {
 } from './components/ModuleViews';
 
 function LabPlatform() {
+  const { authModalOpen, closeAuthModal, authModalMode } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(() => (typeof window !== 'undefined' ? window.innerWidth >= 768 : true));
   const [activeTab, setActiveTab] = useState('aim');
   const [rateModalOpen, setRateModalOpen] = useState(false);
@@ -178,6 +180,12 @@ function LabPlatform() {
         isOpen={bugModalOpen}
         onClose={() => setBugModalOpen(false)}
         activeTab={activeTab}
+      />
+
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={closeAuthModal}
+        defaultMode={authModalMode}
       />
     </div>
   );
