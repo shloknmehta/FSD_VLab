@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Menu,
+  Star,
   ChevronDown,
   UserCheck,
   ShieldAlert,
