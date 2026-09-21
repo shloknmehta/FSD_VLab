@@ -23,7 +23,7 @@ import {
 } from './components/ModuleViews';
 
 function LabPlatform() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => (typeof window !== 'undefined' ? window.innerWidth >= 768 : true));
   const [activeTab, setActiveTab] = useState('aim');
   const [rateModalOpen, setRateModalOpen] = useState(false);
   const [bugModalOpen, setBugModalOpen] = useState(false);
@@ -112,6 +112,7 @@ function LabPlatform() {
     <div className="min-h-screen bg-white flex flex-col font-sans text-slate-800">
       {/* 1. Header with KJSSE Virtual Labs branding, Stars, Rate Me, Report a Bug & Demo Switcher */}
       <Header
+        sidebarOpen={sidebarOpen}
         onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
         onOpenRateModal={() => setRateModalOpen(true)}
         onOpenBugModal={() => setBugModalOpen(true)}
@@ -135,14 +136,16 @@ function LabPlatform() {
           />
         )}
 
-        {/* Sidebar: Offcanvas on mobile, static on desktop */}
+        {/* Sidebar: Offcanvas on mobile, collapsible on desktop */}
         <div
-          className={`z-40 ${
-            sidebarOpen ? 'fixed md:static inset-y-0 left-0 shadow-2xl md:shadow-none' : 'hidden md:block'
-          } shrink-0 bg-white`}
+          className={`z-40 shrink-0 bg-white transition-all duration-200 ease-in-out ${
+            sidebarOpen
+              ? 'fixed md:static inset-y-0 left-0 shadow-2xl md:shadow-none block'
+              : 'hidden'
+          }`}
         >
           <Sidebar
-            isOpen={true}
+            isOpen={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
             activeTab={activeTab}
             onSelectTab={(tabId) => {

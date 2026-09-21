@@ -3,6 +3,7 @@ import { Menu, Star, ChevronDown, UserCheck, ShieldAlert, GraduationCap, Bug } f
 import { useAuth, DEMO_USERS } from '../context/AuthContext';
 
 export default function Header({
+  sidebarOpen = true,
   onToggleSidebar,
   onOpenRateModal,
   onOpenBugModal,
@@ -44,8 +45,14 @@ export default function Header({
         <div className="flex items-center gap-4">
           <button
             onClick={onToggleSidebar}
-            title="Toggle Navigation Menu"
-            className="p-2 -ml-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+            title={sidebarOpen ? 'Collapse Navigation Menu' : 'Open Navigation Menu'}
+            aria-label="Toggle Navigation Menu"
+            aria-expanded={sidebarOpen}
+            className={`p-2 -ml-2 rounded-lg transition-colors cursor-pointer ${
+              sidebarOpen
+                ? 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                : 'text-[#ff6600] bg-orange-50 hover:bg-orange-100'
+            }`}
           >
             <Menu className="w-6 h-6" />
           </button>

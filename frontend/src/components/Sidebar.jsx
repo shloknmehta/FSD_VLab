@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   ChevronRight,
   CheckCircle2,
+  X,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -60,10 +61,11 @@ export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, compl
               {onClose && (
                 <button
                   onClick={onClose}
-                  className="md:hidden text-slate-400 hover:text-slate-600 px-1.5 py-0.5 rounded text-sm font-bold cursor-pointer"
-                  title="Close sidebar"
+                  className="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-1 rounded transition-colors cursor-pointer"
+                  title="Collapse sidebar"
+                  aria-label="Collapse sidebar"
                 >
-                  &times;
+                  <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
