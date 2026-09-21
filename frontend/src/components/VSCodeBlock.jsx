@@ -224,23 +224,23 @@ export default function VSCodeBlock({
   };
 
   return (
-    <div className="rounded-xl overflow-hidden border border-[#333333] shadow-lg bg-[#1e1e1e] text-[#d4d4d4] font-mono text-xs select-text">
+    <div className="w-full max-w-full min-w-0 rounded-xl overflow-hidden border border-[#333333] shadow-lg bg-[#1e1e1e] text-[#d4d4d4] font-mono text-xs select-text">
       {/* VS Code Window Top Bar (Tabs + Action Buttons) */}
       <div className="bg-[#252526] border-b border-[#1e1e1e] flex items-center justify-between px-3 py-1.5 select-none">
         {/* Active Tab */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 bg-[#1e1e1e] px-3 py-1 rounded-t-md border-t-2 border-[#007acc] text-[#ffffff]">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="flex items-center gap-2 bg-[#1e1e1e] px-3 py-1 rounded-t-md border-t-2 border-[#007acc] text-[#ffffff] shrink-0">
             {getFileBadge()}
           </div>
           {breadcrumbs && (
-            <span className="hidden sm:inline text-[11px] text-[#858585] ml-2">
+            <span className="hidden sm:inline text-[11px] text-[#858585] ml-2 truncate">
               {breadcrumbs}
             </span>
           )}
         </div>
 
         {/* Right Tools */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handleCopy}
             title="Copy Code"
@@ -254,12 +254,13 @@ export default function VSCodeBlock({
 
       {/* Editor Body with Line Numbers & Syntax Highlighting */}
       <div
-        className="overflow-x-auto overflow-y-auto p-2"
+        className="w-full max-w-full min-w-0 overflow-x-auto overflow-y-auto p-2"
         style={{
           maxHeight,
           fontFamily: "'Consolas', 'Fira Code', 'Courier New', monospace",
           fontSize: '12.5px',
           lineHeight: '1.55',
+          WebkitOverflowScrolling: 'touch',
         }}
       >
         <table className="w-full border-collapse">

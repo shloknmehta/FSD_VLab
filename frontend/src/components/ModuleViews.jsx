@@ -104,29 +104,31 @@ export function OverviewView({ onNext }) {
           Execution Lifecycle at a Glance (Triggered by form.is_valid())
         </h3>
 
-        <div className="flex flex-wrap items-center justify-between gap-2 p-4 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
-          <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center">
-            Raw POST Data<br/><span className="text-[10px] text-slate-400 font-normal">request.POST</span>
-          </div>
-          <span className="text-slate-400 font-bold">&rarr;</span>
-          <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center">
-            form.is_valid()<br/><span className="text-[10px] text-slate-400 font-normal">full_clean()</span>
-          </div>
-          <span className="text-slate-400 font-bold">&rarr;</span>
-          <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center">
-            _clean_fields()<br/><span className="text-[10px] text-slate-400 font-normal">Built-in checks</span>
-          </div>
-          <span className="text-slate-400 font-bold">&rarr;</span>
-          <div className="px-3 py-2 bg-sky-100 border border-sky-300 text-[#0284c7] rounded shadow-xs text-center font-bold">
-            clean_&lt;field&gt;()<br/><span className="text-[10px] text-sky-700 font-normal">Single-field logic</span>
-          </div>
-          <span className="text-slate-400 font-bold">&rarr;</span>
-          <div className="px-3 py-2 bg-emerald-100 border border-emerald-300 text-emerald-800 rounded shadow-xs text-center font-bold">
-            clean()<br/><span className="text-[10px] text-emerald-700 font-normal">Cross-field logic</span>
-          </div>
-          <span className="text-slate-400 font-bold">&rarr;</span>
-          <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center">
-            cleaned_data / errors<br/><span className="text-[10px] text-slate-400 font-normal">Result returned</span>
+        <div className="overflow-x-auto w-full max-w-full pb-2">
+          <div className="flex items-center min-w-[620px] md:min-w-0 justify-between gap-2 p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
+            <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center shrink-0">
+              Raw POST Data<br/><span className="text-[10px] text-slate-400 font-normal">request.POST</span>
+            </div>
+            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
+            <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center shrink-0">
+              form.is_valid()<br/><span className="text-[10px] text-slate-400 font-normal">full_clean()</span>
+            </div>
+            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
+            <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center shrink-0">
+              _clean_fields()<br/><span className="text-[10px] text-slate-400 font-normal">Built-in checks</span>
+            </div>
+            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
+            <div className="px-3 py-2 bg-sky-100 border border-sky-300 text-[#0284c7] rounded shadow-xs text-center font-bold shrink-0">
+              clean_&lt;field&gt;()<br/><span className="text-[10px] text-sky-700 font-normal">Single-field logic</span>
+            </div>
+            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
+            <div className="px-3 py-2 bg-emerald-100 border border-emerald-300 text-emerald-800 rounded shadow-xs text-center font-bold shrink-0">
+              clean()<br/><span className="text-[10px] text-emerald-700 font-normal">Cross-field logic</span>
+            </div>
+            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
+            <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center shrink-0">
+              cleaned_data / errors<br/><span className="text-[10px] text-slate-400 font-normal">Result returned</span>
+            </div>
           </div>
         </div>
       </div>
@@ -860,10 +862,10 @@ else:
       </div>
 
       {/* Main Split Visualization Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 w-full max-w-full min-w-0">
         {/* Left Side (7 Cols): Active Stage Details & Code Trace */}
-        <div className="lg:col-span-7 space-y-4">
-          <div className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs space-y-4">
+        <div className="lg:col-span-7 space-y-4 min-w-0 max-w-full">
+          <div className="border border-slate-200 rounded-xl p-4 sm:p-5 bg-white shadow-xs space-y-4 min-w-0 max-w-full">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <span className="text-[10px] font-bold text-[#0284c7] uppercase tracking-wider">
@@ -917,21 +919,21 @@ else:
             </div>
 
             {/* Step Controls */}
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 pt-2 border-t border-slate-100 w-full">
+              <div className="flex items-center justify-between sm:justify-start gap-1.5 sm:gap-2">
                 <button
                   disabled={currentStep === 0}
                   onClick={() => {
                     setCurrentStep((prev) => Math.max(0, prev - 1));
                     setIsPlaying(false);
                   }}
-                  className="px-3 py-1.5 text-xs font-semibold rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-40 cursor-pointer"
+                  className="flex-1 sm:flex-initial px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-40 cursor-pointer text-center"
                 >
                   &larr; Prev
                 </button>
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md text-white transition cursor-pointer ${
+                  className={`flex-1 sm:flex-initial px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-md text-white transition cursor-pointer text-center ${
                     isPlaying ? 'bg-amber-600 hover:bg-amber-700' : 'bg-[#0284c7] hover:bg-[#0369a1]'
                   }`}
                 >
@@ -943,23 +945,25 @@ else:
                     setCurrentStep((prev) => Math.min(steps.length - 1, prev + 1));
                     setIsPlaying(false);
                   }}
-                  className="px-3 py-1.5 text-xs font-semibold rounded-md bg-[#0284c7] text-white hover:bg-[#0369a1] disabled:opacity-40 cursor-pointer"
+                  className="flex-1 sm:flex-initial px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-md bg-[#0284c7] text-white hover:bg-[#0369a1] disabled:opacity-40 cursor-pointer text-center"
                 >
                   Next &rarr;
                 </button>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] text-slate-400 font-semibold">Speed:</span>
-                <select
-                  value={playbackSpeed}
-                  onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
-                  className="text-xs border border-slate-300 rounded px-2 py-1 bg-white text-slate-700"
-                >
-                  <option value={2500}>1x (Normal)</option>
-                  <option value={1500}>1.5x (Fast)</option>
-                  <option value={800}>2x (Rapid)</option>
-                </select>
+              <div className="flex items-center justify-between sm:justify-end gap-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[11px] text-slate-400 font-semibold">Speed:</span>
+                  <select
+                    value={playbackSpeed}
+                    onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
+                    className="text-xs border border-slate-300 rounded px-2 py-1 bg-white text-slate-700"
+                  >
+                    <option value={2500}>1x (Normal)</option>
+                    <option value={1500}>1.5x (Fast)</option>
+                    <option value={800}>2x (Rapid)</option>
+                  </select>
+                </div>
                 <button
                   onClick={() => {
                     setCurrentStep(0);
@@ -975,7 +979,7 @@ else:
         </div>
 
         {/* Right Side (5 Cols): Live Variable Watcher & Call Stack */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="lg:col-span-5 space-y-4 min-w-0 max-w-full">
           {/* Call Stack Box */}
           <div className="border border-slate-200 rounded-xl p-4 bg-white shadow-xs space-y-2">
             <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center justify-between">
@@ -1228,9 +1232,9 @@ export function SimulationView({ onNext }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 w-full max-w-full min-w-0">
         {/* Left Form (7 Cols) */}
-        <div className="md:col-span-7 border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
+        <div className="md:col-span-7 border border-slate-200 rounded-xl p-4 sm:p-6 bg-white shadow-xs space-y-4 min-w-0 max-w-full">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <h2 className="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2">
               <FlaskConical className="w-4 h-4 text-[#0284c7]" />
@@ -1368,8 +1372,8 @@ export function SimulationView({ onNext }) {
         </div>
 
         {/* Right Output Panel (5 Cols) */}
-        <div className="md:col-span-5 space-y-4">
-          <div className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs space-y-4">
+        <div className="md:col-span-5 space-y-4 min-w-0 max-w-full">
+          <div className="border border-slate-200 rounded-xl p-4 sm:p-5 bg-white shadow-xs space-y-4 min-w-0 max-w-full">
             <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider">
               Server Validation Response
             </h3>
@@ -1704,11 +1708,11 @@ export function CodeAssessmentView({ onNext, onChallengeSolved }) {
 
         {/* Editor Area with Line Numbers Gutter */}
         <div
-          className="flex bg-[#1e1e1e] font-mono text-[12.5px] leading-[1.55]"
+          className="flex bg-[#1e1e1e] font-mono text-[12.5px] leading-[1.55] w-full max-w-full min-w-0 overflow-hidden"
           style={{ fontFamily: "'Consolas', 'Fira Code', 'Courier New', monospace" }}
         >
           {/* Gutter */}
-          <div className="py-3 px-3 text-right text-[#858585] bg-[#1e1e1e] border-r border-[#2d2d2d] select-none text-xs min-w-[42px]">
+          <div className="py-3 px-2 sm:px-3 text-right text-[#858585] bg-[#1e1e1e] border-r border-[#2d2d2d] select-none text-xs min-w-[36px] sm:min-w-[42px] shrink-0">
             {(activeChallenge === 'clean_age' ? codeAge : codeClean).split('\n').map((_, idx) => (
               <div key={idx} className="h-[19.38px] leading-[19.38px]">{idx + 1}</div>
             ))}
@@ -1720,10 +1724,11 @@ export function CodeAssessmentView({ onNext, onChallengeSolved }) {
             onChange={(e) => updateCode(e.target.value)}
             rows={12}
             spellCheck="false"
-            className="w-full py-3 px-3 bg-[#1e1e1e] text-[#d4d4d4] outline-none resize-none overflow-x-auto selection:bg-[#264f78] leading-[1.55]"
+            className="flex-1 min-w-0 w-full py-3 px-2 sm:px-3 bg-[#1e1e1e] text-[#d4d4d4] outline-none resize-none overflow-x-auto selection:bg-[#264f78] leading-[1.55]"
             style={{
               fontFamily: "'Consolas', 'Fira Code', 'Courier New', monospace",
               lineHeight: '19.38px',
+              WebkitOverflowScrolling: 'touch',
             }}
           />
         </div>
@@ -1829,8 +1834,8 @@ export function AnalysisView() {
       </div>
 
       {/* Execution Table */}
-      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
-        <div className="overflow-x-auto w-full">
+      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs w-full max-w-full min-w-0">
+        <div className="overflow-x-auto w-full max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
           <table className="w-full text-left text-xs min-w-[550px]">
             <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider">
             <tr>
@@ -2489,14 +2494,14 @@ export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
           </div>
 
           {/* Submit Action */}
-          <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-100">
             <span className="text-[11px] text-slate-400">
               Student: {currentUser?.name || 'Student Demo'} &bull; Roll: {currentUser?.roll_or_faculty_id || '16010124169'}
             </span>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="v-button shadow-xs transition-transform hover:scale-[1.02] cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+              className="v-button w-full sm:w-auto justify-center shadow-xs transition-transform hover:scale-[1.02] cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
             >
               <Send className="w-3.5 h-3.5" />
               <span>{isSubmitting ? 'Submitting Evaluation...' : 'Submit Experiment Feedback'}</span>
@@ -2606,12 +2611,12 @@ export function FacultyPortalView() {
       </div>
 
       {/* Student Table */}
-      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
-        <div className="px-5 py-3 border-b border-slate-100 bg-slate-50 font-bold text-xs uppercase tracking-wider text-slate-600 flex items-center justify-between">
+      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs w-full max-w-full min-w-0">
+        <div className="px-4 sm:px-5 py-3 border-b border-slate-100 bg-slate-50 font-bold text-xs uppercase tracking-wider text-slate-600 flex items-center justify-between">
           <span>Student Submissions & Scorecard (Batch D3)</span>
           <span className="text-[10px] text-emerald-700 font-mono">Live Sync</span>
         </div>
-        <div className="overflow-x-auto w-full">
+        <div className="overflow-x-auto w-full max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
           <table className="w-full text-left text-xs min-w-[620px]">
             <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
               <tr>
@@ -2807,12 +2812,11 @@ export function AdminPortalView() {
               title="Refresh User List"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loadingUsers ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">Refresh</span>
             </button>
           </div>
         </div>
 
-        <div className="overflow-x-auto w-full">
+        <div className="overflow-x-auto w-full max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
           <table className="w-full text-left text-xs min-w-[650px]">
             <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
               <tr>
@@ -2883,11 +2887,11 @@ export function AdminPortalView() {
       </div>
 
       {/* Bug Reports Management */}
-      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
-        <div className="px-5 py-3 border-b border-slate-100 bg-slate-50 font-bold text-xs uppercase tracking-wider text-slate-600">
+      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs w-full max-w-full min-w-0">
+        <div className="px-4 sm:px-5 py-3 border-b border-slate-100 bg-slate-50 font-bold text-xs uppercase tracking-wider text-slate-600">
           User Reported Issues & Tickets
         </div>
-        <div className="overflow-x-auto w-full">
+        <div className="overflow-x-auto w-full max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
           <table className="w-full text-left text-xs min-w-[550px]">
             <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
               <tr>

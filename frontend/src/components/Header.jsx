@@ -56,26 +56,26 @@ export default function Header({
   };
 
   return (
-    <header className="bg-white sticky top-0 z-50 border-b-[8px] border-[#ff6600] font-['Raleway',sans-serif] shadow-xs select-none">
+    <header className="bg-white sticky top-0 z-50 border-b-[8px] border-[#ff6600] font-['Raleway',sans-serif] shadow-xs select-none w-full max-w-full overflow-x-hidden">
       {/* Main Bar */}
-      <div className="w-full px-2.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 max-w-full">
+      <div className="w-full px-2 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-2 max-w-full">
         {/* Left: Hamburger & Virtual Labs Brand */}
-        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-4 min-w-0">
           <button
             onClick={onToggleSidebar}
             title={sidebarOpen ? 'Collapse Navigation Menu' : 'Open Navigation Menu'}
             aria-label="Toggle Navigation Menu"
             aria-expanded={sidebarOpen}
-            className="p-1.5 sm:p-2 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+            className="p-1.5 sm:p-2 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer shrink-0"
           >
             <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
           {/* Official Virtual Labs Logo */}
-          <div className="flex items-center gap-1.5 sm:gap-2 cursor-pointer">
+          <div className="flex items-center gap-1 sm:gap-2 cursor-pointer min-w-0">
             {/* SVG Beaker + Gear Emblem */}
             <svg
-              className="w-7 h-7 sm:w-10 sm:h-10 shrink-0"
+              className="w-6 h-6 sm:w-10 sm:h-10 shrink-0"
               viewBox="0 0 100 100"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -220,9 +220,9 @@ export default function Header({
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition cursor-pointer shadow-2xs"
+                className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition cursor-pointer shadow-2xs"
               >
-                <div className="w-7 h-7 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs shrink-0">
                   {currentUser?.first_name?.charAt(0) || currentUser?.name?.charAt(0) || currentUser?.username?.charAt(0) || 'U'}
                 </div>
                 <div className="hidden sm:flex flex-col text-left leading-tight">
@@ -231,13 +231,13 @@ export default function Header({
                   </span>
                 </div>
                 <span
-                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase tracking-wider ${getRoleBadgeStyle(
+                  className={`text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase tracking-wider ${getRoleBadgeStyle(
                     role
                   )}`}
                 >
                   {role}
                 </span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 shrink-0" />
               </button>
 
               {/* User Dropdown Menu */}
