@@ -24,7 +24,11 @@ import {
   Download,
   Star,
   Send,
+  Users,
+  UserCheck,
+  RefreshCw,
 } from 'lucide-react';
+import api from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import VSCodeBlock from './VSCodeBlock';
 
@@ -278,18 +282,13 @@ export function PretestView({ onNext }) {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/experiments/quiz/submit/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          experiment_slug: 'django-form-validation',
-          quiz_type: 'PRETEST',
-          answers: selectedAnswers,
-        }),
+      const response = await api.post('/experiments/quiz/submit/', {
+        experiment_slug: 'django-form-validation',
+        quiz_type: 'PRETEST',
+        answers: selectedAnswers,
       });
-      if (response.ok) {
-        const data = await response.json();
-        setBackendFeedback(data);
+      if (response.data) {
+        setBackendFeedback(response.data);
       }
     } catch (err) {
       console.log('Using local quiz score calculator:', err);
@@ -1127,13 +1126,9 @@ export function SimulationView({ onNext }) {
   const handleRunSimulation = async () => {
     setIsRunning(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/simulator/trace/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ raw_data: formInputs }),
-      });
-      if (response.ok) {
-        const data = await response.json();
+      const response = await api.post('/simulator/trace/', { raw_data: formInputs });
+      const data = response.data;
+      if (data) {
         setSimulationResult({
           isValid: data.is_valid,
           cleanedData: data.final_cleaned_data || {},
@@ -1556,16 +1551,12 @@ export function CodeAssessmentView({ onNext, onChallengeSolved }) {
     const currentCode = activeChallenge === 'clean_age' ? codeAge : codeClean;
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/simulator/assess/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          challenge_id: activeChallenge,
-          code: currentCode,
-        }),
+      const response = await api.post('/simulator/assess/', {
+        challenge_id: activeChallenge,
+        code: currentCode,
       });
-      if (response.ok) {
-        const data = await response.json();
+      const data = response.data;
+      if (data) {
         setTestResult(data);
         if (data.passed) {
           onChallengeSolved?.();
@@ -1999,14 +1990,10 @@ export function PosttestView({ onNext, onQuizPassed }) {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      await fetch('http://127.0.0.1:8000/api/experiments/quiz/submit/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          experiment_slug: 'django-form-validation',
-          quiz_type: 'POSTTEST',
-          answers: selectedAnswers,
-        }),
+      await api.post('/experiments/quiz/submit/', {
+        experiment_slug: 'django-form-validation',
+        quiz_type: 'POSTTEST',
+        answers: selectedAnswers,
       });
     } catch (e) {
       console.log('Quiz submitted locally');
@@ -2333,11 +2320,7 @@ export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
     };
 
     try {
-      await fetch('http://127.0.0.1:8000/api/portal/feedback/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      await api.post('/portal/feedback/', payload);
     } catch (err) {
       console.warn('Feedback API offline fallback');
       const queue = JSON.parse(localStorage.getItem('vlab_ratings_queue') || '[]');
@@ -2505,9 +2488,9 @@ export function FacultyPortalView() {
   ]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/portal/gradebook/')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
+    api.get('/portal/gradebook/')
+      .then((res) => {
+        const data = res.data;
         if (data?.gradebook?.length) {
           const mapped = data.gradebook.map((s) => ({
             roll_number: s.roll_number || '16010124169',
@@ -2637,29 +2620,74 @@ export function FacultyPortalView() {
 // 12. Admin Portal View (RBAC Protected)
 export function AdminPortalView() {
   const { currentUser } = useAuth();
+  const [users, setUsers] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [roleUpdatingId, setRoleUpdatingId] = useState(null);
+  const [roleMessage, setRoleMessage] = useState('');
   const [bugReports, setBugReports] = useState([
     { id: 1, title: 'Integer casting in older Django builds', reporter: 'shlok@vlab.edu', severity: 'LOW', status: 'RESOLVED' },
     { id: 2, title: 'PasswordInput widget autocomplete styling', reporter: 'student16@vlab.edu', severity: 'MEDIUM', status: 'OPEN' },
   ]);
 
+  const loadUsers = async () => {
+    setLoadingUsers(true);
+    try {
+      const res = await api.get('/portal/users/');
+      if (res.data?.users) {
+        setUsers(res.data.users);
+      }
+    } catch (e) {
+      console.warn('Failed to load users from backend, keeping fallback sample accounts');
+      setUsers([
+        { id: 1, username: 'shlok', first_name: 'Shlok', last_name: 'Mehta', email: 'student@vlab.edu', role: 'STUDENT', roll_or_faculty_id: '16010124169', batch: 'D3', department: 'Computer Science (Batch D3)' },
+        { id: 2, username: 'faculty', first_name: 'Prof.', last_name: 'Sharma', email: 'faculty@vlab.edu', role: 'FACULTY', roll_or_faculty_id: 'FAC-CS-204', batch: '', department: 'Computer Science & Engineering' },
+        { id: 3, username: 'admin', first_name: 'System', last_name: 'Administrator', email: 'admin@vlab.edu', role: 'ADMIN', roll_or_faculty_id: 'ADM-001', batch: '', department: 'Virtual Lab Technical Core' },
+      ]);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+
+  const loadBugReports = async () => {
+    try {
+      const res = await api.get('/portal/bug-reports/');
+      const data = res.data;
+      if (Array.isArray(data) && data.length > 0) {
+        setBugReports(
+          data.map((b) => ({
+            id: b.id,
+            title: b.title,
+            reporter: b.username || b.user_fullname || 'student@vlab.edu',
+            severity: b.severity || 'MEDIUM',
+            status: b.status || 'OPEN',
+          }))
+        );
+      }
+    } catch {}
+  };
+
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/portal/bug-reports/')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setBugReports(
-            data.map((b) => ({
-              id: b.id,
-              title: b.title,
-              reporter: b.username || b.user_fullname || 'student@vlab.edu',
-              severity: b.severity || 'MEDIUM',
-              status: b.status || 'OPEN',
-            }))
-          );
-        }
-      })
-      .catch(() => {});
+    loadUsers();
+    loadBugReports();
   }, []);
+
+  const handleRoleChange = async (userId, newRole) => {
+    setRoleUpdatingId(userId);
+    setRoleMessage('');
+    try {
+      await api.patch(`/portal/users/${userId}/`, { role: newRole });
+      setUsers((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
+      );
+      setRoleMessage(`Successfully updated role to ${newRole}`);
+      setTimeout(() => setRoleMessage(''), 3000);
+    } catch (err) {
+      setRoleMessage('Failed to update role on backend');
+      setTimeout(() => setRoleMessage(''), 3000);
+    } finally {
+      setRoleUpdatingId(null);
+    }
+  };
 
   const toggleStatus = async (id) => {
     const target = bugReports.find((b) => b.id === id);
@@ -2671,16 +2699,17 @@ export function AdminPortalView() {
     );
 
     try {
-      await fetch(`http://127.0.0.1:8000/api/portal/bug-reports/${id}/`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      await api.patch(`/portal/bug-reports/${id}/`, { status: newStatus });
     } catch {}
   };
 
+  const studentsCount = users.filter((u) => u.role === 'STUDENT').length;
+  const facultyCount = users.filter((u) => u.role === 'FACULTY').length;
+  const adminCount = users.filter((u) => u.role === 'ADMIN').length;
+
   return (
-    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-5xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200 font-['Raleway',sans-serif]">
+      {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-200 pb-4">
         <div>
           <div className="flex items-center gap-2">
@@ -2689,33 +2718,136 @@ export function AdminPortalView() {
               className="text-2xl font-extrabold text-[#2c99ce]"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
-              System Admin Portal
+              System Admin & Governance Portal
             </h1>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">KJSSE VLab Platform Governance & Logs</p>
+          <p className="text-xs text-slate-500 mt-0.5">
+            KJSSE VLab User Accounts, Role Assignment (RBAC), and Tickets
+          </p>
         </div>
-        <span className="text-xs font-bold px-2.5 py-1 rounded bg-purple-100 text-purple-800 uppercase tracking-wide">
-          ROOT ADMIN
+        <span className="text-xs font-bold px-2.5 py-1 rounded bg-purple-100 text-purple-800 uppercase tracking-wide border border-purple-200 flex items-center gap-1.5">
+          <ShieldCheck className="w-3.5 h-3.5" /> ROOT ADMIN
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {/* Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">System Uptime</span>
-          <p className="text-2xl font-bold text-emerald-600 mt-1">99.99%</p>
-          <span className="text-[11px] text-slate-500">Django 6.1 WSGI Running</span>
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Accounts</span>
+          <p className="text-2xl font-bold text-slate-800 mt-1">{users.length}</p>
+          <span className="text-[11px] text-slate-500">Live in Database</span>
         </div>
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">Bug Reports</span>
-          <p className="text-2xl font-bold text-slate-800 mt-1">
-            {bugReports.filter((b) => b.status === 'OPEN').length} Open
-          </p>
-          <span className="text-[11px] text-amber-600 font-semibold">Priority: Medium</span>
+          <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Students</span>
+          <p className="text-2xl font-bold text-blue-700 mt-1">{studentsCount}</p>
+          <span className="text-[11px] text-slate-500">Enrolled Learners</span>
         </div>
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">Total User Accounts</span>
-          <p className="text-2xl font-bold text-slate-800 mt-1">76</p>
-          <span className="text-[11px] text-[#0284c7] font-semibold">74 Students &bull; 1 Faculty &bull; 1 Admin</span>
+          <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Faculty / Prof</span>
+          <p className="text-2xl font-bold text-emerald-700 mt-1">{facultyCount}</p>
+          <span className="text-[11px] text-slate-500">Lab Instructors</span>
+        </div>
+        <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
+          <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">System Admins</span>
+          <p className="text-2xl font-bold text-purple-700 mt-1">{adminCount}</p>
+          <span className="text-[11px] text-slate-500">Full Governance</span>
+        </div>
+      </div>
+
+      {/* User Management & Role Assignment Table */}
+      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
+        <div className="px-5 py-3 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4 text-purple-600" />
+            <span className="font-bold text-xs uppercase tracking-wider text-slate-700">
+              User Accounts & Role Management
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            {roleMessage && (
+              <span className="text-xs font-semibold text-emerald-600 animate-in fade-in">
+                {roleMessage}
+              </span>
+            )}
+            <button
+              onClick={loadUsers}
+              disabled={loadingUsers}
+              className="flex items-center gap-1 text-xs text-slate-600 hover:text-slate-900 cursor-pointer p-1 rounded hover:bg-slate-200/60 transition"
+              title="Refresh User List"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${loadingUsers ? 'animate-spin' : ''}`} />
+              <span className="hidden sm:inline">Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-xs min-w-[650px]">
+            <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
+              <tr>
+                <th className="px-5 py-2.5">User</th>
+                <th className="px-5 py-2.5">Email</th>
+                <th className="px-5 py-2.5">Roll / Faculty ID</th>
+                <th className="px-5 py-2.5">Department</th>
+                <th className="px-5 py-2.5">Current Role</th>
+                <th className="px-5 py-2.5">Assign Role</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {users.map((u) => {
+                const fullName = `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.username;
+                const isUpdating = roleUpdatingId === u.id;
+                return (
+                  <tr key={u.id} className="hover:bg-slate-50/70 transition">
+                    <td className="px-5 py-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-full bg-slate-700 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                          {fullName.charAt(0) || 'U'}
+                        </div>
+                        <div>
+                          <div className="font-bold text-slate-800">{fullName}</div>
+                          <div className="text-[10px] text-slate-400 font-mono">@{u.username}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-5 py-3 text-slate-600 font-mono">{u.email}</td>
+                    <td className="px-5 py-3 font-semibold text-slate-700">
+                      {u.roll_or_faculty_id || '—'}
+                      {u.batch && <span className="text-slate-400 text-[10px] ml-1">({u.batch})</span>}
+                    </td>
+                    <td className="px-5 py-3 text-slate-600 max-w-[180px] truncate" title={u.department}>
+                      {u.department || 'Computer Engineering'}
+                    </td>
+                    <td className="px-5 py-3">
+                      <span
+                        className={`px-2 py-0.5 rounded text-[10px] font-bold border uppercase tracking-wider ${
+                          u.role === 'ADMIN'
+                            ? 'bg-purple-100 text-purple-800 border-purple-200'
+                            : u.role === 'FACULTY'
+                            ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                            : 'bg-blue-100 text-blue-800 border-blue-200'
+                        }`}
+                      >
+                        {u.role}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3">
+                      <select
+                        disabled={isUpdating}
+                        value={u.role}
+                        onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                        className="text-xs border border-slate-300 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-1 focus:ring-purple-500 font-semibold cursor-pointer disabled:opacity-50"
+                      >
+                        <option value="STUDENT">Student</option>
+                        <option value="FACULTY">Faculty (Professor)</option>
+                        <option value="ADMIN">System Admin</option>
+                      </select>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
 

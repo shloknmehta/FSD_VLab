@@ -535,3 +535,4 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
     </div>
   );
 }
+
