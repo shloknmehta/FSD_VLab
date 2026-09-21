@@ -3,7 +3,7 @@ import React from 'react';
 export default function Footer() {
   return (
     <footer className="w-full bg-[#111111] text-white font-['Raleway',sans-serif] border-t-4 border-[#ff6600] mt-auto select-none">
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-5 sm:py-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Institutional Logos (KJSSE, Somaiya Trust, Somaiya Vidyavihar) */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6">

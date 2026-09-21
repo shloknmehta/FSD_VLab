@@ -304,16 +304,17 @@ export default function VSCodeBlock({
 
       {/* VS Code Bottom Status Strip */}
       <div className="bg-[#007acc] text-white text-[10px] px-3 py-0.5 flex items-center justify-between select-none font-sans font-medium">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <span className="flex items-center gap-1">
-            <Play className="w-2.5 h-2.5 fill-white" />
-            <span>Python 3.12 (Virtual Labs Engine)</span>
+            <Play className="w-2.5 h-2.5 fill-white shrink-0" />
+            <span className="hidden sm:inline">Python 3.12</span>
+            <span className="hidden md:inline"> (Virtual Labs)</span>
           </span>
           <span className="hidden sm:inline">UTF-8</span>
         </div>
-        <div className="flex items-center gap-3">
-          <span>Ln {lines.length}, Col 1</span>
-          <span>Spaces: 4</span>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <span>Ln {lines.length}</span>
+          <span className="hidden sm:inline">Spaces: 4</span>
           <span className="uppercase">{language}</span>
         </div>
       </div>

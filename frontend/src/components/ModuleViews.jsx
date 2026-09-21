@@ -31,16 +31,16 @@ import VSCodeBlock from './VSCodeBlock';
 // 1. Overview View
 export function OverviewView({ onNext }) {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
-      <div className="text-center mb-8">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
+      <div className="text-center mb-6 sm:mb-8">
         <h1
-          className="text-3xl sm:text-4xl font-extrabold text-[#2c99ce] tracking-tight"
+          className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#2c99ce] tracking-tight"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Django Form Validation Architecture
         </h1>
         <p
-          className="text-sm sm:text-base text-slate-500 mt-2 font-medium"
+          className="text-xs sm:text-sm md:text-base text-slate-500 mt-2 font-medium"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Understanding Built-in Validation, Field-Level clean_&lt;field&gt;(), and Form-Level clean()
@@ -143,7 +143,7 @@ export function OverviewView({ onNext }) {
 // 2. Recap View
 export function RecapView() {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1
           className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
@@ -301,7 +301,7 @@ export function PretestView({ onNext }) {
   const score = calculateScore();
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1
           className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
@@ -363,21 +363,21 @@ export function PretestView({ onNext }) {
           <button
             onClick={handleSubmit}
             disabled={Object.keys(selectedAnswers).length < questions.length || isSubmitting}
-            className="v-button shadow-xs transition-transform hover:scale-[1.02] disabled:opacity-50 cursor-pointer"
+            className="v-button w-full sm:w-auto justify-center shadow-xs transition-transform hover:scale-[1.02] disabled:opacity-50 cursor-pointer"
           >
             {isSubmitting ? 'Evaluating...' : 'Submit Pretest'}
           </button>
         ) : (
-          <div className="flex items-center justify-between w-full">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 w-full">
             <div className="text-sm font-semibold text-slate-800" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Score: <span className="text-[#2c99ce] font-bold text-lg">{score} / {questions.length}</span> ({Math.round((score / questions.length) * 100)}%)
-              <span className={`ml-2 text-xs font-bold px-2 py-0.5 rounded ${score >= 4 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+              <span className={`block sm:inline sm:ml-2 mt-1 sm:mt-0 text-xs font-bold px-2 py-0.5 rounded w-fit ${score >= 4 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
                 {score >= 4 ? 'Status: Qualified' : 'Status: Review Advised'}
               </span>
             </div>
             <button
               onClick={onNext}
-              className="v-button shadow-xs transition-transform hover:scale-[1.02] flex items-center gap-2 cursor-pointer"
+              className="v-button w-full sm:w-auto justify-center shadow-xs transition-transform hover:scale-[1.02] flex items-center gap-2 cursor-pointer"
             >
               <span>Proceed to Visualizer</span>
               <ArrowRight className="w-4 h-4" />
@@ -675,7 +675,7 @@ else:
   const activeStepObj = steps[currentStep];
 
   return (
-    <div className="max-w-5xl mx-auto py-8 px-4 sm:px-8 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-5xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       {/* Header */}
       <div className="text-center mb-6">
         <div
@@ -713,7 +713,7 @@ else:
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
           <button
             onClick={() => applyPreset('all_valid')}
             className={`py-2 px-3 rounded-lg border text-xs font-bold transition cursor-pointer flex flex-col items-center gap-0.5 ${
@@ -816,7 +816,7 @@ else:
       </div>
 
       {/* 7-Step Progress Stepper Bar */}
-      <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
+      <div className="overflow-x-auto pb-1.5 flex sm:grid sm:grid-cols-7 gap-1.5 sm:gap-2 no-scrollbar">
         {steps.map((s, idx) => {
           const isCurrent = currentStep === idx;
           const isPassed = currentStep > idx;
@@ -827,7 +827,7 @@ else:
                 setCurrentStep(idx);
                 setIsPlaying(false);
               }}
-              className={`py-2 px-1 text-center rounded-lg border text-[11px] font-bold transition cursor-pointer flex flex-col items-center gap-0.5 ${
+              className={`py-2 px-2.5 sm:px-1 min-w-[54px] sm:min-w-0 flex-1 text-center rounded-lg border text-[11px] font-bold transition cursor-pointer flex flex-col items-center gap-0.5 shrink-0 sm:shrink ${
                 isCurrent
                   ? 'bg-[#0284c7] text-white border-[#0284c7] shadow-sm'
                   : isPassed
@@ -1173,7 +1173,7 @@ export function SimulationView({ onNext }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-5xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1
           className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
@@ -1603,7 +1603,7 @@ export function CodeAssessmentView({ onNext, onChallengeSolved }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1
           className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
@@ -1620,19 +1620,19 @@ export function CodeAssessmentView({ onNext, onChallengeSolved }) {
       </div>
 
       {/* Challenge Selector */}
-      <div className="flex border-b border-slate-200 gap-4">
+      <div className="flex border-b border-slate-200 gap-2 sm:gap-4 overflow-x-auto no-scrollbar">
         <button
           onClick={() => {
             setActiveChallenge('clean_age');
             setTestResult(null);
           }}
-          className={`pb-2.5 text-xs sm:text-sm font-bold border-b-2 transition cursor-pointer flex items-center gap-1.5 ${
+          className={`pb-2.5 px-1 text-xs sm:text-sm font-bold border-b-2 transition cursor-pointer flex items-center gap-1.5 shrink-0 ${
             activeChallenge === 'clean_age'
               ? 'border-[#0284c7] text-[#0284c7]'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
-          <Terminal className="w-4 h-4" />
+          <Terminal className="w-4 h-4 shrink-0" />
           <span>Problem 1: clean_age(self)</span>
         </button>
 
@@ -1641,13 +1641,13 @@ export function CodeAssessmentView({ onNext, onChallengeSolved }) {
             setActiveChallenge('clean_form');
             setTestResult(null);
           }}
-          className={`pb-2.5 text-xs sm:text-sm font-bold border-b-2 transition cursor-pointer flex items-center gap-1.5 ${
+          className={`pb-2.5 px-1 text-xs sm:text-sm font-bold border-b-2 transition cursor-pointer flex items-center gap-1.5 shrink-0 ${
             activeChallenge === 'clean_form'
               ? 'border-[#0284c7] text-[#0284c7]'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
-          <Layers className="w-4 h-4" />
+          <Layers className="w-4 h-4 shrink-0" />
           <span>Problem 2: clean(self) [Cross-Field]</span>
         </button>
       </div>
@@ -1655,30 +1655,31 @@ export function CodeAssessmentView({ onNext, onChallengeSolved }) {
       {/* VS Code Code Editor Container */}
       <div className="border border-[#333333] rounded-xl overflow-hidden bg-[#1e1e1e] shadow-xl">
         {/* Top Tab Bar */}
-        <div className="bg-[#252526] px-2 pt-1 border-b border-[#1e1e1e] flex items-center justify-between select-none">
+        <div className="bg-[#252526] px-2 pt-1 border-b border-[#1e1e1e] flex flex-wrap items-center justify-between gap-2 select-none">
           <div className="flex items-center">
-            <div className="bg-[#1e1e1e] text-[#d4d4d4] px-3 py-1.5 text-xs font-mono rounded-t flex items-center gap-2 border-t-2 border-[#007acc]">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#3572A5] inline-block" />
+            <div className="bg-[#1e1e1e] text-[#d4d4d4] px-2.5 sm:px-3 py-1.5 text-xs font-mono rounded-t flex items-center gap-2 border-t-2 border-[#007acc]">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#3572A5] inline-block shrink-0" />
               <span className="text-[#ffffff] font-medium">forms.py</span>
-              <span className="text-[10px] text-[#858585] ml-1">&mdash; {activeChallenge === 'clean_age' ? 'clean_age(self)' : 'clean(self)'}</span>
+              <span className="text-[10px] text-[#858585] ml-1 hidden sm:inline">&mdash; {activeChallenge === 'clean_age' ? 'clean_age(self)' : 'clean(self)'}</span>
             </div>
           </div>
-          <div className="flex items-center gap-2 pb-1 pr-1">
+          <div className="flex items-center gap-1.5 sm:gap-2 pb-1 pr-1">
             <button
               onClick={handleResetStarter}
               title="Reset code to original starter template"
-              className="px-2.5 py-1 bg-[#333333] hover:bg-[#3e3e42] text-[#cccccc] hover:text-white rounded text-xs font-mono transition cursor-pointer flex items-center gap-1 border border-[#454545]"
+              className="px-2 sm:px-2.5 py-1 bg-[#333333] hover:bg-[#3e3e42] text-[#cccccc] hover:text-white rounded text-xs font-mono transition cursor-pointer flex items-center gap-1 border border-[#454545]"
             >
-              <RotateCcw className="w-3 h-3" />
-              <span>Reset Starter</span>
+              <RotateCcw className="w-3 h-3 shrink-0" />
+              <span className="hidden sm:inline">Reset Starter</span>
+              <span className="sm:hidden">Reset</span>
             </button>
             <button
               onClick={handleRunAssessment}
               disabled={isEvaluating}
-              className="px-3 py-1 bg-[#16825d] hover:bg-[#1b9a6e] text-white rounded text-xs font-mono font-medium transition cursor-pointer disabled:opacity-50 flex items-center gap-1.5 shadow-xs"
+              className="px-2.5 sm:px-3 py-1 bg-[#16825d] hover:bg-[#1b9a6e] text-white rounded text-xs font-mono font-medium transition cursor-pointer disabled:opacity-50 flex items-center gap-1.5 shadow-xs"
             >
               <span>▶</span>
-              <span>{isEvaluating ? 'Evaluating Code...' : 'Run Test Suite'}</span>
+              <span>{isEvaluating ? 'Evaluating...' : 'Run Test Suite'}</span>
             </button>
           </div>
         </div>
@@ -1804,7 +1805,7 @@ export function CodeAssessmentView({ onNext, onChallengeSolved }) {
 // 7. Analysis View
 export function AnalysisView() {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1
           className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
@@ -1822,8 +1823,9 @@ export function AnalysisView() {
 
       {/* Execution Table */}
       <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
-        <table className="w-full text-left text-xs">
-          <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-xs min-w-[550px]">
+            <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider">
             <tr>
               <th className="p-3.5">Step</th>
               <th className="p-3.5">Action</th>
@@ -1884,6 +1886,7 @@ export function AnalysisView() {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Comparison Matrix: Field-level vs Form-level */}
@@ -2048,7 +2051,7 @@ export function PosttestView({ onNext, onQuizPassed }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1
           className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
@@ -2193,18 +2196,18 @@ export function PosttestView({ onNext, onQuizPassed }) {
             </div>
 
             {/* Certificate Actions (hidden during print) */}
-            <div className="no-print flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200">
-              <div className="flex items-center gap-2">
+            <div className="no-print flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-slate-200">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="px-4 py-2 bg-[#1a365d] hover:bg-[#2a4365] text-white rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer flex items-center gap-2 shadow-xs"
+                  className="px-4 py-2 bg-[#1a365d] hover:bg-[#2a4365] text-white rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer flex items-center justify-center gap-2 shadow-xs"
                 >
                   <Printer className="w-4 h-4" />
                   <span>Print / Save Certificate (PDF)</span>
                 </button>
                 <button
                   onClick={handleDownloadReport}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer flex items-center gap-2 border border-slate-300 shadow-2xs"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer flex items-center justify-center gap-2 border border-slate-300 shadow-2xs"
                 >
                   <Download className="w-4 h-4" />
                   <span>Export Lab Report (.JSON)</span>
@@ -2214,7 +2217,7 @@ export function PosttestView({ onNext, onQuizPassed }) {
               {onNext && (
                 <button
                   onClick={onNext}
-                  className="v-button flex items-center gap-2 cursor-pointer"
+                  className="v-button w-full sm:w-auto justify-center flex items-center gap-2 cursor-pointer"
                 >
                   <span>Proceed to References</span>
                   <ArrowRight className="w-4 h-4" />
@@ -2231,7 +2234,7 @@ export function PosttestView({ onNext, onQuizPassed }) {
 // 9. Further Readings / References
 export function ReferencesView() {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1
           className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
@@ -2348,7 +2351,7 @@ export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-3xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1
           className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
@@ -2383,7 +2386,7 @@ export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="border border-slate-200 rounded-xl p-6 sm:p-8 bg-white shadow-xs space-y-6">
+        <form onSubmit={handleSubmit} className="border border-slate-200 rounded-xl p-4 sm:p-6 md:p-8 bg-white shadow-xs space-y-6">
           {/* Star Rating Selector */}
           <div className="flex flex-col items-center justify-center gap-2 pb-4 border-b border-slate-100">
             <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
@@ -2537,11 +2540,11 @@ export function FacultyPortalView() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 pb-4 gap-2">
         <div>
           <div className="flex items-center gap-2">
-            <GraduationCap className="w-6 h-6 text-emerald-600" />
+            <GraduationCap className="w-6 h-6 text-emerald-600 shrink-0" />
             <h1
               className="text-2xl font-extrabold text-[#2c99ce]"
               style={{ fontFamily: "'Raleway', sans-serif" }}
@@ -2551,7 +2554,7 @@ export function FacultyPortalView() {
           </div>
           <p className="text-xs text-slate-500 mt-0.5">Instructor: {currentUser?.name || 'Prof. Sharma'} ({currentUser?.department || 'CSE Dept'})</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
           <button
             onClick={handleExportCSV}
             className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs rounded-lg transition cursor-pointer shadow-xs"
@@ -2565,7 +2568,7 @@ export function FacultyPortalView() {
       </div>
 
       {/* Analytics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
           <span className="text-xs font-bold text-slate-500 uppercase">Batch Students</span>
           <p className="text-2xl font-bold text-slate-800 mt-1">74</p>
@@ -2594,36 +2597,38 @@ export function FacultyPortalView() {
           <span>Student Submissions & Scorecard (Batch D3)</span>
           <span className="text-[10px] text-emerald-700 font-mono">Live Sync</span>
         </div>
-        <table className="w-full text-left text-xs">
-          <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
-            <tr>
-              <th className="px-4 py-2.5">Roll No</th>
-              <th className="px-4 py-2.5">Student Name</th>
-              <th className="px-4 py-2.5">Pretest</th>
-              <th className="px-4 py-2.5">Posttest</th>
-              <th className="px-4 py-2.5">Code Challenge</th>
-              <th className="px-4 py-2.5">Feedback</th>
-              <th className="px-4 py-2.5">Grade</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {gradebook.map((s, idx) => (
-              <tr key={idx} className={s.name.includes('Shlok') ? 'bg-sky-50/50 font-semibold' : ''}>
-                <td className="px-4 py-3 font-mono text-slate-800">{s.roll_number}</td>
-                <td className="px-4 py-3 text-slate-800">{s.name}</td>
-                <td className="px-4 py-3 text-[#0284c7] font-bold">{s.pretest}</td>
-                <td className="px-4 py-3 text-emerald-700 font-bold">{s.posttest}</td>
-                <td className="px-4 py-3">
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${s.codeAssessment === 'PASSED' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                    {s.codeAssessment}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-amber-600 font-bold">{s.rating}</td>
-                <td className="px-4 py-3 font-bold text-slate-800">{s.grade}</td>
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-xs min-w-[620px]">
+            <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
+              <tr>
+                <th className="px-4 py-2.5">Roll No</th>
+                <th className="px-4 py-2.5">Student Name</th>
+                <th className="px-4 py-2.5">Pretest</th>
+                <th className="px-4 py-2.5">Posttest</th>
+                <th className="px-4 py-2.5">Code Challenge</th>
+                <th className="px-4 py-2.5">Feedback</th>
+                <th className="px-4 py-2.5">Grade</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {gradebook.map((s, idx) => (
+                <tr key={idx} className={s.name.includes('Shlok') ? 'bg-sky-50/50 font-semibold' : ''}>
+                  <td className="px-4 py-3 font-mono text-slate-800">{s.roll_number}</td>
+                  <td className="px-4 py-3 text-slate-800">{s.name}</td>
+                  <td className="px-4 py-3 text-[#0284c7] font-bold">{s.pretest}</td>
+                  <td className="px-4 py-3 text-emerald-700 font-bold">{s.posttest}</td>
+                  <td className="px-4 py-3">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${s.codeAssessment === 'PASSED' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                      {s.codeAssessment}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-amber-600 font-bold">{s.rating}</td>
+                  <td className="px-4 py-3 font-bold text-slate-800">{s.grade}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -2675,7 +2680,7 @@ export function AdminPortalView() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="flex items-center justify-between border-b border-slate-200 pb-4">
         <div>
           <div className="flex items-center gap-2">
@@ -2719,45 +2724,47 @@ export function AdminPortalView() {
         <div className="px-5 py-3 border-b border-slate-100 bg-slate-50 font-bold text-xs uppercase tracking-wider text-slate-600">
           User Reported Issues & Tickets
         </div>
-        <table className="w-full text-left text-xs">
-          <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
-            <tr>
-              <th className="px-5 py-2.5">ID</th>
-              <th className="px-5 py-2.5">Issue Title</th>
-              <th className="px-5 py-2.5">Reporter</th>
-              <th className="px-5 py-2.5">Severity</th>
-              <th className="px-5 py-2.5">Status</th>
-              <th className="px-5 py-2.5">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {bugReports.map((b) => (
-              <tr key={b.id}>
-                <td className="px-5 py-3 font-mono font-bold text-slate-500">#{b.id}</td>
-                <td className="px-5 py-3 font-semibold text-slate-800">{b.title}</td>
-                <td className="px-5 py-3 text-slate-600 font-mono">{b.reporter}</td>
-                <td className="px-5 py-3">
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${b.severity === 'LOW' ? 'bg-slate-100 text-slate-700' : 'bg-amber-100 text-amber-800'}`}>
-                    {b.severity}
-                  </span>
-                </td>
-                <td className="px-5 py-3">
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${b.status === 'RESOLVED' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
-                    {b.status}
-                  </span>
-                </td>
-                <td className="px-5 py-3">
-                  <button
-                    onClick={() => toggleStatus(b.id)}
-                    className="text-xs font-semibold text-[#0284c7] hover:underline cursor-pointer"
-                  >
-                    {b.status === 'OPEN' ? 'Mark Resolved' : 'Re-open'}
-                  </button>
-                </td>
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-xs min-w-[550px]">
+            <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
+              <tr>
+                <th className="px-5 py-2.5">ID</th>
+                <th className="px-5 py-2.5">Issue Title</th>
+                <th className="px-5 py-2.5">Reporter</th>
+                <th className="px-5 py-2.5">Severity</th>
+                <th className="px-5 py-2.5">Status</th>
+                <th className="px-5 py-2.5">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {bugReports.map((b) => (
+                <tr key={b.id}>
+                  <td className="px-5 py-3 font-mono font-bold text-slate-500">#{b.id}</td>
+                  <td className="px-5 py-3 font-semibold text-slate-800">{b.title}</td>
+                  <td className="px-5 py-3 text-slate-600 font-mono">{b.reporter}</td>
+                  <td className="px-5 py-3">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${b.severity === 'LOW' ? 'bg-slate-100 text-slate-700' : 'bg-amber-100 text-amber-800'}`}>
+                      {b.severity}
+                    </span>
+                  </td>
+                  <td className="px-5 py-3">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${b.status === 'RESOLVED' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
+                      {b.status}
+                    </span>
+                  </td>
+                  <td className="px-5 py-3">
+                    <button
+                      onClick={() => toggleStatus(b.id)}
+                      className="text-xs font-semibold text-[#0284c7] hover:underline cursor-pointer"
+                    >
+                      {b.status === 'OPEN' ? 'Mark Resolved' : 'Re-open'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

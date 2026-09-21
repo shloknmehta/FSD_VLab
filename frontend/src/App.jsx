@@ -158,7 +158,7 @@ function LabPlatform() {
           />
         </div>
 
-        <main className="flex-1 overflow-y-auto bg-white p-4 sm:p-8">
+        <main className="flex-1 overflow-y-auto bg-white p-3 sm:p-6 md:p-8">
           {renderActiveTabContent()}
         </main>
       </div>

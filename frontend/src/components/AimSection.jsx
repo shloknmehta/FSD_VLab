@@ -3,11 +3,11 @@ import { Clock, BookOpen, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function AimSection({ onNavigateNext }) {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6 sm:px-10 text-slate-800 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 animate-in fade-in duration-200">
       {/* Centered Main Title */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-8 sm:mb-10">
         <h1
-          className="text-3xl sm:text-4xl font-extrabold text-[#2c99ce] tracking-tight"
+          className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#2c99ce] tracking-tight"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Django Custom Form Validation using clean() & clean_&lt;field&gt;()
@@ -89,10 +89,10 @@ export default function AimSection({ onNavigateNext }) {
         </div>
 
         {/* Action Button to Proceed */}
-        <div className="pt-6 flex justify-end">
+        <div className="pt-6 flex justify-stretch sm:justify-end">
           <button
             onClick={onNavigateNext}
-            className="px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm flex items-center gap-2 transition cursor-pointer"
+            className="w-full sm:w-auto justify-center px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm flex items-center gap-2 transition cursor-pointer"
           >
             <span>Proceed to Overview</span>
             <ArrowRight className="w-4 h-4" />
