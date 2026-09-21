@@ -4,10 +4,10 @@ import api from '../api/client';
 export const DEMO_USERS = {
   STUDENT: {
     id: 1,
-    username: 'shlok',
-    first_name: 'Shlok',
-    last_name: 'Mehta',
-    name: 'Shlok Mehta',
+    username: 'student',
+    first_name: 'Student',
+    last_name: 'Demo',
+    name: 'Student Demo',
     role: 'STUDENT',
     email: 'student@vlab.edu',
     roll_or_faculty_id: '16010124169',

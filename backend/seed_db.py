@@ -15,13 +15,22 @@ def seed():
     print("=== SEEDING VLAB DATABASE ===")
 
     # 1. Users
+    # Migrate any legacy 'shlok' user to 'student'
+    if CustomUser.objects.filter(username="shlok").exists():
+        legacy_u = CustomUser.objects.get(username="shlok")
+        if not CustomUser.objects.filter(username="student").exists():
+            legacy_u.username = "student"
+            legacy_u.first_name = "Student"
+            legacy_u.last_name = "Demo"
+            legacy_u.save()
+
     users_data = [
         {
-            "username": "shlok",
+            "username": "student",
             "email": "student@vlab.edu",
             "password": "Student@123",
-            "first_name": "Shlok",
-            "last_name": "Mehta",
+            "first_name": "Student",
+            "last_name": "Demo",
             "role": "STUDENT",
             "roll_or_faculty_id": "16010124169",
             "department": "Computer Science (Batch D3)"

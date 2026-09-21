@@ -13,11 +13,11 @@ class Command(BaseCommand):
         # 1. Users
         users_data = [
             {
-                'username': 'shlok',
+                'username': 'student',
                 'email': 'student@vlab.edu',
                 'password': 'Student@123',
-                'first_name': 'Shlok',
-                'last_name': 'Mehta',
+                'first_name': 'Student',
+                'last_name': 'Demo',
                 'role': 'STUDENT',
                 'roll_or_faculty_id': '16010124169',
                 'department': 'Computer Engineering',

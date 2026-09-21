@@ -215,7 +215,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
                     required
                     value={loginUsername}
                     onChange={(e) => setLoginUsername(e.target.value)}
-                    placeholder="e.g. shlok or student@vlab.edu"
+                    placeholder="e.g. student or student@vlab.edu"
                     className="w-full pl-9 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284c7] focus:border-transparent transition"
                   />
                 </div>
@@ -292,7 +292,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
                     type="text"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="e.g. Shlok"
+                    placeholder="e.g. Student"
                     className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0284c7]"
                   />
                 </div>
@@ -304,7 +304,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
                     type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    placeholder="e.g. Mehta"
+                    placeholder="e.g. User"
                     className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0284c7]"
                   />
                 </div>
@@ -323,7 +323,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
                       required
                       value={regUsername}
                       onChange={(e) => setRegUsername(e.target.value)}
-                      placeholder="e.g. shlokm"
+                      placeholder="e.g. student101"
                       className="w-full pl-8 pr-2 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0284c7]"
                     />
                   </div>

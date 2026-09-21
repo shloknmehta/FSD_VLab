@@ -37,7 +37,7 @@ def test_suite():
     # Auth Me with token
     client.credentials(HTTP_AUTHORIZATION='Token ' + student_token)
     resp = client.get('/api/auth/me/')
-    log_test("GET /api/auth/me/", resp.status_code == 200 and resp.data['user']['username'] == 'shlok', f"User: {resp.data.get('user', {}).get('username')}")
+    log_test("GET /api/auth/me/", resp.status_code == 200 and resp.data['user']['username'] == 'student', f"User: {resp.data.get('user', {}).get('username')}")
 
     # Auth Switch Demo Role
     resp = client.post('/api/auth/switch-demo-role/', {"role": "FACULTY"}, format='json')
@@ -147,10 +147,10 @@ def test_suite():
     # Portal Gradebook (Faculty)
     resp = client.get('/api/portal/gradebook/')
     students = resp.data.get('gradebook', [])
-    shlok_entry = next((s for s in students if s['username'] == 'shlok'), None)
+    student_entry = next((s for s in students if s['username'] == 'student'), None)
     log_test("GET /api/portal/gradebook/", 
-             resp.status_code == 200 and shlok_entry is not None,
-             f"Students: {len(students)}, Shlok Pretest: {shlok_entry['pretest']['score']}, Posttest: {shlok_entry['posttest']['score']}, Status: {shlok_entry['overall_status']}")
+             resp.status_code == 200 and student_entry is not None,
+             f"Students: {len(students)}, Student Pretest: {student_entry['pretest']['score']}, Posttest: {student_entry['posttest']['score']}, Status: {student_entry['overall_status']}")
 
     # Portal Users List (Admin)
     resp = client.get('/api/portal/users/')

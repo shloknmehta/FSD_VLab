@@ -396,8 +396,8 @@ export function VisualizerView({ onNext }) {
 
   // Form Inputs State for dynamic trace
   const [formData, setFormData] = useState({
-    username: 'shlokm',
-    email: 'shlok@vlab.edu',
+    username: 'student',
+    email: 'student@vlab.edu',
     age: '21',
     password: 'SecretPassword123',
     confirm_password: 'SecretPassword123',
@@ -413,8 +413,8 @@ export function VisualizerView({ onNext }) {
     setIsPlaying(false);
     if (presetKey === 'all_valid') {
       setFormData({
-        username: 'shlokm',
-        email: 'shlok@vlab.edu',
+        username: 'student',
+        email: 'student@vlab.edu',
         age: '21',
         password: 'SecretPassword123',
         confirm_password: 'SecretPassword123',
@@ -429,15 +429,15 @@ export function VisualizerView({ onNext }) {
       });
     } else if (presetKey === 'password_mismatch') {
       setFormData({
-        username: 'shlokm',
-        email: 'shlok@vlab.edu',
+        username: 'student',
+        email: 'student@vlab.edu',
         age: '22',
         password: 'SecretPassword123',
         confirm_password: 'DifferentPassword999', // Mismatch!
       });
     } else if (presetKey === 'builtin_email_err') {
       setFormData({
-        username: 'shlokm',
+        username: 'student',
         email: 'invalid-email-format', // Bad email!
         age: '21',
         password: 'SecretPassword123',
@@ -1050,8 +1050,8 @@ export function SimulationView({ onNext }) {
       badge: 'Success (302)',
       bg: 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100',
       data: {
-        username: 'shlokmehta',
-        email: 'shlok@vlab.edu',
+        username: 'student',
+        email: 'student@vlab.edu',
         age: '21',
         password: 'Password123',
         confirm_password: 'Password123',
@@ -2009,7 +2009,7 @@ export function PosttestView({ onNext, onQuizPassed }) {
       university: "Somaiya Vidyavihar University",
       trust: "The Somaiya Trust",
       student: {
-        name: currentUser?.name || 'Shlok Mehta',
+        name: currentUser?.name || 'Student Demo',
         roll_no: currentUser?.roll_or_faculty_id || '16010124169',
         batch: currentUser?.batch || 'D3',
         department: currentUser?.department || 'Computer Engineering',
@@ -2144,7 +2144,7 @@ export function PosttestView({ onNext, onQuizPassed }) {
                   </span>
                   <p className="text-xs text-slate-600 mt-3 italic">This is to certify that</p>
                   <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
-                    {currentUser?.name || 'Shlok Mehta'}
+                    {currentUser?.name || 'Student Demo'}
                   </h2>
                   <div className="text-xs text-slate-600 font-medium mt-1">
                     Roll No: <span className="font-semibold text-slate-800">{currentUser?.roll_or_faculty_id || '16010124169'}</span> &bull; Batch: <span className="font-semibold text-slate-800">{currentUser?.batch || 'D3'}</span>
@@ -2311,7 +2311,7 @@ export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
 
     const payload = {
       user_id: currentUser?.id,
-      user_name: currentUser?.name || 'Shlok Mehta',
+      user_name: currentUser?.name || 'Student Demo',
       rating,
       category,
       clarity: clarityRating,
@@ -2357,7 +2357,7 @@ export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
             Feedback Recorded Successfully!
           </h2>
           <p className="text-xs sm:text-sm text-emerald-800 max-w-md mx-auto leading-relaxed">
-            Thank you, <span className="font-semibold text-emerald-950">{currentUser?.name || 'Shlok Mehta'}</span>. Your evaluation for Experiment 06 has been securely transmitted to the KJSSE Department of Computer Engineering.
+            Thank you, <span className="font-semibold text-emerald-950">{currentUser?.name || 'Student Demo'}</span>. Your evaluation for Experiment 06 has been securely transmitted to the KJSSE Department of Computer Engineering.
           </p>
           <div className="pt-2">
             <button
@@ -2460,7 +2460,7 @@ export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
           {/* Submit Action */}
           <div className="flex items-center justify-between pt-2 border-t border-slate-100">
             <span className="text-[11px] text-slate-400">
-              Student: {currentUser?.name || 'Shlok Mehta'} &bull; Roll: {currentUser?.roll_or_faculty_id || '16010124169'}
+              Student: {currentUser?.name || 'Student Demo'} &bull; Roll: {currentUser?.roll_or_faculty_id || '16010124169'}
             </span>
             <button
               type="submit"
@@ -2481,7 +2481,7 @@ export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
 export function FacultyPortalView() {
   const { currentUser } = useAuth();
   const [gradebook, setGradebook] = useState([
-    { roll_number: '16010124169', name: 'Shlok Mehta', batch: 'Batch D3', pretest: '5 / 5', posttest: '5 / 5', codeAssessment: 'PASSED', rating: '5 ★', grade: 'A+' },
+    { roll_number: '16010124169', name: 'Student Demo', batch: 'Batch D3', pretest: '5 / 5', posttest: '5 / 5', codeAssessment: 'PASSED', rating: '5 ★', grade: 'A+' },
     { roll_number: '16010124170', name: 'Aarav Patel', batch: 'Batch D3', pretest: '4 / 5', posttest: '4 / 5', codeAssessment: 'PASSED', rating: '5 ★', grade: 'A' },
     { roll_number: '16010124171', name: 'Priya Sharma', batch: 'Batch D3', pretest: '5 / 5', posttest: '4 / 5', codeAssessment: 'PASSED', rating: '4 ★', grade: 'A' },
     { roll_number: '16010124172', name: 'Rohan Deshmukh', batch: 'Batch D3', pretest: '3 / 5', posttest: '4 / 5', codeAssessment: 'PENDING', rating: '4 ★', grade: 'B+' },
@@ -2595,7 +2595,7 @@ export function FacultyPortalView() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {gradebook.map((s, idx) => (
-                <tr key={idx} className={s.name.includes('Shlok') ? 'bg-sky-50/50 font-semibold' : ''}>
+                <tr key={idx} className={s.name.includes('Student') ? 'bg-sky-50/50 font-semibold' : ''}>
                   <td className="px-4 py-3 font-mono text-slate-800">{s.roll_number}</td>
                   <td className="px-4 py-3 text-slate-800">{s.name}</td>
                   <td className="px-4 py-3 text-[#0284c7] font-bold">{s.pretest}</td>
@@ -2625,7 +2625,7 @@ export function AdminPortalView() {
   const [roleUpdatingId, setRoleUpdatingId] = useState(null);
   const [roleMessage, setRoleMessage] = useState('');
   const [bugReports, setBugReports] = useState([
-    { id: 1, title: 'Integer casting in older Django builds', reporter: 'shlok@vlab.edu', severity: 'LOW', status: 'RESOLVED' },
+    { id: 1, title: 'Integer casting in older Django builds', reporter: 'student@vlab.edu', severity: 'LOW', status: 'RESOLVED' },
     { id: 2, title: 'PasswordInput widget autocomplete styling', reporter: 'student16@vlab.edu', severity: 'MEDIUM', status: 'OPEN' },
   ]);
 
@@ -2639,7 +2639,7 @@ export function AdminPortalView() {
     } catch (e) {
       console.warn('Failed to load users from backend, keeping fallback sample accounts');
       setUsers([
-        { id: 1, username: 'shlok', first_name: 'Shlok', last_name: 'Mehta', email: 'student@vlab.edu', role: 'STUDENT', roll_or_faculty_id: '16010124169', batch: 'D3', department: 'Computer Science (Batch D3)' },
+        { id: 1, username: 'student', first_name: 'Student', last_name: 'Demo', email: 'student@vlab.edu', role: 'STUDENT', roll_or_faculty_id: '16010124169', batch: 'D3', department: 'Computer Science (Batch D3)' },
         { id: 2, username: 'faculty', first_name: 'Prof.', last_name: 'Sharma', email: 'faculty@vlab.edu', role: 'FACULTY', roll_or_faculty_id: 'FAC-CS-204', batch: '', department: 'Computer Science & Engineering' },
         { id: 3, username: 'admin', first_name: 'System', last_name: 'Administrator', email: 'admin@vlab.edu', role: 'ADMIN', roll_or_faculty_id: 'ADM-001', batch: '', department: 'Virtual Lab Technical Core' },
       ]);
