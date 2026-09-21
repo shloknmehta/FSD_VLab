@@ -1,4 +1,4 @@
-﻿import os
+import os
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vlab_core.settings')
@@ -268,28 +268,26 @@ def seed():
     student_user = created_users['STUDENT']
 
     # Pretest Submission (Score: 4/5)
-    QuizSubmission.objects.get_or_create(
-        user=student_user,
-        experiment=exp,
-        quiz_type="PRETEST",
-        defaults={
-            "score": 4,
-            "total_questions": 5,
-            "answers_json": {"1": "form.is_valid()", "2": "To validate and sanitize a single specific field with domain logic", "3": "form.cleaned_data", "4": "The field's value in self.cleaned_data becomes None", "5": "ValueError"}
-        }
-    )
+    if not QuizSubmission.objects.filter(user=student_user, experiment=exp, quiz_type="PRETEST").exists():
+        QuizSubmission.objects.create(
+            user=student_user,
+            experiment=exp,
+            quiz_type="PRETEST",
+            score=4,
+            total_questions=5,
+            answers_json={"1": "form.is_valid()", "2": "To validate and sanitize a single specific field with domain logic", "3": "form.cleaned_data", "4": "The field's value in self.cleaned_data becomes None", "5": "ValueError"}
+        )
 
     # Posttest Submission (Score: 5/5)
-    QuizSubmission.objects.get_or_create(
-        user=student_user,
-        experiment=exp,
-        quiz_type="POSTTEST",
-        defaults={
-            "score": 5,
-            "total_questions": 5,
-            "answers_json": {"1": "Field.clean() built-in -> clean_<fieldname>() -> form.clean()", "2": "form.errors['__all__'] (non-field errors)", "3": "The confirm_password field may not have been cleaned or validated yet", "4": "It guarantees that parent class cleaned_data dictionary is properly initialized and preserved", "5": "No, Django skips clean_<fieldname>() because the field failed built-in validation"}
-        }
-    )
+    if not QuizSubmission.objects.filter(user=student_user, experiment=exp, quiz_type="POSTTEST").exists():
+        QuizSubmission.objects.create(
+            user=student_user,
+            experiment=exp,
+            quiz_type="POSTTEST",
+            score=5,
+            total_questions=5,
+            answers_json={"1": "Field.clean() built-in -> clean_<fieldname>() -> form.clean()", "2": "form.errors['__all__'] (non-field errors)", "3": "The confirm_password field may not have been cleaned or validated yet", "4": "It guarantees that parent class cleaned_data dictionary is properly initialized and preserved", "5": "No, Django skips clean_<fieldname>() because the field failed built-in validation"}
+        )
 
     # Code submissions
     clean_age_sample_code = """def clean_age(self):
@@ -298,15 +296,14 @@ def seed():
         raise forms.ValidationError('Must be at least 18 years old')
     return age"""
 
-    CodeSubmission.objects.get_or_create(
-        user=student_user,
-        challenge_id="challenge_clean_age",
-        defaults={
-            "code": clean_age_sample_code,
-            "passed_tests": 4,
-            "total_tests": 4
-        }
-    )
+    if not CodeSubmission.objects.filter(user=student_user, challenge_id="challenge_clean_age").exists():
+        CodeSubmission.objects.create(
+            user=student_user,
+            challenge_id="challenge_clean_age",
+            code=clean_age_sample_code,
+            passed_tests=4,
+            total_tests=4
+        )
 
     clean_passwords_sample_code = """def clean(self):
     cleaned_data = super().clean()
@@ -316,35 +313,32 @@ def seed():
         raise forms.ValidationError('Passwords do not match')
     return cleaned_data"""
 
-    CodeSubmission.objects.get_or_create(
-        user=student_user,
-        challenge_id="challenge_clean_passwords",
-        defaults={
-            "code": clean_passwords_sample_code,
-            "passed_tests": 3,
-            "total_tests": 3
-        }
-    )
+    if not CodeSubmission.objects.filter(user=student_user, challenge_id="challenge_clean_passwords").exists():
+        CodeSubmission.objects.create(
+            user=student_user,
+            challenge_id="challenge_clean_passwords",
+            code=clean_passwords_sample_code,
+            passed_tests=3,
+            total_tests=3
+        )
 
     # Feedback
-    FeedbackSubmission.objects.get_or_create(
-        user=student_user,
-        defaults={
-            "rating": 5,
-            "feedback_text": "The step-by-step trace simulation made Django's form validation lifecycle extremely clear! The distinction between clean_<field> and form-level clean() finally clicked."
-        }
-    )
+    if not FeedbackSubmission.objects.filter(user=student_user).exists():
+        FeedbackSubmission.objects.create(
+            user=student_user,
+            rating=5,
+            feedback_text="The step-by-step trace simulation made Django's form validation lifecycle extremely clear! The distinction between clean_<field> and form-level clean() finally clicked."
+        )
 
     # Bug report
-    BugReport.objects.get_or_create(
-        user=student_user,
-        title="Mobile simulator layout width on small screens",
-        defaults={
-            "description": "On viewport widths below 400px, the trace timeline cards could benefit from tighter padding.",
-            "steps_to_reproduce": "1. Resize browser to 375px. 2. Run simulation trace.",
-            "status": "RESOLVED"
-        }
-    )
+    if not BugReport.objects.filter(user=student_user, title="Mobile simulator layout width on small screens").exists():
+        BugReport.objects.create(
+            user=student_user,
+            title="Mobile simulator layout width on small screens",
+            description="On viewport widths below 400px, the trace timeline cards could benefit from tighter padding.",
+            steps_to_reproduce="1. Resize browser to 375px. 2. Run simulation trace.",
+            status="RESOLVED"
+        )
 
     print("=== SEEDING COMPLETED SUCCESSFULLY ===")
 
