@@ -300,55 +300,70 @@ export function PretestView({ onNext }) {
   const score = calculateScore();
 
   return (
-    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
-      <div className="text-center mb-6">
+    <div className="max-w-4xl mx-auto py-4 px-2 sm:px-6 text-slate-800 animate-in fade-in duration-200">
+      {/* Exact Virtual Labs Centered Heading */}
+      <div className="text-center mb-3">
         <h1
-          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          className="text-[1.7rem] font-medium text-[#2c99ce] tracking-normal"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
-          Pre-Lab Assessment (Pre-Test)
+          Django Custom Form Validation Lifecycle
         </h1>
-        <p
-          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
-          style={{ fontFamily: "'Raleway', sans-serif" }}
-        >
-          Answer the following diagnostic questions on Django form handling
-        </p>
       </div>
 
+      {/* Sub-divider */}
+      <div className="border-b border-[#e8e8e8] mb-6"></div>
+
+      {/* Questions List matching exact screenshot placement */}
       <div className="space-y-6">
         {questions.map((q, idx) => (
-          <div key={q.id} className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs">
-            <h3 className="text-sm sm:text-base font-semibold text-slate-800 mb-3">
-              {idx + 1}. {q.q}
-            </h3>
-            <div className="space-y-2">
+          <div key={q.id} className="mb-5">
+            <div
+              className="question mb-2.5 text-black font-black text-base"
+              style={{ fontFamily: "'Open Sans', sans-serif" }}
+            >
+              {q.q}
+            </div>
+            <div className="answers space-y-2 mb-4" style={{ fontFamily: "'Open Sans', sans-serif" }}>
               {q.options.map((opt, oIdx) => {
                 const isSelected = selectedAnswers[q.id] === oIdx;
                 const isCorrect = q.correct === oIdx;
-                let btnStyle = 'border-slate-200 hover:bg-slate-50 text-slate-700';
-                if (submitted) {
-                  if (isCorrect) btnStyle = 'border-emerald-500 bg-emerald-50 text-emerald-800 font-semibold';
-                  else if (isSelected) btnStyle = 'border-red-500 bg-red-50 text-red-800';
-                } else if (isSelected) {
-                  btnStyle = 'border-[#0284c7] bg-sky-50 text-[#0284c7] font-semibold';
-                }
+                const letter = ['a', 'b', 'c', 'd'][oIdx];
 
                 return (
-                  <button
+                  <label
                     key={oIdx}
-                    onClick={() => handleSelect(q.id, oIdx)}
-                    className={`w-full text-left px-4 py-2.5 rounded-lg border text-sm transition-all cursor-pointer flex items-center justify-between ${btnStyle}`}
+                    className={`flex items-center gap-2.5 cursor-pointer text-[0.95rem] py-0.5 ${
+                      submitted
+                        ? isCorrect
+                          ? 'text-emerald-700 font-semibold'
+                          : isSelected
+                          ? 'text-red-700 font-semibold'
+                          : 'text-[#333333]'
+                        : 'text-[#333333]'
+                    }`}
                   >
-                    <span>{opt}</span>
-                    {submitted && isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />}
-                  </button>
+                    <input
+                      type="radio"
+                      name={`pretest-q-${q.id}`}
+                      checked={isSelected}
+                      onChange={() => handleSelect(q.id, oIdx)}
+                      disabled={submitted}
+                      className="w-4 h-4 cursor-pointer text-[#007bff] focus:ring-[#007bff]"
+                    />
+                    <span>
+                      {letter}: {opt}
+                    </span>
+                    {submitted && isCorrect && (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 inline ml-1" />
+                    )}
+                  </label>
                 );
               })}
             </div>
 
             {submitted && (
-              <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-700">
+              <div className="mt-2 p-3 bg-slate-50 rounded border border-slate-200 text-xs text-slate-700 font-['Open_Sans']">
                 <span className="font-bold text-slate-800">Explanation: </span>
                 {q.explanation}
               </div>
@@ -357,18 +372,19 @@ export function PretestView({ onNext }) {
         ))}
       </div>
 
-      <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+      {/* Submit Quiz button & Results Footer */}
+      <div className="pt-4 border-t border-[#e8e8e8] mt-6">
         {!submitted ? (
           <button
             onClick={handleSubmit}
             disabled={Object.keys(selectedAnswers).length < questions.length || isSubmitting}
-            className="v-button w-full sm:w-auto justify-center shadow-xs transition-transform hover:scale-[1.02] disabled:opacity-50 cursor-pointer"
+            className="bg-[#007bff] hover:bg-[#0069d9] text-white rounded px-4 py-2 text-base font-['Open_Sans'] cursor-pointer transition disabled:opacity-50"
           >
-            {isSubmitting ? 'Evaluating...' : 'Submit Pretest'}
+            {isSubmitting ? 'Evaluating...' : 'Submit Quiz'}
           </button>
         ) : (
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 w-full">
-            <div className="text-sm font-semibold text-slate-800" style={{ fontFamily: "'Raleway', sans-serif" }}>
+            <div className="text-base font-semibold text-slate-800" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Score: <span className="text-[#2c99ce] font-bold text-lg">{score} / {questions.length}</span> ({Math.round((score / questions.length) * 100)}%)
               <span className={`block sm:inline sm:ml-2 mt-1 sm:mt-0 text-xs font-bold px-2 py-0.5 rounded w-fit ${score >= 4 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
                 {score >= 4 ? 'Status: Qualified' : 'Status: Review Advised'}
@@ -376,7 +392,7 @@ export function PretestView({ onNext }) {
             </div>
             <button
               onClick={onNext}
-              className="v-button w-full sm:w-auto justify-center shadow-xs transition-transform hover:scale-[1.02] flex items-center gap-2 cursor-pointer"
+              className="bg-[#288ec8] hover:bg-[#2075a5] text-white rounded-[1em] px-5 py-2 text-sm font-['Raleway'] font-bold flex items-center gap-2 cursor-pointer transition shadow-xs"
             >
               <span>Proceed to Visualizer</span>
               <ArrowRight className="w-4 h-4" />
@@ -2038,55 +2054,70 @@ export function PosttestView({ onNext, onQuizPassed }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
-      <div className="text-center mb-6">
+    <div className="max-w-4xl mx-auto py-4 px-2 sm:px-6 text-slate-800 animate-in fade-in duration-200">
+      {/* Exact Virtual Labs Centered Heading */}
+      <div className="text-center mb-3">
         <h1
-          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          className="text-[1.7rem] font-medium text-[#2c99ce] tracking-normal"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
-          Post-Lab Assessment (Post-Test)
+          Django Form Validation Posttest Assessment
         </h1>
-        <p
-          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
-          style={{ fontFamily: "'Raleway', sans-serif" }}
-        >
-          Answer the following evaluation questions to verify your understanding of form cleaning and error handling
-        </p>
       </div>
 
+      {/* Sub-divider */}
+      <div className="border-b border-[#e8e8e8] mb-6"></div>
+
+      {/* Questions List matching exact screenshot placement */}
       <div className="space-y-6">
         {questions.map((q, idx) => (
-          <div key={q.id} className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs">
-            <h3 className="text-sm sm:text-base font-semibold text-slate-800 mb-3">
-              {idx + 1}. {q.q}
-            </h3>
-            <div className="space-y-2">
+          <div key={q.id} className="mb-5">
+            <div
+              className="question mb-2.5 text-black font-black text-base"
+              style={{ fontFamily: "'Open Sans', sans-serif" }}
+            >
+              {q.q}
+            </div>
+            <div className="answers space-y-2 mb-4" style={{ fontFamily: "'Open Sans', sans-serif" }}>
               {q.options.map((opt, oIdx) => {
                 const isSelected = selectedAnswers[q.id] === oIdx;
                 const isCorrect = q.correct === oIdx;
-                let btnStyle = 'border-slate-200 hover:bg-slate-50 text-slate-700';
-                if (submitted) {
-                  if (isCorrect) btnStyle = 'border-emerald-500 bg-emerald-50 text-emerald-800 font-semibold';
-                  else if (isSelected) btnStyle = 'border-red-500 bg-red-50 text-red-800';
-                } else if (isSelected) {
-                  btnStyle = 'border-[#0284c7] bg-sky-50 text-[#0284c7] font-semibold';
-                }
+                const letter = ['a', 'b', 'c', 'd'][oIdx];
 
                 return (
-                  <button
+                  <label
                     key={oIdx}
-                    onClick={() => handleSelect(q.id, oIdx)}
-                    className={`w-full text-left px-4 py-2.5 rounded-lg border text-sm transition-all cursor-pointer flex items-center justify-between ${btnStyle}`}
+                    className={`flex items-center gap-2.5 cursor-pointer text-[0.95rem] py-0.5 ${
+                      submitted
+                        ? isCorrect
+                          ? 'text-emerald-700 font-semibold'
+                          : isSelected
+                          ? 'text-red-700 font-semibold'
+                          : 'text-[#333333]'
+                        : 'text-[#333333]'
+                    }`}
                   >
-                    <span>{opt}</span>
-                    {submitted && isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />}
-                  </button>
+                    <input
+                      type="radio"
+                      name={`posttest-q-${q.id}`}
+                      checked={isSelected}
+                      onChange={() => handleSelect(q.id, oIdx)}
+                      disabled={submitted}
+                      className="w-4 h-4 cursor-pointer text-[#007bff] focus:ring-[#007bff]"
+                    />
+                    <span>
+                      {letter}: {opt}
+                    </span>
+                    {submitted && isCorrect && (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 inline ml-1" />
+                    )}
+                  </label>
                 );
               })}
             </div>
 
             {submitted && (
-              <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-700">
+              <div className="mt-2 p-3 bg-slate-50 rounded border border-slate-200 text-xs text-slate-700 font-['Open_Sans']">
                 <span className="font-bold text-slate-800">Explanation: </span>
                 {q.explanation}
               </div>
@@ -2096,15 +2127,15 @@ export function PosttestView({ onNext, onQuizPassed }) {
       </div>
 
       {/* Submission & Formal Academic Certificate */}
-      <div className="pt-4 border-t border-slate-100">
+      <div className="pt-4 border-t border-[#e8e8e8] mt-6">
         {!submitted ? (
-          <div className="flex justify-end">
+          <div>
             <button
               onClick={handleSubmit}
               disabled={Object.keys(selectedAnswers).length < questions.length || isSubmitting}
-              className="v-button shadow-xs transition-transform hover:scale-[1.02] disabled:opacity-50 cursor-pointer"
+              className="bg-[#007bff] hover:bg-[#0069d9] text-white rounded px-4 py-2 text-base font-['Open_Sans'] cursor-pointer transition disabled:opacity-50"
             >
-              {isSubmitting ? 'Evaluating Submission...' : 'Submit Post-Lab Answers'}
+              {isSubmitting ? 'Evaluating Submission...' : 'Submit Quiz'}
             </button>
           </div>
         ) : (

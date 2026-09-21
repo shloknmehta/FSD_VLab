@@ -20,7 +20,14 @@ body {
 h1, h2, h3, .vlabs-heading {
   font-family: 'Raleway', sans-serif;
   color: #2c99ce;
-  font-weight: 800;
+}
+
+.vlabs-lab-name {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.7rem;
+  color: #2c99ce;
+  font-weight: 500;
+  text-align: center;
 }
 
 /* Official Virtual Labs Header */
@@ -30,10 +37,29 @@ h1, h2, h3, .vlabs-heading {
 }
 
 /* Official Virtual Labs Breadcrumbs */
-.breadcrumbs {
+.breadcrumbs,
+.breadcrumbs a,
+.breadcrumbs span {
   font-family: 'Raleway', sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: #337ab7;
+}
+
+/* Official Nav Menu / Sidebar */
+.nav-menu a {
+  color: #3e6389;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.nav-menu a.current-item {
+  color: #ff6600;
+}
+
+.sidebar {
+  border-right: thin solid #e8e8e8;
+  box-sizing: content-box;
 }
 
 /* Official .v-button from Virtual Labs ref */
@@ -42,25 +68,48 @@ h1, h2, h3, .vlabs-heading {
   color: #ffffff;
   background-color: #288ec8;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-family: 'Raleway', sans-serif;
-  font-weight: 600;
-  border-radius: 1.25rem;
-  padding: 0.45rem 1.15rem;
+  border-radius: 1em;
+  padding: 0.6em 1.2em;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.2s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
 }
 
 .v-button:hover {
-  background-color: #2075a5;
+  background-color: #a9a9a9;
 }
 
 .v-button:disabled {
   background-color: #a9a9a9;
   cursor: not-allowed;
+}
+
+/* Official Footer Section Header Underline */
+.vlabs-footer-sect-name {
+  border-bottom-width: 0.15rem;
+  border-bottom-style: solid;
+  border-image: linear-gradient(to right, #3ec1d5 20%, #555 0%) 0% 0% 100% 0%;
+}
+
+/* Pre-test and post-test official styles */
+.answers {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.question {
+  font-weight: 900;
+  color: #000000;
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
 }
 
 /* Text Justify and Typography for Educational Content */

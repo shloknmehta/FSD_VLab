@@ -2,31 +2,33 @@ import React from 'react';
 
 export default function Breadcrumbs({
   department = 'Computer Science and Engineering',
-  course = 'Django Web Technologies / Full Stack Development',
+  course = 'Full Stack Development',
   section = 'Experiments',
   experimentTitle,
 }) {
   return (
-    <div className="w-full bg-white border-b border-slate-100 px-3 sm:px-6 md:px-10 py-2.5 sm:py-3.5 select-none">
+    <div className="w-full bg-white px-4 sm:px-6 md:px-8 py-3 sm:py-4 select-none">
       <nav
-        className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-xs sm:text-base md:text-[1.25rem] font-bold tracking-tight text-[#337ab7]"
+        className="flex items-center flex-wrap gap-x-2 text-[1.15rem] sm:text-[1.4rem] md:text-[1.6rem] font-normal tracking-normal text-[#337ab7]"
         style={{ fontFamily: "'Raleway', sans-serif" }}
       >
-        <span className="hover:underline cursor-pointer transition-colors">
+        <span className="hover:underline cursor-pointer transition-colors text-[#337ab7]">
           {department}
         </span>
-        <span className="text-[#337ab7] font-semibold px-0.5 sm:px-1">&gt;</span>
-        <span className="hover:underline cursor-pointer transition-colors">
+        <span className="text-[#337ab7] px-1">&gt;</span>
+        <span className="hover:underline cursor-pointer transition-colors text-[#337ab7]">
           {course}
         </span>
-        <span className="text-[#337ab7] font-semibold px-0.5 sm:px-1">&gt;</span>
-        <span className="hover:underline cursor-pointer transition-colors">
+        <span className="text-[#337ab7] px-1">&gt;</span>
+        <span className="hover:underline cursor-pointer transition-colors text-[#337ab7]">
           {section}
         </span>
         {experimentTitle && (
           <>
-            <span className="text-[#337ab7] font-semibold px-0.5 sm:px-1">&gt;</span>
-            <span className="text-slate-600 font-bold">{experimentTitle}</span>
+            <span className="text-[#337ab7] px-1">&gt;</span>
+            <span className="hover:underline cursor-pointer transition-colors text-[#337ab7]">
+              {experimentTitle}
+            </span>
           </>
         )}
       </nav>

@@ -66,17 +66,13 @@ export default function Header({
             title={sidebarOpen ? 'Collapse Navigation Menu' : 'Open Navigation Menu'}
             aria-label="Toggle Navigation Menu"
             aria-expanded={sidebarOpen}
-            className={`p-2 -ml-2 rounded-lg transition-colors cursor-pointer ${
-              sidebarOpen
-                ? 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
-                : 'text-[#ff6600] bg-orange-50 hover:bg-orange-100'
-            }`}
+            className="p-2 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-5 h-5" />
           </button>
 
-          {/* Official KJSSE Virtual Labs Logo */}
-          <div className="flex items-center gap-2.5 cursor-pointer">
+          {/* Official Virtual Labs Logo */}
+          <div className="flex items-center gap-2 cursor-pointer">
             {/* SVG Beaker + Gear Emblem */}
             <svg
               className="w-10 h-10 shrink-0"
@@ -106,53 +102,42 @@ export default function Header({
                 fillOpacity="0.4"
               />
               {/* Cyan Cog / Gears in Beaker */}
-              <circle cx="48" cy="52" r="11" stroke="#00acc1" strokeWidth="4" />
-              <path d="M48 37V41M48 63V67M33 52H37M59 52H63" stroke="#00acc1" strokeWidth="4" strokeLinecap="round" />
-              <path d="M37.5 41.5L40.5 44.5M55.5 59.5L58.5 62.5M37.5 62.5L40.5 59.5M55.5 44.5L58.5 41.5" stroke="#00acc1" strokeWidth="3" strokeLinecap="round" />
-              <circle cx="63" cy="42" r="6" stroke="#0284c7" strokeWidth="2.5" />
+              <circle cx="48" cy="52" r="11" stroke="#2c99ce" strokeWidth="4" />
+              <path d="M48 37V41M48 63V67M33 52H37M59 52H63" stroke="#2c99ce" strokeWidth="4" strokeLinecap="round" />
+              <path d="M37.5 41.5L40.5 44.5M55.5 59.5L58.5 62.5M37.5 62.5L40.5 59.5M55.5 44.5L58.5 41.5" stroke="#2c99ce" strokeWidth="3" strokeLinecap="round" />
+              <circle cx="63" cy="42" r="6" stroke="#2c99ce" strokeWidth="2.5" />
             </svg>
 
             {/* Typography */}
-            <div className="flex flex-col justify-center leading-tight">
+            <div className="flex flex-col justify-center leading-none">
               <div className="flex items-baseline font-bold tracking-tight">
-                <span className="text-[22px] text-[#0284c7]">Virtual</span>
-                <span className="text-[22px] text-[#689f38] ml-1">Labs</span>
+                <span className="text-[25px] text-[#2c99ce] font-['Raleway']">Virtual</span>
+                <span className="text-[25px] text-[#689f38] ml-1 font-['Raleway']">Labs</span>
               </div>
-              <span className="text-[9.5px] font-medium text-slate-500 tracking-wide uppercase">
+              <span className="text-[9.5px] font-medium text-slate-500 tracking-wide">
                 An MoE Govt of India Initiative
               </span>
             </div>
           </div>
 
-          {/* Institutional Divider & Official Somaiya Logos (KJSSE & Somaiya Trust) */}
-          <div className="hidden sm:block h-8 w-[1px] bg-slate-200" />
-          <div className="hidden sm:flex items-center gap-3">
-            {/* KJSSE (K. J. Somaiya School of Engineering) Logo */}
+          {/* Institutional Divider & Official Somaiya Logos */}
+          <div className="hidden lg:block h-8 w-[1px] bg-slate-200" />
+          <div className="hidden lg:flex items-center gap-3">
             <img
               src="/assets/logos/kjsce-formerly.svg"
-              alt="K. J. Somaiya School of Engineering - Somaiya Vidyavihar University"
-              className="h-8 md:h-9 w-auto object-contain hover:opacity-95 transition-opacity"
-              title="K. J. Somaiya School of Engineering (KJSSE)"
-            />
-
-            <div className="hidden md:block h-7 w-[1px] bg-slate-200" />
-
-            {/* Somaiya Trust Logo */}
-            <img
-              src="/assets/logos/somaiya_trust.png"
-              alt="The Somaiya Trust"
-              className="hidden md:block h-8 w-auto object-contain rounded-xs hover:opacity-95 transition-opacity"
-              title="The Somaiya Trust"
+              alt="K. J. Somaiya School of Engineering"
+              className="h-8 w-auto object-contain opacity-90"
+              title="K. J. Somaiya School of Engineering"
             />
           </div>
         </div>
 
-        {/* Right Side: Ratings, Buttons, Persona Badge */}
-        <div className="flex items-center gap-3 sm:gap-5">
-          {/* Interactive Stars */}
-          <div className="hidden md:flex items-center gap-1" title="Rate this experiment">
+        {/* Right Side: Ratings, Buttons, User Menu */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          {/* Interactive Stars - Matches screenshot yellow rating */}
+          <div className="flex items-center gap-0.5" title="Rate this experiment">
             {[1, 2, 3, 4, 5].map((star) => {
-              const isSelected = (hoverRating || activeRating) >= star;
+              const isFilled = (hoverRating || activeRating || 3) >= star;
               return (
                 <button
                   key={star}
@@ -160,13 +145,13 @@ export default function Header({
                   onClick={onOpenRateModal}
                   onMouseEnter={() => setHoverRating(star)}
                   onMouseLeave={() => setHoverRating(0)}
-                  className="p-0.5 text-slate-300 hover:text-amber-400 transition-colors focus:outline-none"
+                  className="p-0.5 transition-colors focus:outline-none cursor-pointer"
                 >
                   <Star
-                    className={`w-5 h-5 transition-transform hover:scale-110 ${
-                      isSelected
-                        ? 'fill-amber-400 text-amber-400'
-                        : 'text-amber-400/60 stroke-[1.75]'
+                    className={`w-5 h-5 ${
+                      isFilled
+                        ? 'fill-[#ffc107] text-[#ffc107]'
+                        : 'text-[#ffc107] stroke-[1.5]'
                     }`}
                   />
                 </button>
@@ -174,24 +159,22 @@ export default function Header({
             })}
           </div>
 
-          {/* Rate Me Button */}
+          {/* Rate Me Button - Matches exact v-button style in screenshot */}
           <button
             onClick={onOpenRateModal}
             title="Rate this experiment"
-            className="v-button shadow-xs transition-transform hover:scale-[1.02]"
+            className="v-button shadow-none text-white text-[1.05rem]"
           >
-            <Star className="w-3.5 h-3.5 fill-white/90" />
-            <span className="hidden sm:inline">Rate Me</span>
+            Rate Me
           </button>
 
-          {/* Report a Bug Button */}
+          {/* Report a Bug Button - Matches exact v-button style in screenshot */}
           <button
             onClick={onOpenBugModal}
             title="Report a Bug"
-            className="v-button shadow-xs transition-transform hover:scale-[1.02]"
+            className="v-button shadow-none text-white text-[1.05rem]"
           >
-            <Bug className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Report a Bug</span>
+            Report a Bug
           </button>
 
           {/* Unauthenticated: Sign In & Register Buttons */}

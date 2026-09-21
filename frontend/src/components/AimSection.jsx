@@ -3,46 +3,44 @@ import { Clock, BookOpen, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function AimSection({ onNavigateNext }) {
   return (
-    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 animate-in fade-in duration-200">
-      {/* Centered Main Title */}
-      <div className="text-center mb-8 sm:mb-10">
+    <div className="max-w-4xl mx-auto py-4 px-2 sm:px-6 text-slate-800 animate-in fade-in duration-200">
+      {/* Centered Main Title matching official Virtual Labs */}
+      <div className="text-center mb-3">
         <h1
-          className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#2c99ce] tracking-tight"
+          className="text-[1.7rem] font-medium text-[#2c99ce] tracking-normal"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Django Custom Form Validation using clean() & clean_&lt;field&gt;()
         </h1>
-        <p
-          className="text-sm sm:text-base text-slate-500 mt-2 font-medium"
-          style={{ fontFamily: "'Raleway', sans-serif" }}
-        >
-          Experiment 06: Field-Level and Multi-Field Custom Validation in Django Forms
-        </p>
       </div>
 
-      <div className="space-y-8 vlabs-content">
+      {/* Sub-divider */}
+      <div className="border-b border-[#e8e8e8] mb-6"></div>
+
+      <div className="space-y-6 text-[#000000] font-['Open_Sans'] text-base">
         {/* Estimated Time */}
         <section>
-          <h2
-            className="text-xl font-bold text-[#2c99ce] underline decoration-slate-300 decoration-1 underline-offset-4 mb-2 flex items-center gap-2"
+          <h3
+            className="text-[1.1rem] font-bold text-[#333333] underline mb-1"
             style={{ fontFamily: "'Raleway', sans-serif" }}
           >
-            <Clock className="w-5 h-5 text-[#2c99ce]" />
             Estimated Time
-          </h2>
-          <p className="text-base text-slate-700 font-medium pl-1">1 hour</p>
+          </h3>
+          <p className="text-base text-[#333333]">1 hour</p>
         </section>
 
         {/* Learning Objectives */}
         <section>
-          <h2 className="text-xl font-bold text-slate-800 underline decoration-slate-400 decoration-1 underline-offset-4 mb-3 flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-[#0284c7]" />
-            Learning Objectives
-          </h2>
-          <p className="text-slate-700 mb-3 font-normal">
-            After completing this experiment, students will be able to:
+          <h3
+            className="text-[1.1rem] font-bold text-[#333333] underline mb-2"
+            style={{ fontFamily: "'Raleway', sans-serif" }}
+          >
+            Learning Objectives of the Experiment
+          </h3>
+          <p className="text-[#333333] mb-3">
+            In this experiment, we will be able to do the following:
           </p>
-          <ul className="space-y-2.5 pl-5 text-slate-700 list-disc marker:text-slate-600">
+          <ul className="space-y-2 pl-6 list-disc text-[#333333]">
             <li className="leading-relaxed">
               Identify the roles of single-field validation (<code className="text-xs bg-slate-100 text-[#0284c7] px-1.5 py-0.5 rounded border border-slate-200 font-mono font-bold">clean_&lt;fieldname&gt;()</code>) and multi-field validation (<code className="text-xs bg-slate-100 text-[#0284c7] px-1.5 py-0.5 rounded border border-slate-200 font-mono font-bold">clean()</code>) in Django forms.
             </li>
