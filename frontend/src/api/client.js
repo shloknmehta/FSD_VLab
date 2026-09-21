@@ -1,11 +1,15 @@
 import axios from 'axios';
 
+const defaultBaseURL = import.meta.env.PROD
+  ? 'https://fsd-vlab.onrender.com/api/'
+  : 'http://localhost:8000/api/';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/',
+  baseURL: import.meta.env.VITE_API_URL || defaultBaseURL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000,
+  timeout: 15000,
 });
 
 // Attach JWT or auth token if present
