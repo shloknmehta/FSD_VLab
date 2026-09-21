@@ -129,38 +129,34 @@ function LabPlatform() {
       />
 
       {/* 3. Main Workspace Area: Left Sidebar + Right Content */}
-      <div className="flex-1 flex overflow-hidden relative">
-        {/* Mobile Backdrop */}
+      <div className="flex-1 flex flex-col md:flex-row w-full bg-white relative">
+        {/* Mobile Backdrop - anchored below header */}
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden absolute inset-0 bg-slate-900/30 z-20 transition-opacity"
+            className="md:hidden fixed inset-0 top-[68px] bg-slate-900/40 z-30 transition-opacity"
           />
         )}
 
-        {/* Sidebar: In-flow on desktop, overlay bounded to workspace on mobile */}
-        <div
-          className={`shrink-0 bg-white transition-all duration-200 z-30 ${
-            sidebarOpen
-              ? 'absolute md:static top-0 bottom-0 left-0 shadow-xl md:shadow-none block h-full'
-              : 'hidden'
-          }`}
-        >
-          <Sidebar
-            isOpen={sidebarOpen}
-            onClose={() => setSidebarOpen(false)}
-            activeTab={activeTab}
-            onSelectTab={(tabId) => {
-              handleSelectTab(tabId);
-              if (window.innerWidth < 768) {
-                setSidebarOpen(false);
-              }
-            }}
-            completedModules={completedModules}
-          />
-        </div>
+        {/* Sidebar: Normal document flow on desktop, slide drawer below header on mobile */}
+        {sidebarOpen && (
+          <div className="fixed md:static top-[68px] bottom-0 left-0 z-40 bg-white shadow-2xl md:shadow-none shrink-0 overflow-y-auto max-h-[calc(100vh-68px)] md:max-h-none">
+            <Sidebar
+              isOpen={sidebarOpen}
+              onClose={() => setSidebarOpen(false)}
+              activeTab={activeTab}
+              onSelectTab={(tabId) => {
+                handleSelectTab(tabId);
+                if (window.innerWidth < 768) {
+                  setSidebarOpen(false);
+                }
+              }}
+              completedModules={completedModules}
+            />
+          </div>
+        )}
 
-        <main className="flex-1 overflow-y-auto bg-white p-3 sm:p-6 md:p-8">
+        <main className="flex-1 min-w-0 bg-white p-3 sm:p-6 md:p-8">
           {renderActiveTabContent()}
         </main>
       </div>
