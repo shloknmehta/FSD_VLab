@@ -53,11 +53,6 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
     setSuccessMessage('');
   };
 
-  const handleQuickFill = (username, password) => {
-    setLoginUsername(username);
-    setLoginPassword(password);
-    setErrorMessage('');
-  };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -267,39 +262,6 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
                   </>
                 )}
               </button>
-
-              {/* Quick Demo Autofill Section for viva / evaluator testing */}
-              <div className="pt-3 border-t border-slate-100">
-                <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center justify-between">
-                  <span>1-Click Demo Accounts (Fast Testing)</span>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleQuickFill('shlok', 'Student@123')}
-                    className="p-2 text-left rounded-lg border border-blue-100 bg-blue-50/60 hover:bg-blue-100/70 transition cursor-pointer text-xs"
-                  >
-                    <div className="font-bold text-blue-900 leading-tight">Student</div>
-                    <div className="text-[10px] text-blue-600 font-mono mt-0.5">shlok</div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleQuickFill('faculty', 'Faculty@123')}
-                    className="p-2 text-left rounded-lg border border-emerald-100 bg-emerald-50/60 hover:bg-emerald-100/70 transition cursor-pointer text-xs"
-                  >
-                    <div className="font-bold text-emerald-900 leading-tight">Faculty</div>
-                    <div className="text-[10px] text-emerald-600 font-mono mt-0.5">faculty</div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleQuickFill('admin', 'Admin@123')}
-                    className="p-2 text-left rounded-lg border border-purple-100 bg-purple-50/60 hover:bg-purple-100/70 transition cursor-pointer text-xs"
-                  >
-                    <div className="font-bold text-purple-900 leading-tight">Admin</div>
-                    <div className="text-[10px] text-purple-600 font-mono mt-0.5">admin</div>
-                  </button>
-                </div>
-              </div>
             </form>
           ) : (
             /* ===================== REGISTER FORM ===================== */

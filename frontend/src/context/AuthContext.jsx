@@ -41,30 +41,59 @@ export const DEMO_USERS = {
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  // Only restore user if a real valid token exists in storage
   const [currentUser, setCurrentUser] = useState(() => {
-    const saved = localStorage.getItem('vlab_user');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Failed to parse cached user:', e);
+    try {
+      const storedToken = localStorage.getItem('vlab_token');
+      if (!storedToken || storedToken.startsWith('demo-')) {
+        return null;
       }
+      const saved = localStorage.getItem('vlab_user');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error('Failed to parse cached user:', e);
     }
-    return DEMO_USERS.STUDENT;
+    return null;
   });
 
-  const [token, setToken] = useState(() => localStorage.getItem('vlab_token') || 'demo-jwt-token-fsd');
-  const [role, setRole] = useState(() => currentUser?.role || 'STUDENT');
+  const [token, setToken] = useState(() => {
+    try {
+      const storedToken = localStorage.getItem('vlab_token');
+      if (!storedToken || storedToken.startsWith('demo-')) {
+        return null;
+      }
+      return storedToken;
+    } catch {
+      return null;
+    }
+  });
+
+  const [role, setRole] = useState(() => currentUser?.role || null);
   const [isLoading, setIsLoading] = useState(false);
-  const [authModalOpen, setAuthModalOpen] = useState(false);
+
+  // If user is not logged in on initial visit, prompt with Sign In modal automatically!
+  const [authModalOpen, setAuthModalOpen] = useState(() => {
+    try {
+      const storedToken = localStorage.getItem('vlab_token');
+      return !storedToken || storedToken.startsWith('demo-');
+    } catch {
+      return true;
+    }
+  });
+
   const [authModalMode, setAuthModalMode] = useState('login'); // 'login' | 'register'
 
-  // Sync role whenever currentUser changes
+  // Sync role and localStorage whenever currentUser changes
   useEffect(() => {
     if (currentUser) {
       const computedRole = currentUser.role || 'STUDENT';
       setRole(computedRole);
       localStorage.setItem('vlab_user', JSON.stringify(currentUser));
+    } else {
+      setRole(null);
+      localStorage.removeItem('vlab_user');
     }
   }, [currentUser]);
 
@@ -81,7 +110,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const verifySession = async () => {
       const storedToken = localStorage.getItem('vlab_token');
-      if (!storedToken || storedToken.startsWith('demo-')) return;
+      if (!storedToken || storedToken.startsWith('demo-')) {
+        // If unauthenticated, make sure modal is prompted
+        setAuthModalOpen(true);
+        return;
+      }
 
       try {
         const res = await api.get('/auth/me/');
@@ -93,13 +126,17 @@ export const AuthProvider = ({ children }) => {
           };
           setCurrentUser(formatted);
           setRole(formatted.role);
+          setAuthModalOpen(false);
         }
       } catch (err) {
-        // Token expired or invalid
         if (err.response?.status === 401) {
-          console.warn('Session expired, falling back to demo persona');
-          setCurrentUser(DEMO_USERS.STUDENT);
-          setToken('demo-jwt-token-fsd');
+          console.warn('Session expired, asking for sign in');
+          setCurrentUser(null);
+          setToken(null);
+          setRole(null);
+          localStorage.removeItem('vlab_user');
+          localStorage.removeItem('vlab_token');
+          setAuthModalOpen(true);
         }
       }
     };
@@ -154,11 +191,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Real backend registration
+  // Real backend registration (always creates STUDENT by default)
   const register = async (userData) => {
     setIsLoading(true);
     try {
-      const res = await api.post('/auth/register/', userData);
+      const res = await api.post('/auth/register/', {
+        ...userData,
+        role: 'STUDENT',
+      });
       if (res.data?.token && res.data?.user) {
         const u = res.data.user;
         const formattedUser = {
@@ -198,11 +238,13 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       console.warn('Logout notification to backend failed or unneeded');
     } finally {
-      setCurrentUser(DEMO_USERS.STUDENT);
-      setRole('STUDENT');
-      setToken('demo-jwt-token-fsd');
+      setCurrentUser(null);
+      setRole(null);
+      setToken(null);
       localStorage.removeItem('vlab_user');
       localStorage.removeItem('vlab_token');
+      setAuthModalMode('login');
+      setAuthModalOpen(true);
     }
   };
 
@@ -225,6 +267,7 @@ export const AuthProvider = ({ children }) => {
           };
           setCurrentUser(formatted);
           localStorage.setItem('vlab_user', JSON.stringify(formatted));
+          setAuthModalOpen(false);
           return;
         }
       }
@@ -236,9 +279,10 @@ export const AuthProvider = ({ children }) => {
     setToken(mockToken);
     localStorage.setItem('vlab_token', mockToken);
     localStorage.setItem('vlab_user', JSON.stringify(targetUser));
+    setAuthModalOpen(false);
   };
 
-  const isRealAuth = Boolean(token && !token.startsWith('demo-'));
+  const isRealAuth = Boolean(currentUser && token && !token.startsWith('demo-'));
 
   const value = {
     currentUser,
@@ -246,6 +290,7 @@ export const AuthProvider = ({ children }) => {
     token,
     isLoading,
     isRealAuth,
+    isAuthenticated: Boolean(currentUser),
     authModalOpen,
     authModalMode,
     openLogin,
