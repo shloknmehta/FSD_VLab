@@ -134,15 +134,15 @@ function LabPlatform() {
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden fixed inset-0 bg-slate-900/40 z-30 transition-opacity"
+            className="md:hidden absolute inset-0 bg-slate-900/30 z-20 transition-opacity"
           />
         )}
 
-        {/* Sidebar: Offcanvas on mobile, collapsible on desktop */}
+        {/* Sidebar: In-flow on desktop, overlay bounded to workspace on mobile */}
         <div
-          className={`z-40 shrink-0 bg-white transition-all duration-200 ease-in-out ${
+          className={`shrink-0 bg-white transition-all duration-200 z-30 ${
             sidebarOpen
-              ? 'fixed md:static inset-y-0 left-0 shadow-2xl md:shadow-none block'
+              ? 'absolute md:static top-0 bottom-0 left-0 shadow-xl md:shadow-none block h-full'
               : 'hidden'
           }`}
         >

@@ -56,7 +56,7 @@ export default function Header({
   };
 
   return (
-    <header className="bg-white sticky top-0 z-40 border-b-[8px] border-[#ff6600] font-['Raleway',sans-serif] shadow-xs select-none">
+    <header className="bg-white sticky top-0 z-50 border-b-[8px] border-[#ff6600] font-['Raleway',sans-serif] shadow-xs select-none">
       {/* Main Bar */}
       <div className="w-full px-4 sm:px-6 py-2.5 flex items-center justify-between">
         {/* Left: Hamburger & Virtual Labs Brand */}
