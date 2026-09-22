@@ -135,7 +135,7 @@ export default function Header({
         {/* Right Side: Ratings, Buttons, User Menu */}
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           {/* Interactive Stars - Visible on desktop/tablet */}
-          <div className="hidden md:flex items-center gap-0.5" title="Rate this experiment">
+          <div className="!hidden md:!flex items-center gap-0.5" title="Rate this experiment">
             {[1, 2, 3, 4, 5].map((star) => {
               const isFilled = (hoverRating || activeRating || 3) >= star;
               return (
@@ -163,7 +163,7 @@ export default function Header({
           <button
             onClick={onOpenRateModal}
             title="Rate this experiment"
-            className="md:hidden p-1.5 text-[#ffc107] hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+            className="md:!hidden p-1.5 text-[#ffc107] hover:bg-amber-50 rounded-lg transition-colors cursor-pointer shrink-0"
           >
             <Star className="w-5 h-5 fill-[#ffc107]" />
           </button>
@@ -172,7 +172,7 @@ export default function Header({
           <button
             onClick={onOpenBugModal}
             title="Report a Bug"
-            className="sm:hidden p-1.5 text-[#288ec8] hover:bg-sky-50 rounded-lg transition-colors cursor-pointer"
+            className="md:!hidden p-1.5 text-[#288ec8] hover:bg-sky-50 rounded-lg transition-colors cursor-pointer shrink-0"
           >
             <Bug className="w-5 h-5" />
           </button>
@@ -181,7 +181,7 @@ export default function Header({
           <button
             onClick={onOpenRateModal}
             title="Rate this experiment"
-            className="hidden md:inline-flex v-button shadow-none text-white text-[1.05rem]"
+            className="!hidden md:!inline-flex v-button shadow-none text-white text-[1.05rem]"
           >
             Rate Me
           </button>
@@ -190,7 +190,7 @@ export default function Header({
           <button
             onClick={onOpenBugModal}
             title="Report a Bug"
-            className="hidden sm:inline-flex v-button shadow-none text-white text-[1.05rem]"
+            className="!hidden md:!inline-flex v-button shadow-none text-white text-[1.05rem]"
           >
             Report a Bug
           </button>

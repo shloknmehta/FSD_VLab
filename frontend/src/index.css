@@ -96,30 +96,36 @@ h1, h2, h3, .vlabs-heading {
 }
 
 /* Official .v-button from Virtual Labs ref */
-.v-button {
-  border: none;
-  color: #ffffff;
-  background-color: #288ec8;
-  text-align: center;
-  font-size: 1.05rem;
-  font-family: 'Raleway', sans-serif;
-  border-radius: 1em;
-  padding: 0.6em 1.2em;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
+@layer components {
+  .v-button {
+    border: none;
+    color: #ffffff;
+    background-color: #288ec8;
+    text-align: center;
+    font-size: 1.05rem;
+    font-family: 'Raleway', sans-serif;
+    border-radius: 1em;
+    padding: 0.6em 1.2em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .v-button:hover {
+    background-color: #a9a9a9;
+  }
+
+  .v-button:disabled {
+    background-color: #a9a9a9;
+    cursor: not-allowed;
+  }
 }
 
-.v-button:hover {
-  background-color: #a9a9a9;
-}
-
-.v-button:disabled {
-  background-color: #a9a9a9;
-  cursor: not-allowed;
+.hidden {
+  display: none !important;
 }
 
 /* Official Footer Section Header Underline */
