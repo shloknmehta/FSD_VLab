@@ -2,6 +2,13 @@ from django.db import models
 from django.conf import settings
 
 class Experiment(models.Model):
+    SUBJECT_CHOICES = [
+        ('FSD', 'Full Stack Development'),
+        ('CN', 'Computer Networks'),
+    ]
+
+    subject = models.CharField(max_length=20, choices=SUBJECT_CHOICES, default='FSD')
+    experiment_number = models.PositiveIntegerField(default=1)
     slug = models.SlugField(max_length=100, unique=True, default='django-form-validation')
     title = models.CharField(max_length=255)
     aim = models.TextField()
@@ -13,8 +20,11 @@ class Experiment(models.Model):
     estimated_minutes = models.PositiveIntegerField(default=45)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['subject', 'experiment_number', 'id']
+
     def __str__(self):
-        return self.title
+        return f"[{self.subject}] {self.title}"
 
 class QuizQuestion(models.Model):
     QUIZ_TYPE_CHOICES = [

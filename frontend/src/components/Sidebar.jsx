@@ -16,6 +16,12 @@ import {
   ChevronRight,
   CheckCircle2,
   X,
+  Network,
+  Cpu,
+  Layers,
+  Server,
+  Activity,
+  ArrowRight,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -41,17 +47,27 @@ export const ADMIN_ITEMS = [
   { id: 'admin_portal', label: 'Admin Portal', icon: ShieldCheck, requires: 'ADMIN' },
 ];
 
-export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, completedModules = [] }) {
+export default function Sidebar({
+  isOpen,
+  onClose,
+  activeTab,
+  onSelectTab,
+  completedModules = [],
+  currentSubject = 'FSD',
+  cnExperiments = [],
+  activeExperimentSlug,
+  onSelectExperiment,
+}) {
   const { isFaculty, isAdmin } = useAuth();
 
   if (!isOpen) return null;
 
   return (
-    <aside className="w-full h-full overflow-y-auto py-4 px-4 sm:px-6 select-none flex flex-col justify-between">
-      <div className="space-y-1">
+    <aside className="w-full h-full overflow-y-auto py-4 px-3 sm:px-5 select-none flex flex-col justify-between">
+      <div className="space-y-3">
         {/* Mobile Close Bar */}
         {onClose && (
-          <div className="flex md:hidden items-center justify-between pb-3 mb-3 border-b border-gray-200">
+          <div className="flex md:hidden items-center justify-between pb-3 mb-2 border-b border-gray-200">
             <span className="text-sm font-bold text-[#2c99ce] tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Virtual <span className="text-[#689f38]">Labs</span> Menu
             </span>
@@ -65,7 +81,57 @@ export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, compl
           </div>
         )}
 
+        {/* If in Computer Networks, render Experiment Badge or Selector */}
+        {currentSubject === 'CN' && cnExperiments.length > 0 && (
+          <div className="bg-sky-50/70 border border-sky-200 rounded-xl p-3 mb-3 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#0284c7] flex items-center gap-1.5" style={{ fontFamily: "'Raleway', sans-serif" }}>
+                <Network className="w-3.5 h-3.5" />
+                Computer Networks
+              </span>
+              <span className="text-[10px] text-sky-800 font-mono font-bold bg-sky-100 px-1.5 py-0.5 rounded">
+                216U01L502
+              </span>
+            </div>
+
+            {cnExperiments.length > 1 ? (
+              <div className="space-y-1 max-h-56 overflow-y-auto pr-1">
+                {cnExperiments.map((exp) => {
+                  const isSelected = activeExperimentSlug === exp.slug;
+                  return (
+                    <button
+                      key={exp.slug}
+                      onClick={() => onSelectExperiment && onSelectExperiment(exp.slug)}
+                      className={`w-full text-left p-2 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center justify-between gap-1.5 ${
+                        isSelected
+                          ? 'bg-[#0284c7] text-white shadow-xs'
+                          : 'bg-white hover:bg-sky-100/60 text-slate-700 border border-slate-200'
+                      }`}
+                    >
+                      <div className="truncate">
+                        <span className="font-bold mr-1">Exp {exp.number}:</span>
+                        <span>{exp.shortTitle || exp.title}</span>
+                      </div>
+                      {isSelected && <ChevronRight className="w-3.5 h-3.5 shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="p-2 rounded-lg bg-white border border-sky-200 text-xs font-bold text-slate-800 flex items-center justify-between shadow-2xs">
+                <div className="truncate">
+                  <span className="text-[#0284c7] mr-1">Exp {cnExperiments[0].number}:</span>
+                  <span>{cnExperiments[0].shortTitle || cnExperiments[0].title}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Core Student Modules matching official Virtual Labs sidebar */}
+        <div className="text-[11px] font-bold tracking-wider uppercase text-slate-400 pb-1" style={{ fontFamily: "'Raleway', sans-serif" }}>
+          Laboratory Modules
+        </div>
         <nav className="nav-menu space-y-1">
           {NAV_ITEMS.map((item) => {
             const isActive = activeTab === item.id;
@@ -73,7 +139,7 @@ export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, compl
               <div key={item.id} className="d-flex nav-menu-body">
                 <button
                   onClick={() => onSelectTab(item.id)}
-                  className={`w-full text-left py-1.5 transition-colors cursor-pointer text-[1.15rem] sm:text-[1.2rem] font-bold block ${
+                  className={`w-full text-left py-1.5 transition-colors cursor-pointer text-[1.1rem] sm:text-[1.15rem] font-bold block ${
                     isActive
                       ? 'text-[#ff6600]'
                       : 'text-[#3e6389] hover:text-[#ff6600]'
@@ -89,7 +155,7 @@ export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, compl
 
         {/* Faculty Portal (Visible to Faculty & Admin) */}
         {isFaculty && (
-          <div className="pt-4 mt-3 border-t border-[#e8e8e8] space-y-1">
+          <div className="pt-3 mt-3 border-t border-[#e8e8e8] space-y-1">
             <div className="text-[11px] font-bold tracking-wider uppercase text-emerald-600 pb-1" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Faculty Zone
             </div>
@@ -99,7 +165,7 @@ export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, compl
                 <button
                   key={item.id}
                   onClick={() => onSelectTab(item.id)}
-                  className={`w-full text-left py-1.5 transition-colors cursor-pointer text-[1.15rem] sm:text-[1.2rem] font-bold block ${
+                  className={`w-full text-left py-1.5 transition-colors cursor-pointer text-[1.1rem] sm:text-[1.15rem] font-bold block ${
                     isActive
                       ? 'text-[#ff6600]'
                       : 'text-[#3e6389] hover:text-[#ff6600]'
@@ -125,7 +191,7 @@ export default function Sidebar({ isOpen, onClose, activeTab, onSelectTab, compl
                 <button
                   key={item.id}
                   onClick={() => onSelectTab(item.id)}
-                  className={`w-full text-left py-1.5 transition-colors cursor-pointer text-[1.15rem] sm:text-[1.2rem] font-bold block ${
+                  className={`w-full text-left py-1.5 transition-colors cursor-pointer text-[1.1rem] sm:text-[1.15rem] font-bold block ${
                     isActive
                       ? 'text-[#ff6600]'
                       : 'text-[#3e6389] hover:text-[#ff6600]'

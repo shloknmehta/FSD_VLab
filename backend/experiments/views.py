@@ -11,13 +11,30 @@ from .serializers import (
     QuizSubmissionSerializer
 )
 
+class ExperimentListView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        subject = request.query_params.get('subject')
+        experiments = Experiment.objects.all()
+        if subject:
+            experiments = experiments.filter(subject=subject.upper())
+        serializer = ExperimentSerializer(experiments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class ExperimentDetailsView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
         slug = request.query_params.get('slug')
+        subject = request.query_params.get('subject')
+
         if slug:
             experiment = get_object_or_404(Experiment, slug=slug)
+        elif subject:
+            experiment = Experiment.objects.filter(subject=subject.upper()).first()
+            if not experiment:
+                return Response({"error": f"No experiments found for subject {subject}."}, status=status.HTTP_404_NOT_FOUND)
         else:
             experiment = Experiment.objects.first()
             if not experiment:

@@ -47,23 +47,27 @@ def test_suite():
     resp = client.post('/api/auth/switch-demo-role/', {"role": "STUDENT"}, format='json')
     client.credentials(HTTP_AUTHORIZATION='Token ' + resp.data['token'])
 
-    # 3. Experiments Details
-    resp = client.get('/api/experiments/details/')
-    log_test("GET /api/experiments/details/", resp.status_code == 200, f"Title: {resp.data.get('title')[:35]}...")
+    # 3. Experiments Details and List
+    resp = client.get('/api/experiments/list/?subject=CN')
+    log_test("GET /api/experiments/list/?subject=CN", resp.status_code == 200 and len(resp.data) >= 1, f"CN Count: {len(resp.data)}")
+
+    resp = client.get('/api/experiments/details/?slug=django-form-validation')
+    log_test("GET /api/experiments/details/?slug=django-form-validation", resp.status_code == 200, f"Title: {resp.data.get('title')[:30]}...")
 
     # Experiments Pretest
-    pre_resp = client.get('/api/experiments/quiz/?type=PRETEST')
+    pre_resp = client.get('/api/experiments/quiz/?slug=django-form-validation&type=PRETEST')
     q_count = len(pre_resp.data.get('questions', []))
     log_test("GET /api/experiments/quiz/?type=PRETEST", pre_resp.status_code == 200 and q_count == 5, f"Questions count: {q_count}")
 
     # Experiments Posttest
-    post_resp = client.get('/api/experiments/quiz/?type=POSTTEST')
+    post_resp = client.get('/api/experiments/quiz/?slug=django-form-validation&type=POSTTEST')
     q_count_post = len(post_resp.data.get('questions', []))
     log_test("GET /api/experiments/quiz/?type=POSTTEST", post_resp.status_code == 200 and q_count_post == 5, f"Questions count: {q_count_post}")
 
     # Experiments Quiz Submit
     q1 = pre_resp.data['questions'][0]['id']
     resp = client.post('/api/experiments/quiz/submit/', {
+        "experiment_slug": "django-form-validation",
         "quiz_type": "PRETEST",
         "answers": {
             str(q1): "form.is_valid()"

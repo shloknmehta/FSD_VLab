@@ -8,7 +8,7 @@ class ExperimentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experiment
         fields = [
-            'id', 'slug', 'title', 'aim', 'overview',
+            'id', 'subject', 'experiment_number', 'slug', 'title', 'aim', 'overview',
             'recap', 'analysis', 'references', 'estimated_time',
             'estimated_minutes', 'pretest_count', 'posttest_count', 'created_at'
         ]

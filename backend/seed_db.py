@@ -349,6 +349,10 @@ def seed():
             status="RESOLVED"
         )
 
+    # 5. Computer Networks Experiments
+    from seed_cn import seed_cn
+    seed_cn()
+
     print("=== SEEDING COMPLETED SUCCESSFULLY ===")
 
 if __name__ == '__main__':

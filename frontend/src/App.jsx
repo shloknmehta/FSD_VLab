@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import RateMeModal from './components/RateMeModal';
 import ReportBugModal from './components/ReportBugModal';
 import AuthModal from './components/AuthModal';
+import { CN_EXPERIMENTS } from './data/cnExperimentsData';
 import {
   OverviewView,
   RecapView,
@@ -23,6 +24,17 @@ import {
   FacultyPortalView,
   AdminPortalView,
 } from './components/ModuleViews';
+import {
+  CNOverviewView,
+  CNRecapView,
+  CNPretestView,
+  CNVisualizerView,
+  CNSimulationView,
+  CNCodeAssessmentView,
+  CNAnalysisView,
+  CNPosttestView,
+  CNReferencesView,
+} from './components/cn/CNModuleViews';
 
 function LabPlatform() {
   const { authModalOpen, closeAuthModal, authModalMode } = useAuth();
@@ -31,6 +43,36 @@ function LabPlatform() {
   const [rateModalOpen, setRateModalOpen] = useState(false);
   const [bugModalOpen, setBugModalOpen] = useState(false);
   const [userRating, setUserRating] = useState(5);
+
+  // Multi-Subject State: 'FSD' or 'CN'
+  const [currentSubject, setCurrentSubject] = useState(() => {
+    try {
+      return localStorage.getItem('vlab_current_subject') || 'FSD';
+    } catch {
+      return 'FSD';
+    }
+  });
+
+  // Active Computer Networks Experiment Slug
+  const [activeCnSlug, setActiveCnSlug] = useState('cn-vlan-switching');
+
+  const currentCnExp = CN_EXPERIMENTS.find((e) => e.slug === activeCnSlug) || CN_EXPERIMENTS[0];
+
+  const handleSubjectChange = (subject) => {
+    setCurrentSubject(subject);
+    setActiveTab('aim');
+    try {
+      localStorage.setItem('vlab_current_subject', subject);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleSelectCnExperiment = (slug) => {
+    setActiveCnSlug(slug);
+    setActiveTab('aim');
+  };
+
   const [completedModules, setCompletedModules] = useState(() => {
     try {
       const saved = localStorage.getItem('fsd_vlab_completed_modules');
@@ -59,6 +101,104 @@ function LabPlatform() {
   };
 
   const renderActiveTabContent = () => {
+    // 1. If in Computer Networks (CN) Subject
+    if (currentSubject === 'CN') {
+      switch (activeTab) {
+        case 'aim':
+          return (
+            <AimSection
+              experiment={currentCnExp}
+              onNavigateNext={() => handleSelectTab('overview')}
+            />
+          );
+        case 'overview':
+          return (
+            <CNOverviewView
+              experiment={currentCnExp}
+              onNext={() => handleSelectTab('recap')}
+            />
+          );
+        case 'recap':
+          return (
+            <CNRecapView
+              experiment={currentCnExp}
+              onNext={() => handleSelectTab('pretest')}
+            />
+          );
+        case 'pretest':
+          return (
+            <CNPretestView
+              experiment={currentCnExp}
+              onNext={() => handleSelectTab('visualizer')}
+              onQuizPassed={() => markModuleCompleted('pretest')}
+            />
+          );
+        case 'visualizer':
+          return (
+            <CNVisualizerView
+              experiment={currentCnExp}
+              onNext={() => handleSelectTab('simulation')}
+            />
+          );
+        case 'simulation':
+          return (
+            <CNSimulationView
+              experiment={currentCnExp}
+              onNext={() => handleSelectTab('code_assessment')}
+            />
+          );
+        case 'code_assessment':
+          return (
+            <CNCodeAssessmentView
+              experiment={currentCnExp}
+              onNext={() => handleSelectTab('analysis')}
+              onChallengeSolved={() => markModuleCompleted('code_assessment')}
+            />
+          );
+        case 'analysis':
+          return (
+            <CNAnalysisView
+              experiment={currentCnExp}
+              onNext={() => handleSelectTab('posttest')}
+            />
+          );
+        case 'posttest':
+          return (
+            <CNPosttestView
+              experiment={currentCnExp}
+              onNext={() => handleSelectTab('references')}
+              onQuizPassed={() => markModuleCompleted('posttest')}
+            />
+          );
+        case 'references':
+          return (
+            <CNReferencesView
+              experiment={currentCnExp}
+              onNext={() => handleSelectTab('feedback')}
+            />
+          );
+        case 'feedback':
+          return (
+            <FeedbackView
+              onOpenRateModal={() => setRateModalOpen(true)}
+              onFeedbackSubmitted={() => markModuleCompleted('feedback')}
+            />
+          );
+        case 'faculty_portal':
+          return <FacultyPortalView />;
+        case 'admin_portal':
+          return <AdminPortalView />;
+        default:
+          return (
+            <AimSection
+              experiment={currentCnExp}
+              onNavigateNext={() => handleSelectTab('overview')}
+            />
+          );
+      }
+    }
+
+    // 2. Default: Full Stack Development (FSD) Subject
     switch (activeTab) {
       case 'aim':
         return <AimSection onNavigateNext={() => handleSelectTab('overview')} />;
@@ -111,22 +251,28 @@ function LabPlatform() {
     }
   };
 
+  const courseTitle = currentSubject === 'CN' ? 'Computer Networks (216U01L502)' : 'Full Stack Development';
+  const currentExpTitle = currentSubject === 'CN' ? currentCnExp.title : 'Experiment 6: Custom Form Validation';
+
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans text-slate-800">
-      {/* 1. Header with KJSSE Virtual Labs branding, Stars, Rate Me, Report a Bug & Demo Switcher */}
+      {/* 1. Header with KJSSE Virtual Labs branding, Stars, Rate Me, Report a Bug & Subject Switcher */}
       <Header
         sidebarOpen={sidebarOpen}
         onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
         onOpenRateModal={() => setRateModalOpen(true)}
         onOpenBugModal={() => setBugModalOpen(true)}
         activeRating={userRating}
+        currentSubject={currentSubject}
+        onSelectSubject={handleSubjectChange}
       />
 
       {/* 2. Breadcrumbs matching KJSSE / VLab styling */}
       <Breadcrumbs
         department="Computer Science and Engineering"
-        course="Full Stack Development"
+        course={courseTitle}
         section="Experiments"
+        experimentTitle={currentExpTitle}
       />
 
       {/* 3. Main Workspace Area: Left Sidebar + Right Content */}
@@ -151,19 +297,27 @@ function LabPlatform() {
                 setSidebarOpen(false);
               }}
               completedModules={completedModules}
+              currentSubject={currentSubject}
+              cnExperiments={CN_EXPERIMENTS}
+              activeExperimentSlug={activeCnSlug}
+              onSelectExperiment={handleSelectCnExperiment}
             />
           </div>
         )}
 
         {/* Desktop Sidebar: In-flow beside main content */}
         {sidebarOpen && (
-          <div className="hidden md:block shrink-0 w-56 sm:w-60 md:w-64 bg-white border-r border-[#e8e8e8]">
+          <div className="hidden md:block shrink-0 w-60 sm:w-64 md:w-72 bg-white border-r border-[#e8e8e8]">
             <Sidebar
               isOpen={sidebarOpen}
               onClose={() => setSidebarOpen(false)}
               activeTab={activeTab}
               onSelectTab={(tabId) => handleSelectTab(tabId)}
               completedModules={completedModules}
+              currentSubject={currentSubject}
+              cnExperiments={CN_EXPERIMENTS}
+              activeExperimentSlug={activeCnSlug}
+              onSelectExperiment={handleSelectCnExperiment}
             />
           </div>
         )}
