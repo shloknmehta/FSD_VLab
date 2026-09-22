@@ -179,7 +179,7 @@ export default function Breadcrumbs({
             <span>{department}</span>
           </a>
 
-          <span className="crumb-sep px-0.5 sm:px-1 text-slate-400 font-sans select-none">&gt;</span>
+          <ChevronRight className="w-3.5 h-3.5 mx-0.5 sm:mx-1 text-slate-400 shrink-0" aria-hidden="true" />
 
           {/* 2. Course / Subject Breadcrumb (Clickable -> Opens Course Switcher Dropdown) */}
           <div className="relative inline-flex items-center" ref={dropdownRef}>
@@ -248,7 +248,7 @@ export default function Breadcrumbs({
             )}
           </div>
 
-          <span className="crumb-sep px-0.5 sm:px-1 text-slate-400 font-sans select-none">&gt;</span>
+          <ChevronRight className="w-3.5 h-3.5 mx-0.5 sm:mx-1 text-slate-400 shrink-0" aria-hidden="true" />
 
           {/* 3. Section: "Experiments" (Clickable -> Opens All Experiments Modal) */}
           <button
@@ -263,7 +263,7 @@ export default function Breadcrumbs({
           {/* 4. Active Experiment Title (Clickable -> Resets to Aim) */}
           {experimentTitle && (
             <>
-              <span className="crumb-sep px-0.5 sm:px-1 text-slate-400 font-sans select-none">&gt;</span>
+              <ChevronRight className="w-3.5 h-3.5 mx-0.5 sm:mx-1 text-slate-400 shrink-0" aria-hidden="true" />
               <button
                 type="button"
                 onClick={handleExperimentClick}
