@@ -97,13 +97,13 @@ export default function CNVlanSimulator() {
         </div>
 
         {/* 24-Port Visual Switch Chassis */}
-        <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 sm:p-4">
-          <div className="text-[10px] text-slate-400 font-mono mb-2 flex justify-between">
+        <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 sm:p-4 overflow-x-auto">
+          <div className="text-[10px] text-slate-400 font-mono mb-2 flex justify-between min-w-[500px]">
             <span>FastEthernet 0/1 — 0/24 (RJ45 Access Ports)</span>
             <span>GigabitEthernet 0/1 - 0/2 (Trunk Uplinks)</span>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center justify-between gap-2 min-w-[500px]">
             {/* Rows of Ports */}
             <div className="grid grid-cols-12 gap-1 sm:gap-2">
               {[...Array(24)].map((_, i) => {
