@@ -83,32 +83,6 @@ export default function Sidebar({
           </div>
         )}
 
-        {/* Subject Switcher in Sidebar (Essential for mobile & quick desktop access) */}
-        <div className="p-1 bg-slate-100/90 rounded-xl border border-slate-200 grid grid-cols-2 gap-1 mb-2">
-          <button
-            type="button"
-            onClick={() => onSelectSubject && onSelectSubject('FSD')}
-            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer text-center ${
-              currentSubject === 'FSD'
-                ? 'bg-white text-[#0284c7] shadow-xs border border-slate-200'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            Full Stack Dev
-          </button>
-          <button
-            type="button"
-            onClick={() => onSelectSubject && onSelectSubject('CN')}
-            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer text-center flex items-center justify-center gap-1 ${
-              currentSubject === 'CN'
-                ? 'bg-white text-[#0284c7] shadow-xs border border-slate-200'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <span>Computer Networks</span>
-          </button>
-        </div>
-
         {/* If in Computer Networks, render Active Experiment Card */}
         {currentSubject === 'CN' && cnExperiments.length > 0 && (
           <div className="bg-sky-50/70 border border-sky-200 rounded-xl p-3 mb-3 space-y-2">

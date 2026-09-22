@@ -306,6 +306,11 @@ function LabPlatform() {
         course={courseTitle}
         section="Experiments"
         experimentTitle={currentExpTitle}
+        currentSubject={currentSubject}
+        onSelectSubject={handleSubjectChange}
+        onSelectTab={handleSelectTab}
+        onSelectExperiment={handleSelectCnExperiment}
+        cnExperiments={CN_EXPERIMENTS}
         activeTab={activeTab}
         onNavigateToBroadArea={() => setActiveTab('broad_area')}
         onNavigateToCourseHome={() => setActiveTab('aim')}

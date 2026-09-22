@@ -178,3 +178,4 @@ export default function BroadAreaView({ onSelectSubject, onStartLab }) {
     </div>
   );
 }
+
