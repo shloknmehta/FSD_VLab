@@ -21,6 +21,7 @@ export default function Header({
   activeRating = 0,
   currentSubject = 'FSD',
   onSelectSubject,
+  onNavigateHome,
 }) {
   const {
     currentUser,
@@ -74,7 +75,11 @@ export default function Header({
           </button>
 
           {/* Official Virtual Labs Logo */}
-          <div className="flex items-center gap-1 sm:gap-2 cursor-pointer min-w-0">
+          <div
+            onClick={onNavigateHome}
+            className="flex items-center gap-1 sm:gap-2 cursor-pointer min-w-0 hover:opacity-90 transition-opacity"
+            title="Go to Virtual Labs Home"
+          >
             {/* SVG Beaker + Gear Emblem */}
             <svg
               className="w-6 h-6 sm:w-10 sm:h-10 shrink-0"

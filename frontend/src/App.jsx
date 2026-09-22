@@ -40,8 +40,9 @@ import ExperimentsListView from './views/ExperimentsListView';
 
 function LabPlatform() {
   const { authModalOpen, closeAuthModal, authModalMode } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(() => (typeof window !== 'undefined' ? window.innerWidth >= 768 : true));
-  const [activeTab, setActiveTab] = useState('aim');
+  // Default to Broad Area Home Page with full-width layout (sidebar collapsed)
+  const [activeTab, setActiveTab] = useState('broad_area');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [rateModalOpen, setRateModalOpen] = useState(false);
   const [bugModalOpen, setBugModalOpen] = useState(false);
   const [userRating, setUserRating] = useState(5);
@@ -63,6 +64,7 @@ function LabPlatform() {
   const handleSubjectChange = (subject) => {
     setCurrentSubject(subject);
     setActiveTab('aim');
+    setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
     try {
       localStorage.setItem('vlab_current_subject', subject);
     } catch (e) {
@@ -70,9 +72,19 @@ function LabPlatform() {
     }
   };
 
+  const handleStartLab = (subject) => {
+    handleSubjectChange(subject);
+  };
+
+  const handleNavigateToBroadArea = () => {
+    setActiveTab('broad_area');
+    setSidebarOpen(false);
+  };
+
   const handleSelectCnExperiment = (slug) => {
     setActiveCnSlug(slug);
     setActiveTab('aim');
+    setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
   };
 
   const [completedModules, setCompletedModules] = useState(() => {
@@ -290,6 +302,7 @@ function LabPlatform() {
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans text-slate-800">
       {/* 1. Header with KJSSE Virtual Labs branding, Stars, Rate Me, Report a Bug & Subject Switcher */}
+      {/* 1. Header with KJSSE Virtual Labs branding, Stars, Rate Me, Report a Bug */}
       <Header
         sidebarOpen={sidebarOpen}
         onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
@@ -298,6 +311,7 @@ function LabPlatform() {
         activeRating={userRating}
         currentSubject={currentSubject}
         onSelectSubject={handleSubjectChange}
+        onNavigateHome={handleNavigateToBroadArea}
       />
 
       {/* 2. Breadcrumbs matching KJSSE / VLab styling */}
@@ -306,16 +320,20 @@ function LabPlatform() {
         course={courseTitle}
         section="Experiments"
         experimentTitle={currentExpTitle}
-        currentSubject={currentSubject}
-        onSelectSubject={handleSubjectChange}
-        onSelectTab={handleSelectTab}
-        onSelectExperiment={handleSelectCnExperiment}
-        cnExperiments={CN_EXPERIMENTS}
         activeTab={activeTab}
-        onNavigateToBroadArea={() => setActiveTab('broad_area')}
-        onNavigateToCourseHome={() => setActiveTab('aim')}
-        onNavigateToExperimentsList={() => setActiveTab('experiments_list')}
-        onNavigateToExperimentAim={() => setActiveTab('aim')}
+        onNavigateToBroadArea={handleNavigateToBroadArea}
+        onNavigateToCourseHome={() => {
+          setActiveTab('aim');
+          setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+        }}
+        onNavigateToExperimentsList={() => {
+          setActiveTab('experiments_list');
+          setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+        }}
+        onNavigateToExperimentAim={() => {
+          setActiveTab('aim');
+          setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+        }}
       />
 
       {/* 3. Main Workspace Area: Left Sidebar + Right Content */}
@@ -349,8 +367,8 @@ function LabPlatform() {
           </div>
         )}
 
-        {/* Desktop Sidebar: In-flow beside main content */}
-        {sidebarOpen && (
+        {/* Desktop Sidebar: In-flow beside main content (Hidden on Broad Area Home Page) */}
+        {sidebarOpen && activeTab !== 'broad_area' && (
           <div className="hidden md:block shrink-0 w-60 sm:w-64 md:w-72 bg-white border-r border-[#e8e8e8]">
             <Sidebar
               isOpen={sidebarOpen}
