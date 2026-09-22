@@ -2812,6 +2812,7 @@ export function AdminPortalView() {
               title="Refresh User List"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loadingUsers ? 'animate-spin' : ''}`} />
+              <span className="hidden sm:inline">Refresh</span>
             </button>
           </div>
         </div>

@@ -56,7 +56,7 @@ export default function Header({
   };
 
   return (
-    <header className="bg-white sticky top-0 z-50 border-b-[8px] border-[#ff6600] font-['Raleway',sans-serif] shadow-xs select-none w-full max-w-full overflow-x-hidden">
+    <header className="bg-white sticky top-0 z-50 border-b-[8px] border-[#ff6600] font-['Raleway',sans-serif] shadow-xs select-none w-full">
       {/* Main Bar */}
       <div className="w-full px-2 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-2 max-w-full">
         {/* Left: Hamburger & Virtual Labs Brand */}
