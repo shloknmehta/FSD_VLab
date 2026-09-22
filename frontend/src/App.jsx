@@ -35,6 +35,8 @@ import {
   CNPosttestView,
   CNReferencesView,
 } from './components/cn/CNModuleViews';
+import BroadAreaView from './views/BroadAreaView';
+import ExperimentsListView from './views/ExperimentsListView';
 
 function LabPlatform() {
   const { authModalOpen, closeAuthModal, authModalMode } = useAuth();
@@ -101,6 +103,37 @@ function LabPlatform() {
   };
 
   const renderActiveTabContent = () => {
+    // 0. Global Broad Area & Experiments List Views
+    if (activeTab === 'broad_area') {
+      return (
+        <BroadAreaView
+          onSelectSubject={(subj) => {
+            handleSubjectChange(subj);
+            setActiveTab('aim');
+          }}
+          onStartLab={(subj) => {
+            handleSubjectChange(subj);
+            setActiveTab('aim');
+          }}
+        />
+      );
+    }
+
+    if (activeTab === 'experiments_list') {
+      return (
+        <ExperimentsListView
+          currentSubject={currentSubject}
+          onSelectExperiment={(slug) => {
+            if (currentSubject === 'CN') {
+              handleSelectCnExperiment(slug);
+            }
+            setActiveTab('aim');
+          }}
+          cnExperiments={CN_EXPERIMENTS}
+        />
+      );
+    }
+
     // 1. If in Computer Networks (CN) Subject
     if (currentSubject === 'CN') {
       switch (activeTab) {
@@ -273,11 +306,11 @@ function LabPlatform() {
         course={courseTitle}
         section="Experiments"
         experimentTitle={currentExpTitle}
-        currentSubject={currentSubject}
-        onSelectSubject={handleSubjectChange}
-        onSelectTab={handleSelectTab}
-        onSelectExperiment={handleSelectCnExperiment}
-        cnExperiments={CN_EXPERIMENTS}
+        activeTab={activeTab}
+        onNavigateToBroadArea={() => setActiveTab('broad_area')}
+        onNavigateToCourseHome={() => setActiveTab('aim')}
+        onNavigateToExperimentsList={() => setActiveTab('experiments_list')}
+        onNavigateToExperimentAim={() => setActiveTab('aim')}
       />
 
       {/* 3. Main Workspace Area: Left Sidebar + Right Content */}

@@ -26,6 +26,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 
 export const NAV_ITEMS = [
+  { id: 'experiments_list', label: 'List of experiments', icon: FlaskConical },
   { id: 'aim', label: 'Aim', icon: Target },
   { id: 'overview', label: 'Overview', icon: BookOpen },
   { id: 'recap', label: 'Recap', icon: RotateCcw },
