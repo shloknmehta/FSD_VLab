@@ -171,14 +171,18 @@ export function CNRecapView({ experiment, onNext }) {
 
 // 3. CN Pretest View
 export function CNPretestView({ experiment, onNext, onQuizPassed }) {
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState(() => experiment?.pretest || []);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
   useEffect(() => {
-    // Attempt to load questions from backend; fallback to local experiment data
-    if (experiment) {
+    // If experiment has local pretest, make sure it's loaded immediately
+    if (experiment?.pretest?.length > 0) {
+      setQuestions(experiment.pretest);
+    }
+    // Attempt to load/sync questions from backend
+    if (experiment?.slug) {
       api
         .get(`/experiments/quiz/?slug=${experiment.slug}&type=PRETEST`)
         .then((res) => {
@@ -187,7 +191,9 @@ export function CNPretestView({ experiment, onNext, onQuizPassed }) {
           }
         })
         .catch(() => {
-          // If offline/fallback, use any local pretest questions if available
+          if (experiment?.pretest) {
+            setQuestions(experiment.pretest);
+          }
         });
     }
   }, [experiment]);
@@ -588,13 +594,16 @@ export function CNAnalysisView({ experiment, onNext }) {
 // 8. CN Posttest & Certificate View
 export function CNPosttestView({ experiment, onNext, onQuizPassed }) {
   const { currentUser } = useAuth();
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState(() => experiment?.posttest || []);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
   useEffect(() => {
-    if (experiment) {
+    if (experiment?.posttest?.length > 0) {
+      setQuestions(experiment.posttest);
+    }
+    if (experiment?.slug) {
       api
         .get(`/experiments/quiz/?slug=${experiment.slug}&type=POSTTEST`)
         .then((res) => {
@@ -602,7 +611,11 @@ export function CNPosttestView({ experiment, onNext, onQuizPassed }) {
             setQuestions(res.data.questions);
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          if (experiment?.posttest) {
+            setQuestions(experiment.posttest);
+          }
+        });
     }
   }, [experiment]);
 

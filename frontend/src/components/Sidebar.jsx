@@ -54,6 +54,7 @@ export default function Sidebar({
   onSelectTab,
   completedModules = [],
   currentSubject = 'FSD',
+  onSelectSubject,
   cnExperiments = [],
   activeExperimentSlug,
   onSelectExperiment,
@@ -81,13 +82,39 @@ export default function Sidebar({
           </div>
         )}
 
-        {/* If in Computer Networks, render Experiment Badge or Selector */}
+        {/* Subject Switcher in Sidebar (Essential for mobile & quick desktop access) */}
+        <div className="p-1 bg-slate-100/90 rounded-xl border border-slate-200 grid grid-cols-2 gap-1 mb-2">
+          <button
+            type="button"
+            onClick={() => onSelectSubject && onSelectSubject('FSD')}
+            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer text-center ${
+              currentSubject === 'FSD'
+                ? 'bg-white text-[#0284c7] shadow-xs border border-slate-200'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            Full Stack Dev
+          </button>
+          <button
+            type="button"
+            onClick={() => onSelectSubject && onSelectSubject('CN')}
+            className={`py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer text-center flex items-center justify-center gap-1 ${
+              currentSubject === 'CN'
+                ? 'bg-white text-[#0284c7] shadow-xs border border-slate-200'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <span>Computer Networks</span>
+          </button>
+        </div>
+
+        {/* If in Computer Networks, render Active Experiment Card */}
         {currentSubject === 'CN' && cnExperiments.length > 0 && (
           <div className="bg-sky-50/70 border border-sky-200 rounded-xl p-3 mb-3 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#0284c7] flex items-center gap-1.5" style={{ fontFamily: "'Raleway', sans-serif" }}>
                 <Network className="w-3.5 h-3.5" />
-                Computer Networks
+                Active Experiment
               </span>
               <span className="text-[10px] text-sky-800 font-mono font-bold bg-sky-100 px-1.5 py-0.5 rounded">
                 216U01L502
@@ -101,7 +128,10 @@ export default function Sidebar({
                   return (
                     <button
                       key={exp.slug}
-                      onClick={() => onSelectExperiment && onSelectExperiment(exp.slug)}
+                      onClick={() => {
+                        if (onSelectExperiment) onSelectExperiment(exp.slug);
+                        if (onSelectTab) onSelectTab('aim');
+                      }}
                       className={`w-full text-left p-2 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center justify-between gap-1.5 ${
                         isSelected
                           ? 'bg-[#0284c7] text-white shadow-xs'
@@ -118,12 +148,21 @@ export default function Sidebar({
                 })}
               </div>
             ) : (
-              <div className="p-2 rounded-lg bg-white border border-sky-200 text-xs font-bold text-slate-800 flex items-center justify-between shadow-2xs">
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSelectExperiment) onSelectExperiment(cnExperiments[0].slug);
+                  if (onSelectTab) onSelectTab('aim');
+                }}
+                className="w-full p-2.5 rounded-lg bg-white hover:bg-sky-50 border border-sky-200 text-xs font-bold text-slate-800 flex items-center justify-between shadow-2xs transition cursor-pointer text-left"
+                title="Click to view Experiment Aim"
+              >
                 <div className="truncate">
                   <span className="text-[#0284c7] mr-1">Exp {cnExperiments[0].number}:</span>
                   <span>{cnExperiments[0].shortTitle || cnExperiments[0].title}</span>
                 </div>
-              </div>
+                <ChevronRight className="w-3.5 h-3.5 text-[#0284c7] shrink-0" />
+              </button>
             )}
           </div>
         )}

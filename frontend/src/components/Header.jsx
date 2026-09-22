@@ -135,29 +135,33 @@ export default function Header({
         </div>
 
         {/* Center: Course / Subject Switcher */}
-        <div className="flex items-center bg-slate-100/90 p-1 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="flex items-center bg-slate-100/90 p-0.5 sm:p-1 rounded-xl border border-slate-200 shadow-2xs shrink-0">
           <button
             type="button"
             onClick={() => onSelectSubject && onSelectSubject('FSD')}
-            className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+            className={`px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
               currentSubject === 'FSD'
                 ? 'bg-white text-[#0284c7] shadow-xs border border-slate-200/80'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
+            title="Switch to Full Stack Development"
           >
-            <span>Full Stack Dev</span>
+            <span className="hidden sm:inline">Full Stack Dev</span>
+            <span className="sm:hidden">FSD</span>
           </button>
           <button
             type="button"
             onClick={() => onSelectSubject && onSelectSubject('CN')}
-            className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+            className={`px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
               currentSubject === 'CN'
                 ? 'bg-white text-[#0284c7] shadow-xs border border-slate-200/80'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
+            title="Switch to Computer Networks"
           >
-            <span>Computer Networks</span>
-            <span className="hidden sm:inline text-[9px] bg-sky-100 text-sky-800 px-1 py-0.5 rounded font-mono font-bold">
+            <span className="hidden sm:inline">Computer Networks</span>
+            <span className="sm:hidden">CN</span>
+            <span className="hidden md:inline text-[9px] bg-sky-100 text-sky-800 px-1 py-0.5 rounded font-mono font-bold">
               216U01L502
             </span>
           </button>

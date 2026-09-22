@@ -273,6 +273,8 @@ function LabPlatform() {
         course={courseTitle}
         section="Experiments"
         experimentTitle={currentExpTitle}
+        onSelectSubject={handleSubjectChange}
+        onSelectTab={handleSelectTab}
       />
 
       {/* 3. Main Workspace Area: Left Sidebar + Right Content */}
@@ -298,6 +300,7 @@ function LabPlatform() {
               }}
               completedModules={completedModules}
               currentSubject={currentSubject}
+              onSelectSubject={handleSubjectChange}
               cnExperiments={CN_EXPERIMENTS}
               activeExperimentSlug={activeCnSlug}
               onSelectExperiment={handleSelectCnExperiment}
@@ -315,6 +318,7 @@ function LabPlatform() {
               onSelectTab={(tabId) => handleSelectTab(tabId)}
               completedModules={completedModules}
               currentSubject={currentSubject}
+              onSelectSubject={handleSubjectChange}
               cnExperiments={CN_EXPERIMENTS}
               activeExperimentSlug={activeCnSlug}
               onSelectExperiment={handleSelectCnExperiment}
