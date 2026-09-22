@@ -50,16 +50,28 @@ h1, h2, h3, .vlabs-heading {
 /* Official Virtual Labs Breadcrumbs - Responsive */
 .breadcrumbs,
 .breadcrumbs a,
-.breadcrumbs span {
+.breadcrumbs span,
+.breadcrumbs button {
   font-family: 'Raleway', sans-serif;
   color: #337ab7;
   font-size: 0.85rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs button:hover {
+  text-decoration: underline;
+  color: #23527c;
 }
 
 @media (min-width: 640px) {
   .breadcrumbs,
   .breadcrumbs a,
-  .breadcrumbs span {
+  .breadcrumbs span,
+  .breadcrumbs button {
     font-size: 1.05rem;
   }
 }
@@ -67,8 +79,9 @@ h1, h2, h3, .vlabs-heading {
 @media (min-width: 1024px) {
   .breadcrumbs,
   .breadcrumbs a,
-  .breadcrumbs span {
-    font-size: 1.6rem;
+  .breadcrumbs span,
+  .breadcrumbs button {
+    font-size: 1.4rem;
   }
 }
 

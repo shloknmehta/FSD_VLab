@@ -273,8 +273,11 @@ function LabPlatform() {
         course={courseTitle}
         section="Experiments"
         experimentTitle={currentExpTitle}
+        currentSubject={currentSubject}
         onSelectSubject={handleSubjectChange}
         onSelectTab={handleSelectTab}
+        onSelectExperiment={handleSelectCnExperiment}
+        cnExperiments={CN_EXPERIMENTS}
       />
 
       {/* 3. Main Workspace Area: Left Sidebar + Right Content */}
