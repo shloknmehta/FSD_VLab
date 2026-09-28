@@ -144,9 +144,6 @@ h1, h2, h3, .vlabs-heading {
   }
 }
 
-.hidden {
-  display: none !important;
-}
 
 /* Official Footer Section Header Underline */
 .vlabs-footer-sect-name {
