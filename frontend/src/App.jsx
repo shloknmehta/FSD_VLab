@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bug } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
@@ -61,10 +61,21 @@ function LabPlatform() {
 
   const currentCnExp = CN_EXPERIMENTS.find((e) => e.slug === activeCnSlug) || CN_EXPERIMENTS[0];
 
+  // Close slide-over menu drawer on Escape key (convenient on laptops and desktops)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && sidebarOpen) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [sidebarOpen]);
+
   const handleSubjectChange = (subject) => {
     setCurrentSubject(subject);
     setActiveTab('aim');
-    setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+    setSidebarOpen(false);
     try {
       localStorage.setItem('vlab_current_subject', subject);
     } catch (e) {
@@ -84,7 +95,7 @@ function LabPlatform() {
   const handleSelectCnExperiment = (slug) => {
     setActiveCnSlug(slug);
     setActiveTab('aim');
-    setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+    setSidebarOpen(false);
   };
 
   const [completedModules, setCompletedModules] = useState(() => {
@@ -324,31 +335,32 @@ function LabPlatform() {
         onNavigateToBroadArea={handleNavigateToBroadArea}
         onNavigateToCourseHome={() => {
           setActiveTab('aim');
-          setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+          setSidebarOpen(false);
         }}
         onNavigateToExperimentsList={() => {
           setActiveTab('experiments_list');
-          setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+          setSidebarOpen(false);
         }}
         onNavigateToExperimentAim={() => {
           setActiveTab('aim');
-          setSidebarOpen(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+          setSidebarOpen(false);
         }}
       />
 
-      {/* 3. Main Workspace Area: Left Sidebar + Right Content */}
-      <div className="flex-1 flex flex-col md:flex-row w-full bg-white relative">
-        {/* Mobile Backdrop */}
+      {/* 3. Main Workspace Area: Left Sidebar Drawer + Content */}
+      <div className="flex-1 flex flex-col w-full bg-white relative">
+        {/* Backdrop for Slide-over Drawer (Visible on all devices: laptops, desktops, tablets, mobile) */}
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden fixed inset-0 bg-slate-900/50 z-50 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-slate-900/50 z-50 backdrop-blur-xs transition-opacity cursor-pointer"
+            aria-hidden="true"
           />
         )}
 
-        {/* Mobile Sidebar: Slide-over Drawer */}
+        {/* Universal Slide-over Drawer (Laptops + Desktops + Tablets + Mobile) */}
         {sidebarOpen && (
-          <div className="md:hidden fixed top-0 bottom-0 left-0 z-50 w-72 max-w-[85vw] bg-white shadow-2xl overflow-y-auto">
+          <div className="fixed top-0 bottom-0 left-0 z-50 w-72 sm:w-80 max-w-[85vw] bg-white shadow-2xl overflow-y-auto animate-in slide-in-from-left duration-200">
             <Sidebar
               isOpen={sidebarOpen}
               onClose={() => setSidebarOpen(false)}
@@ -357,24 +369,6 @@ function LabPlatform() {
                 handleSelectTab(tabId);
                 setSidebarOpen(false);
               }}
-              completedModules={completedModules}
-              currentSubject={currentSubject}
-              onSelectSubject={handleSubjectChange}
-              cnExperiments={CN_EXPERIMENTS}
-              activeExperimentSlug={activeCnSlug}
-              onSelectExperiment={handleSelectCnExperiment}
-            />
-          </div>
-        )}
-
-        {/* Desktop Sidebar: In-flow beside main content (Hidden on Broad Area Home Page) */}
-        {sidebarOpen && activeTab !== 'broad_area' && (
-          <div className="hidden md:block shrink-0 w-60 sm:w-64 md:w-72 bg-white border-r border-[#e8e8e8]">
-            <Sidebar
-              isOpen={sidebarOpen}
-              onClose={() => setSidebarOpen(false)}
-              activeTab={activeTab}
-              onSelectTab={(tabId) => handleSelectTab(tabId)}
               completedModules={completedModules}
               currentSubject={currentSubject}
               onSelectSubject={handleSubjectChange}

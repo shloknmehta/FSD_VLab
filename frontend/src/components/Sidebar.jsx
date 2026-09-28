@@ -67,16 +67,17 @@ export default function Sidebar({
   return (
     <aside className="w-full h-full overflow-y-auto py-4 px-3 sm:px-5 select-none flex flex-col justify-between">
       <div className="space-y-3">
-        {/* Mobile Close Bar */}
+        {/* Top Header Bar with Close Button (Visible on mobile & laptops) */}
         {onClose && (
-          <div className="flex md:hidden items-center justify-between pb-3 mb-2 border-b border-gray-200">
+          <div className="flex items-center justify-between pb-3 mb-2 border-b border-gray-200">
             <span className="text-sm font-bold text-[#2c99ce] tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Virtual <span className="text-[#689f38]">Labs</span> Menu
             </span>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 cursor-pointer"
+              className="p-1.5 rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 cursor-pointer transition-colors"
               aria-label="Close Navigation"
+              title="Close menu"
             >
               <X className="w-5 h-5" />
             </button>
