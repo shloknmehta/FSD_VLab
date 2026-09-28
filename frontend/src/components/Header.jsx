@@ -69,7 +69,7 @@ export default function Header({
             title={sidebarOpen ? 'Collapse Navigation Menu' : 'Open Navigation Menu'}
             aria-label="Toggle Navigation Menu"
             aria-expanded={sidebarOpen}
-            className="p-1.5 sm:p-2 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer shrink-0"
+            className="lg:hidden p-1.5 sm:p-2 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer shrink-0"
           >
             <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>

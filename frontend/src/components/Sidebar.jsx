@@ -22,6 +22,7 @@ import {
   Server,
   Activity,
   ArrowRight,
+  Building2,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -67,17 +68,16 @@ export default function Sidebar({
   return (
     <aside className="w-full h-full overflow-y-auto py-4 px-3 sm:px-5 select-none flex flex-col justify-between">
       <div className="space-y-3">
-        {/* Top Header Bar with Close Button (Visible on mobile & laptops) */}
+        {/* Mobile Close Bar (only shown in mobile/tablet slide-over drawer) */}
         {onClose && (
-          <div className="flex items-center justify-between pb-3 mb-2 border-b border-gray-200">
+          <div className="flex lg:hidden items-center justify-between pb-3 mb-2 border-b border-gray-200">
             <span className="text-sm font-bold text-[#2c99ce] tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Virtual <span className="text-[#689f38]">Labs</span> Menu
             </span>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 cursor-pointer transition-colors"
+              className="p-1.5 rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 cursor-pointer"
               aria-label="Close Navigation"
-              title="Close menu"
             >
               <X className="w-5 h-5" />
             </button>
@@ -142,6 +142,24 @@ export default function Sidebar({
             )}
           </div>
         )}
+
+        {/* Broad Area Department Link */}
+        <button
+          onClick={() => onSelectTab('broad_area')}
+          className={`w-full text-left py-2 px-3 rounded-lg transition-colors cursor-pointer text-xs font-bold flex items-center justify-between gap-2 mb-2 ${
+            activeTab === 'broad_area'
+              ? 'bg-sky-50 text-[#0284c7] border border-sky-200 shadow-2xs font-extrabold'
+              : 'text-slate-600 hover:text-[#0284c7] hover:bg-slate-50 border border-transparent'
+          }`}
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+          title="Go to Broad Area: Computer Science & Engineering"
+        >
+          <div className="flex items-center gap-2 truncate">
+            <Building2 className="w-4 h-4 text-[#0284c7] shrink-0" />
+            <span className="truncate">Broad Area: CS & Engg</span>
+          </div>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+        </button>
 
         {/* Core Student Modules matching official Virtual Labs sidebar */}
         <div className="text-[11px] font-bold tracking-wider uppercase text-slate-400 pb-1" style={{ fontFamily: "'Raleway', sans-serif" }}>

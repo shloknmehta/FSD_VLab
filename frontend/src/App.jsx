@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Bug } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
@@ -60,17 +60,6 @@ function LabPlatform() {
   const [activeCnSlug, setActiveCnSlug] = useState('cn-vlan-switching');
 
   const currentCnExp = CN_EXPERIMENTS.find((e) => e.slug === activeCnSlug) || CN_EXPERIMENTS[0];
-
-  // Close slide-over menu drawer on Escape key (convenient on laptops and desktops)
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && sidebarOpen) {
-        setSidebarOpen(false);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [sidebarOpen]);
 
   const handleSubjectChange = (subject) => {
     setCurrentSubject(subject);
@@ -347,20 +336,20 @@ function LabPlatform() {
         }}
       />
 
-      {/* 3. Main Workspace Area: Left Sidebar Drawer + Content */}
-      <div className="flex-1 flex flex-col w-full bg-white relative">
-        {/* Backdrop for Slide-over Drawer (Visible on all devices: laptops, desktops, tablets, mobile) */}
+      {/* 3. Main Workspace Area: Persistent Left Sidebar on Laptops/Desktops + Main Content */}
+      <div className="flex-1 flex flex-col lg:flex-row w-full bg-white relative">
+        {/* Mobile & Tablet Backdrop (< lg: only visible when drawer is opened) */}
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
-            className="fixed inset-0 bg-slate-900/50 z-50 backdrop-blur-xs transition-opacity cursor-pointer"
+            className="lg:hidden fixed inset-0 bg-slate-900/50 z-50 backdrop-blur-xs transition-opacity cursor-pointer"
             aria-hidden="true"
           />
         )}
 
-        {/* Universal Slide-over Drawer (Laptops + Desktops + Tablets + Mobile) */}
+        {/* Mobile & Tablet Slide-over Drawer (< lg: only rendered on phones and tablets) */}
         {sidebarOpen && (
-          <div className="fixed top-0 bottom-0 left-0 z-50 w-72 sm:w-80 max-w-[85vw] bg-white shadow-2xl overflow-y-auto animate-in slide-in-from-left duration-200">
+          <div className="lg:hidden fixed top-0 bottom-0 left-0 z-50 w-72 sm:w-80 max-w-[85vw] bg-white shadow-2xl overflow-y-auto animate-in slide-in-from-left duration-200">
             <Sidebar
               isOpen={sidebarOpen}
               onClose={() => setSidebarOpen(false)}
@@ -379,7 +368,23 @@ function LabPlatform() {
           </div>
         )}
 
-        <main className="flex-1 min-w-0 bg-white p-3 sm:p-6 md:p-8 overflow-x-hidden">
+        {/* Persistent In-flow Sidebar for Laptops & Desktops (Always visible on the left, NO blur, NO overlap) */}
+        <div className="hidden lg:block shrink-0 w-64 xl:w-72 bg-white border-r border-[#e8e8e8] min-h-[calc(100vh-140px)]">
+          <Sidebar
+            isOpen={true}
+            activeTab={activeTab}
+            onSelectTab={(tabId) => handleSelectTab(tabId)}
+            completedModules={completedModules}
+            currentSubject={currentSubject}
+            onSelectSubject={handleSubjectChange}
+            cnExperiments={CN_EXPERIMENTS}
+            activeExperimentSlug={activeCnSlug}
+            onSelectExperiment={handleSelectCnExperiment}
+          />
+        </div>
+
+        {/* Main Content Area */}
+        <main className="flex-1 min-w-0 bg-white p-3 sm:p-6 lg:p-8 overflow-x-hidden">
           {renderActiveTabContent()}
         </main>
       </div>
