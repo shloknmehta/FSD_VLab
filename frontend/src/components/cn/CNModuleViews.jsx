@@ -804,7 +804,7 @@ export function CNReferencesView({ experiment, onNext }) {
           onClick={onNext}
           className="px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm flex items-center gap-2 transition cursor-pointer"
         >
-          <span>Share Laboratory Feedback</span>
+          <span>View Contributors</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

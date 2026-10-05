@@ -20,6 +20,7 @@ import {
   AnalysisView,
   PosttestView,
   ReferencesView,
+  ContributorsView,
   FeedbackView,
   FacultyPortalView,
   AdminPortalView,
@@ -219,6 +220,13 @@ function LabPlatform() {
           return (
             <CNReferencesView
               experiment={currentCnExp}
+              onNext={() => handleSelectTab('contributors')}
+            />
+          );
+        case 'contributors':
+          return (
+            <ContributorsView
+              experiment={currentCnExp}
               onNext={() => handleSelectTab('feedback')}
             />
           );
@@ -279,7 +287,9 @@ function LabPlatform() {
           />
         );
       case 'references':
-        return <ReferencesView onNext={() => handleSelectTab('feedback')} />;
+        return <ReferencesView onNext={() => handleSelectTab('contributors')} />;
+      case 'contributors':
+        return <ContributorsView onNext={() => handleSelectTab('feedback')} />;
       case 'feedback':
         return (
           <FeedbackView

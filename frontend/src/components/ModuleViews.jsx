@@ -2326,6 +2326,237 @@ export function ReferencesView() {
           <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7]" />
         </a>
       </div>
+
+      {onNext && (
+        <div className="pt-4 flex justify-end">
+          <button
+            onClick={onNext}
+            className="px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm flex items-center gap-2 transition cursor-pointer"
+          >
+            <span>View Contributors</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// 9b. Contributors View (Matching official Virtual Labs Contributors Panel)
+export function ContributorsView({ experiment, onNext }) {
+  const title = experiment
+    ? experiment.title
+    : 'Django Custom Form Validation using clean() & clean_<field>()';
+
+  const subjectMatterExperts = [
+    {
+      name: 'Prof. Sharma',
+      institute: 'K. J. Somaiya School of Engineering (KJSSE), SVU',
+      email: 'faculty.comp@somaiya.edu',
+      department: 'Department of Computer Engineering',
+      webpage: 'https://kjsse.somaiya.edu/en',
+    },
+    {
+      name: 'Dr. Debasis Samanta',
+      institute: 'K. J. Somaiya School of Engineering (KJSSE), SVU',
+      email: 'vlab.kjsse@somaiya.edu',
+      department: 'Department of Computer Science and Engineering',
+      webpage: 'https://www.somaiya.edu/en',
+    },
+  ];
+
+  const contributorsList = [
+    {
+      srNo: 1,
+      name: 'Shlok Mehta',
+      role: 'Lead Developer & System Architect (Roll: 16010124169)',
+      department: 'Department of Computer Engineering (Batch D3)',
+      institute: 'KJSSE, Somaiya Vidyavihar University',
+    },
+    {
+      srNo: 2,
+      name: 'Aarav Patel',
+      role: 'Developer (Roll: 16010124170)',
+      department: 'Department of Computer Engineering (Batch D3)',
+      institute: 'KJSSE, Somaiya Vidyavihar University',
+    },
+    {
+      srNo: 3,
+      name: 'Priya Sharma',
+      role: 'Developer (Roll: 16010124171)',
+      department: 'Department of Computer Engineering (Batch D3)',
+      institute: 'KJSSE, Somaiya Vidyavihar University',
+    },
+    {
+      srNo: 4,
+      name: 'Rohan Deshmukh',
+      role: 'Developer & Integration (Roll: 16010124172)',
+      department: 'Department of Computer Engineering (Batch D3)',
+      institute: 'KJSSE, Somaiya Vidyavihar University',
+    },
+  ];
+
+  return (
+    <div className="max-w-4xl mx-auto py-4 px-2 sm:px-6 text-slate-800 animate-in fade-in duration-200">
+      {/* Centered Main Title matching official Virtual Labs */}
+      <div className="text-center mb-3">
+        <h1
+          className="text-lg sm:text-2xl md:text-[1.7rem] font-medium text-[#2c99ce] tracking-normal break-words"
+          style={{ fontFamily: "'Raleway', sans-serif" }}
+        >
+          {title}
+        </h1>
+      </div>
+
+      {/* Sub-divider */}
+      <div className="border-b border-[#e8e8e8] mb-6"></div>
+
+      <div className="space-y-8 text-[#333333] font-['Open_Sans',sans-serif] text-sm sm:text-[15px]">
+        {/* Section 1: Subject Matter Experts */}
+        <section className="space-y-4">
+          <h3
+            className="text-[1.15rem] sm:text-[1.25rem] font-normal text-[#333333] underline mb-3"
+            style={{ fontFamily: "'Raleway', sans-serif" }}
+          >
+            Subject Matter Experts
+          </h3>
+
+          <div className="space-y-5">
+            {subjectMatterExperts.map((sme, idx) => (
+              <div key={idx} className="overflow-x-auto">
+                <table className="w-full max-w-xl border-collapse border border-[#e5e7eb] text-left text-xs sm:text-sm">
+                  <tbody>
+                    <tr className="border-b border-[#e5e7eb] bg-white">
+                      <th className="py-2.5 px-3.5 font-semibold text-[#111827] w-40 sm:w-44 border-r border-[#e5e7eb]">
+                        Name of Developer
+                      </th>
+                      <td className="py-2.5 px-3.5 font-medium text-[#111827]">
+                        {sme.name}
+                      </td>
+                    </tr>
+                    <tr className="border-b border-[#e5e7eb] bg-white">
+                      <th className="py-2.5 px-3.5 font-semibold text-[#111827] border-r border-[#e5e7eb]">
+                        Institute
+                      </th>
+                      <td className="py-2.5 px-3.5 text-[#111827]">
+                        {sme.institute}
+                      </td>
+                    </tr>
+                    <tr className="border-b border-[#e5e7eb] bg-[#f8fafc]">
+                      <th className="py-2.5 px-3.5 font-semibold text-[#111827] border-r border-[#e5e7eb]">
+                        Email id
+                      </th>
+                      <td className="py-2.5 px-3.5">
+                        <a
+                          href={`mailto:${sme.email}`}
+                          className="text-[#0066cc] hover:underline font-medium"
+                        >
+                          {sme.email}
+                        </a>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-[#e5e7eb] bg-white">
+                      <th className="py-2.5 px-3.5 font-semibold text-[#111827] border-r border-[#e5e7eb]">
+                        Department
+                      </th>
+                      <td className="py-2.5 px-3.5 text-[#111827]">
+                        {sme.department}
+                      </td>
+                    </tr>
+                    <tr className="bg-[#f8fafc]">
+                      <th className="py-2.5 px-3.5 font-semibold text-[#111827] border-r border-[#e5e7eb]">
+                        Webpage
+                      </th>
+                      <td className="py-2.5 px-3.5">
+                        <a
+                          href={sme.webpage}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[#0066cc] hover:underline"
+                        >
+                          {sme.webpage}
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Section 2: Contributors List */}
+        <section className="space-y-3 pt-2">
+          <h3
+            className="text-[1.15rem] sm:text-[1.25rem] font-normal text-[#333333] underline mb-3"
+            style={{ fontFamily: "'Raleway', sans-serif" }}
+          >
+            Contributors List
+          </h3>
+
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-[#e5e7eb] text-left text-xs sm:text-sm">
+              <thead>
+                <tr className="border-b border-[#e5e7eb] bg-white text-[#111827]">
+                  <th className="py-2.5 px-3 font-semibold border-r border-[#e5e7eb] w-14">
+                    SrNo
+                  </th>
+                  <th className="py-2.5 px-3 font-semibold border-r border-[#e5e7eb]">
+                    Name
+                  </th>
+                  <th className="py-2.5 px-3 font-semibold border-r border-[#e5e7eb]">
+                    VLabs Developer or Integration Engineer
+                  </th>
+                  <th className="py-2.5 px-3 font-semibold border-r border-[#e5e7eb]">
+                    Department
+                  </th>
+                  <th className="py-2.5 px-3 font-semibold">
+                    Institute
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {contributorsList.map((person, index) => (
+                  <tr
+                    key={person.srNo}
+                    className={`border-b border-[#e5e7eb] ${
+                      index % 2 === 0 ? 'bg-[#f8fafc]' : 'bg-white'
+                    }`}
+                  >
+                    <td className="py-2.5 px-3 text-[#374151] border-r border-[#e5e7eb]">
+                      {person.srNo}
+                    </td>
+                    <td className="py-2.5 px-3 font-semibold text-[#111827] border-r border-[#e5e7eb]">
+                      {person.name}
+                    </td>
+                    <td className="py-2.5 px-3 text-[#4b5563] border-r border-[#e5e7eb]">
+                      {person.role}
+                    </td>
+                    <td className="py-2.5 px-3 text-[#4b5563] border-r border-[#e5e7eb]">
+                      {person.department}
+                    </td>
+                    <td className="py-2.5 px-3 text-[#4b5563]">
+                      {person.institute}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {onNext && (
+          <div className="pt-4 flex justify-end">
+            <button
+              onClick={onNext}
+              className="px-6 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold rounded-lg shadow-sm flex items-center gap-2 transition cursor-pointer"
+            >
+              <span>Share Laboratory Feedback</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

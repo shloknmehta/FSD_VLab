@@ -23,6 +23,7 @@ import {
   Activity,
   ArrowRight,
   Building2,
+  Users,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -38,6 +39,7 @@ export const NAV_ITEMS = [
   { id: 'analysis', label: 'Analysis', icon: BarChart2 },
   { id: 'posttest', label: 'Posttest', icon: Award },
   { id: 'references', label: 'Further Readings/References', icon: BookMarked },
+  { id: 'contributors', label: 'Contributors', icon: Users },
   { id: 'feedback', label: 'Feedback', icon: MessageSquareHeart },
 ];
 
