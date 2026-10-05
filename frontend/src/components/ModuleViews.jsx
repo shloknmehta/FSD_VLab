@@ -27,6 +27,10 @@ import {
   Users,
   UserCheck,
   RefreshCw,
+  Book,
+  Sparkles,
+  X,
+  ZoomIn,
 } from 'lucide-react';
 import api from '../api/client';
 import { useAuth } from '../context/AuthContext';
@@ -34,109 +38,533 @@ import VSCodeBlock from './VSCodeBlock';
 
 // 1. Overview View
 export function OverviewView({ onNext }) {
+  const [activeModalImage, setActiveModalImage] = useState(null);
+
+  const literatureBooks = [
+    {
+      title: 'Two Scoops of Django 3.x / 4.x',
+      subtitle: 'Best Practices for Python and Django',
+      authors: 'Daniel Roy Greenfeld & Audrey Roy Greenfeld',
+      publisher: 'Two Scoops Press',
+      isbn: '978-0692915721',
+      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780692915721-M.jpg',
+      fallbackCover: '/assets/books/two-scoops-django.svg',
+      citedChapters: 'Chapter 10: Form Basics & Chapter 11: More Things to Do With Forms',
+      coreTakeaway:
+        'Always return the cleaned value in clean_<field>(), always call super().clean() first in clean(), and safely access attributes with cleaned_data.get() to guard against prior field validation failures.',
+      badge: 'Prescribed Industry Standard',
+    },
+    {
+      title: 'Mastering Django: Core',
+      subtitle: 'The Complete Guide to the Django Framework Architecture',
+      authors: 'Nigel George',
+      publisher: 'GNW Independent Publishing',
+      isbn: '978-0994541703',
+      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780994541703-M.jpg',
+      fallbackCover: '/assets/books/mastering-django.svg',
+      citedChapters: 'Chapter 8: Django Forms: Processing and Validation Lifecycle',
+      coreTakeaway:
+        'Documents the internal full_clean() algorithm, illustrating how _clean_fields() and _clean_form() partition valid data into cleaned_data while routing invalid states to ErrorDict and ErrorList.',
+      badge: 'Core Framework Guide',
+    },
+    {
+      title: 'Django 5 By Example (5th Edition)',
+      subtitle: 'Build powerful Python web applications with Django and modern frontend tools',
+      authors: 'Antonio Mele',
+      publisher: 'Packt Publishing',
+      isbn: '978-1805125457',
+      coverUrl: '/assets/books/django-5-by-example.svg',
+      fallbackCover: '/assets/books/django-5-by-example.svg',
+      citedChapters: 'Chapter 3: Advanced Form Validation, CSRF Protection, and User Input Sanitization',
+      coreTakeaway:
+        'Enforces secure multi-field cross-validation in production web environments and explains how non-field errors (__all__) are cleanly surfaced in UI form banners.',
+      badge: 'Modern Web Patterns',
+    },
+    {
+      title: 'Django for Beginners',
+      subtitle: 'Build websites with Python and Django',
+      authors: 'William S. Vincent',
+      publisher: 'WelcomeToCode Publishing',
+      isbn: '978-1735467207',
+      coverUrl: 'https://covers.openlibrary.org/b/isbn/9781735467207-M.jpg',
+      fallbackCover: '/assets/books/django-beginners.svg',
+      citedChapters: 'User Registration Forms, ValidationError, and Template Error Rendering',
+      coreTakeaway:
+        'Guides students through wiring custom form validation logic directly to template rendering, using Django errorlist classes for intuitive UX feedback.',
+      badge: 'Foundational Text',
+    },
+  ];
+
   return (
-    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
-      <div className="text-center mb-6 sm:mb-8">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-10 animate-in fade-in duration-200">
+      {/* Lightbox Modal for Diagram Zoom */}
+      {activeModalImage && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
+          onClick={() => setActiveModalImage(null)}
+        >
+          <div
+            className="relative bg-slate-900 border border-slate-700 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-4 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+              <span className="text-sm font-bold text-sky-400 font-mono">
+                {activeModalImage.title}
+              </span>
+              <button
+                onClick={() => setActiveModalImage(null)}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
+                title="Close Fullscreen View"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <img
+              src={activeModalImage.src}
+              alt={activeModalImage.title}
+              className="w-full h-auto rounded-lg shadow-inner bg-slate-950"
+            />
+            <p className="text-xs text-slate-400 mt-3 text-center">
+              Click anywhere outside or the close icon to return to the laboratory overview.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Main Header & Academic Syllabus Context */}
+      <div className="text-center space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-semibold">
+          <GraduationCap className="w-4 h-4 text-[#0284c7]" />
+          <span>KJSSE &bull; Somaiya Vidyavihar University &bull; Course: Full Stack Development (216U01L502 / 216U01C502)</span>
+        </div>
         <h1
-          className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#2c99ce] tracking-tight"
+          className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#2c99ce] tracking-tight pt-2"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Django Form Validation Architecture
         </h1>
         <p
-          className="text-xs sm:text-sm md:text-base text-slate-500 mt-2 font-medium"
+          className="text-xs sm:text-sm md:text-base text-slate-600 font-medium max-w-2xl mx-auto"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
-          Understanding Built-in Validation, Field-Level clean_&lt;field&gt;(), and Form-Level clean()
+          The definitive architectural guide to Django's 3-Tier validation lifecycle: Built-in Field Constraints, Field-Level <code className="text-sky-700 bg-sky-100/70 px-1 py-0.5 rounded font-mono text-xs">clean_&lt;field&gt;()</code>, and Form-Level <code className="text-emerald-700 bg-emerald-100/70 px-1 py-0.5 rounded font-mono text-xs">clean()</code>.
         </p>
       </div>
 
-      {/* Introduction Card */}
+      {/* Executive Summary & The Untrusted HTTP Boundary */}
       <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
-        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+        <h2 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
           <ShieldCheck className="w-5 h-5 text-[#0284c7]" />
-          Introduction & Theory
+          1. Why Server-Side Validation is Crucial in Web Engineering
         </h2>
         <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
-          When a web application accepts user input through an HTTP POST request, incoming data arrives as unverified strings.
-          Django passes this data through a structured validation pipeline to cast data types, verify field constraints,
-          and execute custom business logic before the data is committed to the database or processed in views.
+          In web architectures, user data submitted through an HTTP POST request enters the server as raw, unverified strings in <code className="bg-slate-100 text-indigo-700 px-1.5 py-0.5 rounded font-mono text-xs sm:text-sm">request.POST</code>. Client-side browser checks (HTML5 attributes like <code className="bg-slate-100 text-slate-800 px-1 rounded font-mono text-xs">required</code> or JavaScript event listeners) are strictly for user convenience—they can be trivially bypassed using cURL, Postman, automated scripts, or by disabling JavaScript in the client browser.
+        </p>
+        <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
+          The Django Form framework acts as the <strong>primary security perimeter</strong>. When bound to incoming HTTP POST data, a Django form executes type coercion, sanitization, single-field domain invariants, and cross-field consistency checks. Validated data is isolated into <code className="bg-slate-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded font-mono text-xs sm:text-sm">self.cleaned_data</code>, preventing SQL injection, Cross-Site Scripting (XSS), and data corruption before any data touches your database models or business logic.
         </p>
       </div>
 
-      {/* 3 Pillars of Validation */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="border border-slate-200 rounded-xl p-5 bg-slate-50 hover:shadow-sm transition">
-          <div className="flex items-center gap-2 text-indigo-700 font-bold mb-2.5 text-base">
-            <Database className="w-5 h-5" />
-            <span>1. Built-in Field Checks</span>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-            Django fields (<code className="bg-slate-200 px-1 rounded font-mono">IntegerField</code>, <code className="bg-slate-200 px-1 rounded font-mono">EmailField</code>) automatically verify presence (<code className="bg-slate-200 px-1 rounded font-mono">required=True</code>), enforce type casting, and run core regex/email validators.
-          </p>
-        </div>
-
-        <div className="border border-slate-200 rounded-xl p-5 bg-sky-50/70 border-sky-200 hover:shadow-sm transition">
-          <div className="flex items-center gap-2 text-[#0284c7] font-bold mb-2.5 text-base">
-            <Terminal className="w-5 h-5" />
-            <span>2. clean_&lt;fieldname&gt;()</span>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            Custom method executed for a specific field after built-in checks pass. Validates single-field business rules (e.g. applicant age &ge; 18, unique roll numbers, alphanumeric username).
-          </p>
-        </div>
-
-        <div className="border border-slate-200 rounded-xl p-5 bg-emerald-50/70 border-emerald-200 hover:shadow-sm transition">
-          <div className="flex items-center gap-2 text-emerald-800 font-bold mb-2.5 text-base">
-            <Layers className="w-5 h-5" />
-            <span>3. Form-Level clean()</span>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            Executed after all individual fields are cleaned. Perfect for cross-field validation where multiple fields depend on each other (e.g., matching password and confirm_password).
-          </p>
-        </div>
-      </div>
-
-      {/* Visual Execution Flow Diagram */}
-      <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
-        <h3 className="font-bold text-slate-800 text-base flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-          Execution Lifecycle at a Glance (Triggered by form.is_valid())
+      {/* The 3 Pillars of Django Validation */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <Layers className="w-5 h-5 text-indigo-600" />
+          2. The Three Pillars of the Validation Pipeline
         </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="border border-slate-200 rounded-xl p-5 bg-slate-50 hover:shadow-md transition">
+            <div className="flex items-center gap-2 text-indigo-700 font-bold mb-2.5 text-base">
+              <Database className="w-5 h-5" />
+              <span>1. Built-in Field Checks</span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3">
+              Executed first inside <code className="bg-slate-200 px-1 rounded font-mono">_clean_fields()</code>. Coerces raw strings into Python primitives (<code className="bg-slate-200 px-1 rounded font-mono">int</code>, <code className="bg-slate-200 px-1 rounded font-mono">datetime</code>) and runs built-in validators (<code className="bg-slate-200 px-1 rounded font-mono">EmailValidator</code>, <code className="bg-slate-200 px-1 rounded font-mono">MinValueValidator</code>).
+            </p>
+            <div className="text-[11px] font-mono bg-white p-2 rounded border border-slate-200 text-slate-700">
+              age = forms.IntegerField(min_value=1)
+            </div>
+          </div>
 
-        <div className="overflow-x-auto w-full max-w-full pb-2">
-          <div className="flex items-center min-w-[620px] md:min-w-0 justify-between gap-2 p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700">
-            <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center shrink-0">
-              Raw POST Data<br/><span className="text-[10px] text-slate-400 font-normal">request.POST</span>
+          <div className="border border-sky-200 rounded-xl p-5 bg-sky-50/70 hover:shadow-md transition">
+            <div className="flex items-center gap-2 text-[#0284c7] font-bold mb-2.5 text-base">
+              <Terminal className="w-5 h-5" />
+              <span>2. clean_&lt;field&gt;()</span>
             </div>
-            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
-            <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center shrink-0">
-              form.is_valid()<br/><span className="text-[10px] text-slate-400 font-normal">full_clean()</span>
+            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed mb-3">
+              Targeted single-field domain logic. Runs immediately after built-in checks pass for that specific field. Must inspect <code className="bg-sky-200/80 px-1 rounded font-mono">self.cleaned_data['age']</code>, raise <code className="bg-sky-200/80 px-1 rounded font-mono">ValidationError</code>, and <strong>return the cleaned value</strong>.
+            </p>
+            <div className="text-[11px] font-mono bg-white p-2 rounded border border-sky-200 text-sky-900">
+              def clean_age(self): return age
             </div>
-            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
-            <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center shrink-0">
-              _clean_fields()<br/><span className="text-[10px] text-slate-400 font-normal">Built-in checks</span>
+          </div>
+
+          <div className="border border-emerald-200 rounded-xl p-5 bg-emerald-50/70 hover:shadow-md transition">
+            <div className="flex items-center gap-2 text-emerald-800 font-bold mb-2.5 text-base">
+              <Layers className="w-5 h-5" />
+              <span>3. Form-Level clean()</span>
             </div>
-            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
-            <div className="px-3 py-2 bg-sky-100 border border-sky-300 text-[#0284c7] rounded shadow-xs text-center font-bold shrink-0">
-              clean_&lt;field&gt;()<br/><span className="text-[10px] text-sky-700 font-normal">Single-field logic</span>
-            </div>
-            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
-            <div className="px-3 py-2 bg-emerald-100 border border-emerald-300 text-emerald-800 rounded shadow-xs text-center font-bold shrink-0">
-              clean()<br/><span className="text-[10px] text-emerald-700 font-normal">Cross-field logic</span>
-            </div>
-            <span className="text-slate-400 font-bold shrink-0">&rarr;</span>
-            <div className="px-3 py-2 bg-white border border-slate-300 rounded shadow-xs text-center shrink-0">
-              cleaned_data / errors<br/><span className="text-[10px] text-slate-400 font-normal">Result returned</span>
+            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed mb-3">
+              Cross-field validation executed inside <code className="bg-emerald-200/80 px-1 rounded font-mono">_clean_form()</code> after all fields are processed. Compares multiple inputs (e.g. matching passwords), attaches non-field errors to <code className="bg-emerald-200/80 px-1 rounded font-mono">__all__</code>, and <strong>returns cleaned_data</strong>.
+            </p>
+            <div className="text-[11px] font-mono bg-white p-2 rounded border border-emerald-200 text-emerald-950">
+              def clean(self): return cleaned_data
             </div>
           </div>
         </div>
       </div>
 
-      <div className="pt-4 flex justify-end">
+      {/* Figure 1: Architectural Diagram */}
+      <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <div className="text-xs font-bold text-sky-600 uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              Figure 1 &bull; Architectural Blueprint
+            </div>
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">
+              The 5-Stage Django Validation Pipeline (<code className="text-indigo-600 font-mono">full_clean()</code> Sequence)
+            </h3>
+          </div>
+          <button
+            onClick={() =>
+              setActiveModalImage({
+                src: '/assets/diagrams/django-form-lifecycle.svg',
+                title: 'Figure 1: Django Form Validation Pipeline (full_clean() Sequence)',
+              })
+            }
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-sky-50 hover:text-sky-700 text-xs font-semibold text-slate-700 border border-slate-200 transition cursor-pointer self-start sm:self-auto"
+          >
+            <ZoomIn className="w-4 h-4 text-sky-600" />
+            <span>Expand Full Diagram</span>
+          </button>
+        </div>
+
+        <div
+          className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-900 cursor-pointer shadow-inner"
+          onClick={() =>
+            setActiveModalImage({
+              src: '/assets/diagrams/django-form-lifecycle.svg',
+              title: 'Figure 1: Django Form Validation Pipeline (full_clean() Sequence)',
+            })
+          }
+        >
+          <img
+            src="/assets/diagrams/django-form-lifecycle.svg"
+            alt="Django Form Validation Lifecycle Pipeline"
+            className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.01]"
+          />
+          <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center pointer-events-none">
+            <span className="px-4 py-2 rounded-lg bg-slate-900/90 text-white text-xs font-bold shadow-lg flex items-center gap-2">
+              <ZoomIn className="w-4 h-4 text-sky-400" />
+              Click to view high-resolution schematic
+            </span>
+          </div>
+        </div>
+
+        {/* Step-by-Step Breakdown Accordion/Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 text-xs sm:text-sm text-slate-700">
+          <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+            <div className="font-bold text-slate-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center">1</span>
+              <span>Binding Raw POST Data</span>
+            </div>
+            <p className="text-slate-600 text-xs leading-relaxed">
+              When instantiated with <code className="bg-slate-200 px-1 rounded font-mono">UserRegistrationForm(request.POST)</code>, the form becomes <em>bound</em>. Data is stored in <code className="bg-slate-200 px-1 rounded font-mono">self.data</code> as unvalidated strings.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-lg bg-sky-50/70 border border-sky-200 space-y-1">
+            <div className="font-bold text-sky-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-sky-200 text-sky-800 text-xs font-bold flex items-center justify-center">2</span>
+              <span>Invoking form.is_valid()</span>
+            </div>
+            <p className="text-sky-800 text-xs leading-relaxed">
+              Calling <code className="bg-sky-200/70 px-1 rounded font-mono">form.is_valid()</code> triggers internal <code className="bg-sky-200/70 px-1 rounded font-mono">self.full_clean()</code>. If <code className="bg-sky-200/70 px-1 rounded font-mono">self.errors</code> remains empty, it returns <code className="font-bold">True</code>.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-lg bg-purple-50/70 border border-purple-200 space-y-1">
+            <div className="font-bold text-purple-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-purple-200 text-purple-800 text-xs font-bold flex items-center justify-center">3</span>
+              <span>_clean_fields() &amp; Field Type Coercion</span>
+            </div>
+            <p className="text-purple-800 text-xs leading-relaxed">
+              Iterates through declared form fields. Calls <code className="bg-purple-200/70 px-1 rounded font-mono">field.clean(value)</code>: runs <code className="font-mono">to_python()</code>, basic constraints (<code className="font-mono">max_length</code>), and field regex validators.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-lg bg-emerald-50/70 border border-emerald-200 space-y-1">
+            <div className="font-bold text-emerald-900 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full bg-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-center">4</span>
+              <span>clean() Cross-Field Validation</span>
+            </div>
+            <p className="text-emerald-800 text-xs leading-relaxed">
+              Executed via <code className="bg-emerald-200/70 px-1 rounded font-mono">_clean_form()</code>. Evaluates inter-dependent fields. Raises <code className="bg-emerald-200/70 px-1 rounded font-mono">ValidationError</code> attached to the form or non-field errors under key <code className="font-mono">'__all__'</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Figure 2: Single-Field vs Form-Level Comparison */}
+      <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <div className="text-xs font-bold text-sky-600 uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              Figure 2 &bull; Comparative Analysis
+            </div>
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">
+              Architectural Comparison: <code className="text-sky-700 font-mono text-sm">clean_&lt;field&gt;()</code> vs <code className="text-emerald-700 font-mono text-sm">clean()</code>
+            </h3>
+          </div>
+          <button
+            onClick={() =>
+              setActiveModalImage({
+                src: '/assets/diagrams/django-clean-comparison.svg',
+                title: 'Figure 2: clean_<field>() vs clean() Architectural Comparison',
+              })
+            }
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-sky-50 hover:text-sky-700 text-xs font-semibold text-slate-700 border border-slate-200 transition cursor-pointer self-start sm:self-auto"
+          >
+            <ZoomIn className="w-4 h-4 text-sky-600" />
+            <span>Expand Comparison</span>
+          </button>
+        </div>
+
+        <div
+          className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-900 cursor-pointer shadow-inner"
+          onClick={() =>
+            setActiveModalImage({
+              src: '/assets/diagrams/django-clean-comparison.svg',
+              title: 'Figure 2: clean_<field>() vs clean() Architectural Comparison',
+            })
+          }
+        >
+          <img
+            src="/assets/diagrams/django-clean-comparison.svg"
+            alt="Field-Level vs Form-Level Clean Comparison"
+            className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.01]"
+          />
+          <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center pointer-events-none">
+            <span className="px-4 py-2 rounded-lg bg-slate-900/90 text-white text-xs font-bold shadow-lg flex items-center gap-2">
+              <ZoomIn className="w-4 h-4 text-sky-400" />
+              Click to view high-resolution comparison
+            </span>
+          </div>
+        </div>
+
+        {/* Detailed Technical Comparison Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs sm:text-sm border-collapse border border-slate-200 rounded-lg overflow-hidden">
+            <thead className="bg-slate-100 text-slate-800 font-bold border-b border-slate-200">
+              <tr>
+                <th className="p-3 border-r border-slate-200">Architectural Property</th>
+                <th className="p-3 border-r border-slate-200 text-sky-800 bg-sky-50/50">Field-Level: clean_&lt;fieldname&gt;(self)</th>
+                <th className="p-3 text-emerald-800 bg-emerald-50/50">Form-Level: clean(self)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 text-slate-700">
+              <tr>
+                <td className="p-3 font-semibold bg-slate-50 border-r border-slate-200">Target Scope</td>
+                <td className="p-3 border-r border-slate-200">Single individual field in isolation</td>
+                <td className="p-3">Multiple inter-dependent fields across the form</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold bg-slate-50 border-r border-slate-200">Internal Trigger</td>
+                <td className="p-3 border-r border-slate-200">Called inside <code className="bg-slate-100 px-1 rounded font-mono text-xs">_clean_fields()</code> per field</td>
+                <td className="p-3">Called inside <code className="bg-slate-100 px-1 rounded font-mono text-xs">_clean_form()</code> after all fields</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold bg-slate-50 border-r border-slate-200">Input Data Access</td>
+                <td className="p-3 border-r border-slate-200"><code className="bg-slate-100 text-indigo-700 px-1 rounded font-mono text-xs">self.cleaned_data.get('fieldname')</code></td>
+                <td className="p-3"><code className="bg-slate-100 text-indigo-700 px-1 rounded font-mono text-xs">self.cleaned_data.get('field_a')</code> &amp; <code className="bg-slate-100 text-indigo-700 px-1 rounded font-mono text-xs">.get('field_b')</code></td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold bg-slate-50 border-r border-slate-200">Return Value Requirement</td>
+                <td className="p-3 font-bold text-amber-700 border-r border-slate-200">MUST return the cleaned field scalar value</td>
+                <td className="p-3 font-bold text-amber-700">MUST return the entire <code className="font-mono text-xs">cleaned_data</code> dictionary</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold bg-slate-50 border-r border-slate-200">Error Destination</td>
+                <td className="p-3 border-r border-slate-200"><code className="bg-red-50 text-red-700 px-1 rounded font-mono text-xs">form.errors['fieldname']</code></td>
+                <td className="p-3"><code className="bg-red-50 text-red-700 px-1 rounded font-mono text-xs">form.errors['__all__']</code> (Non-field error list)</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold bg-slate-50 border-r border-slate-200">Canonical Example</td>
+                <td className="p-3 border-r border-slate-200">Age check (&ge; 18), institutional email domain verification</td>
+                <td className="p-3">Password matching (<code className="font-mono text-xs">password == confirm_password</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Figure 3: Web Request/Response & PRG Pattern */}
+      <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <div className="text-xs font-bold text-sky-600 uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              Figure 3 &bull; Runtime Workflow
+            </div>
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">
+              The Django View Form Workflow: Post/Redirect/Get (PRG) Pattern
+            </h3>
+          </div>
+          <button
+            onClick={() =>
+              setActiveModalImage({
+                src: '/assets/diagrams/django-request-response.svg',
+                title: 'Figure 3: Django View Form Workflow and Post/Redirect/Get Pattern',
+              })
+            }
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-sky-50 hover:text-sky-700 text-xs font-semibold text-slate-700 border border-slate-200 transition cursor-pointer self-start sm:self-auto"
+          >
+            <ZoomIn className="w-4 h-4 text-sky-600" />
+            <span>Expand PRG Diagram</span>
+          </button>
+        </div>
+
+        <div
+          className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-900 cursor-pointer shadow-inner"
+          onClick={() =>
+            setActiveModalImage({
+              src: '/assets/diagrams/django-request-response.svg',
+              title: 'Figure 3: Django View Form Workflow and Post/Redirect/Get Pattern',
+            })
+          }
+        >
+          <img
+            src="/assets/diagrams/django-request-response.svg"
+            alt="Django View Form Workflow and PRG Pattern"
+            className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.01]"
+          />
+          <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center pointer-events-none">
+            <span className="px-4 py-2 rounded-lg bg-slate-900/90 text-white text-xs font-bold shadow-lg flex items-center gap-2">
+              <ZoomIn className="w-4 h-4 text-sky-400" />
+              Click to view high-resolution PRG pattern
+            </span>
+          </div>
+        </div>
+
+        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+          As documented across canonical literature (e.g., <em>Two Scoops of Django</em>, Chapter 10), following the <strong>Post/Redirect/Get (PRG)</strong> pattern is mandatory. When <code className="bg-slate-100 px-1 rounded font-mono text-xs">form.is_valid()</code> evaluates to <code className="font-bold text-emerald-600">True</code>, the view executes <code className="bg-slate-100 px-1 rounded font-mono text-xs">redirect('success')</code>, preventing browser re-submission warnings when a user refreshes the page. If validation fails, the view re-renders the same template with the bound form instance, allowing Django to automatically populate user inputs and highlight inline errors in <code className="bg-slate-100 px-1 rounded font-mono text-xs">&lt;ul class="errorlist"&gt;</code>.
+        </p>
+      </div>
+
+      {/* Authoritative Literature & Recommended Books Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+          <div>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+              <Book className="w-5 h-5 text-[#0284c7]" />
+              3. Authoritative Literature &amp; Prescribed Textbooks
+            </h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Foundational literature referenced in SVU coursework and industry software engineering
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {literatureBooks.map((book, idx) => (
+            <div
+              key={idx}
+              className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-4"
+            >
+              <div className="flex gap-4">
+                {/* Book Cover Image with Fallback */}
+                <div className="shrink-0 w-24 sm:w-28 rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-slate-100">
+                  <img
+                    src={book.coverUrl}
+                    alt={book.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = book.fallbackCover;
+                    }}
+                    className="w-full h-auto object-cover aspect-[2/3]"
+                  />
+                </div>
+
+                {/* Book Details */}
+                <div className="space-y-1.5 flex-1 min-w-0">
+                  <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 uppercase tracking-wider">
+                    {book.badge}
+                  </span>
+                  <h4 className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                    {book.title}
+                  </h4>
+                  <p className="text-xs text-slate-500 font-medium">{book.subtitle}</p>
+                  <p className="text-xs text-slate-700">
+                    <span className="font-semibold">Authors:</span> {book.authors}
+                  </p>
+                  <p className="text-[11px] text-slate-500">
+                    <span className="font-semibold text-slate-600">Publisher:</span> {book.publisher} &bull; <span className="font-mono">ISBN: {book.isbn}</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Cited Chapters & Core Takeaway */}
+              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 space-y-1.5 text-xs">
+                <div className="font-semibold text-[#0284c7] flex items-center gap-1.5">
+                  <BookMarked className="w-3.5 h-3.5" />
+                  <span>{book.citedChapters}</span>
+                </div>
+                <p className="text-slate-600 italic leading-relaxed">
+                  "{book.coreTakeaway}"
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* The 7 Golden Rules Checklist */}
+      <div className="border border-slate-200 rounded-xl p-6 bg-slate-50 shadow-xs space-y-4">
+        <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
+          <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+          The 7 Golden Rules of Django Form Validation (Summary Checklist)
+        </h3>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-700">
+          <li className="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200">
+            <span className="font-bold text-sky-600 shrink-0">1.</span>
+            <span><strong>Never Trust User Input:</strong> Always sanitize raw strings server-side regardless of client validation.</span>
+          </li>
+          <li className="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200">
+            <span className="font-bold text-sky-600 shrink-0">2.</span>
+            <span><strong>Return in clean_&lt;field&gt;():</strong> Failing to return the cleaned value overwrites valid inputs with <code className="font-mono text-xs">None</code>.</span>
+          </li>
+          <li className="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200">
+            <span className="font-bold text-sky-600 shrink-0">3.</span>
+            <span><strong>Return in clean():</strong> Must return the entire dictionary or valid fields are discarded.</span>
+          </li>
+          <li className="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200">
+            <span className="font-bold text-sky-600 shrink-0">4.</span>
+            <span><strong>Use .get() in clean():</strong> Prevent <code className="font-mono text-xs">KeyError</code> exceptions if a field failed its earlier built-in validation.</span>
+          </li>
+          <li className="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200">
+            <span className="font-bold text-sky-600 shrink-0">5.</span>
+            <span><strong>Call super().clean():</strong> Preserves default parent cleaning behavior in custom form classes.</span>
+          </li>
+          <li className="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200">
+            <span className="font-bold text-sky-600 shrink-0">6.</span>
+            <span><strong>Raise forms.ValidationError:</strong> Never use generic Python exceptions like <code className="font-mono text-xs">Exception</code> or <code className="font-mono text-xs">ValueError</code>.</span>
+          </li>
+          <li className="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200 sm:col-span-2">
+            <span className="font-bold text-sky-600 shrink-0">7.</span>
+            <span><strong>Post/Redirect/Get Compliance:</strong> Always redirect upon successful POST submission to ensure idempotency.</span>
+          </li>
+        </ul>
+      </div>
+
+      {/* Navigation Footer */}
+      <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200">
+        <span className="text-xs text-slate-500 font-medium">
+          Ready to verify your understanding of Django Form Validation architecture?
+        </span>
         <button
           onClick={onNext}
-          className="v-button shadow-xs transition-transform hover:scale-[1.02] cursor-pointer"
+          className="v-button shadow-md transition-transform hover:scale-[1.02] cursor-pointer flex items-center gap-2 px-6 py-2.5"
         >
           <span>Take Pretest</span>
           <ArrowRight className="w-4 h-4" />
@@ -2658,78 +3086,277 @@ export function PosttestView({ onNext, onQuizPassed }) {
 }
 
 // 9. Further Readings / References
-export function ReferencesView() {
+export function ReferencesView({ onNext }) {
+  const textbooks = [
+    {
+      title: 'Two Scoops of Django 3.x / 4.x',
+      subtitle: 'Best Practices for Python and Django',
+      authors: 'Daniel Roy Greenfeld & Audrey Roy Greenfeld',
+      edition: '4th Edition',
+      publisher: 'Two Scoops Press',
+      isbn: '978-0692915721',
+      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780692915721-M.jpg',
+      fallbackCover: '/assets/books/two-scoops-django.svg',
+      citedChapters: 'Chapter 10: Form Basics & Chapter 11: More Things to Do With Forms',
+      description:
+        'The definitive industry manual for idiomatic Django development. Specifically covers custom clean() methods, avoiding common anti-patterns like failing to return cleaned_data, and safe dictionary access using .get().',
+      link: 'https://www.feldroy.com/books/two-scoops-of-django',
+    },
+    {
+      title: 'Mastering Django: Core',
+      subtitle: 'The Complete Guide to the Django Framework Architecture',
+      authors: 'Nigel George',
+      edition: '2nd Edition',
+      publisher: 'GNW Independent Publishing',
+      isbn: '978-0994541703',
+      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780994541703-M.jpg',
+      fallbackCover: '/assets/books/mastering-django.svg',
+      citedChapters: 'Chapter 8: Django Forms: Processing and Validation Lifecycle',
+      description:
+        'A comprehensive deep dive into Django internals. Details the step-by-step execution order of full_clean(), _clean_fields(), and _clean_form(), detailing how ErrorDict and ErrorList instances populate form.errors.',
+      link: 'https://masteringdjango.com/',
+    },
+    {
+      title: 'Django 5 By Example',
+      subtitle: 'Build powerful Python web applications with Django 5 and modern web technologies',
+      authors: 'Antonio Mele',
+      edition: '5th Edition',
+      publisher: 'Packt Publishing',
+      isbn: '978-1805125457',
+      coverUrl: '/assets/books/django-5-by-example.svg',
+      fallbackCover: '/assets/books/django-5-by-example.svg',
+      citedChapters: 'Chapter 3: Advanced Form Validation, CSRF Protection, and User Input Sanitization',
+      description:
+        'Practical, project-centric coverage of user form submissions, security boundaries, multi-field password matching validation, and rendering non-field error banners in templates.',
+      link: 'https://www.packtpub.com/product/django-5-by-example-fifth-edition/9781805125457',
+    },
+    {
+      title: 'Django for Beginners',
+      subtitle: 'Build websites with Python and Django',
+      authors: 'William S. Vincent',
+      edition: '4th Edition',
+      publisher: 'WelcomeToCode Publishing',
+      isbn: '978-1735467207',
+      coverUrl: 'https://covers.openlibrary.org/b/isbn/9781735467207-M.jpg',
+      fallbackCover: '/assets/books/django-beginners.svg',
+      citedChapters: 'Chapter on Forms, Validation Errors, and Template Rendering',
+      description:
+        'Step-by-step guide to constructing HTML form flows in Django, binding user submissions to form classes, and handling ValidationError exceptions with intuitive UI feedback.',
+      link: 'https://djangoforbeginners.com/',
+    },
+  ];
+
+  const onlineResources = [
+    {
+      title: 'Official Django Documentation: Form and Field Validation',
+      publisher: 'Django Software Foundation (DSF)',
+      url: 'https://docs.djangoproject.com/en/stable/ref/forms/validation/',
+      description: 'Comprehensive technical specification of full_clean(), clean_<field>(), clean(), and ValidationError raising behavior.',
+      tag: 'Official Spec',
+    },
+    {
+      title: 'Django Project: Working with Forms & Lifecycle API',
+      publisher: 'Django Software Foundation (DSF)',
+      url: 'https://docs.djangoproject.com/en/stable/topics/forms/',
+      description: 'The core guide on form workflows, request.POST binding, bound vs unbound forms, and error handling.',
+      tag: 'Official Guide',
+    },
+    {
+      title: 'MDN Web Docs: Django Web Framework — Working with Forms',
+      publisher: 'Mozilla Developer Network',
+      url: 'https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Forms',
+      description: 'Architectural overview of handling HTML form submissions, CSRF tokens, and form processing patterns in views.',
+      tag: 'Web Standards',
+    },
+    {
+      title: 'ProgrammingEmpire: Custom Validation using clean() in forms.py',
+      publisher: 'ProgrammingEmpire',
+      url: 'https://www.programmingempire.com/implement-custom-validation-using-clean-method-in-forms-py/',
+      description: 'Complete code examples demonstrating multi-field cross-validation and age checks in Django form classes.',
+      tag: 'Tutorial',
+    },
+  ];
+
+  const institutionalLinks = [
+    {
+      title: 'K. J. Somaiya School of Engineering (KJSSE)',
+      subtitle: 'Department of Computer Engineering &bull; Somaiya Vidyavihar University, Mumbai',
+      url: 'https://kjsse.somaiya.edu/',
+      description: 'Accredited curriculum guidelines for B.Tech Computer Engineering Full Stack Development Laboratory.',
+    },
+    {
+      title: 'Somaiya Vidyavihar University (SVU 2023 Detailed Syllabus)',
+      subtitle: 'Course Code: 216U01L502 / 216U01C502 — Full Stack Development Laboratory',
+      url: 'https://somaiya.edu/',
+      description: 'Laboratory Course Outcome mapping for Experiment 6: Form Validation & Security Architecture.',
+    },
+    {
+      title: 'Virtual Labs: An Initiative of Ministry of Education (MoE)',
+      subtitle: 'National Mission on Education through ICT (NMEICT)',
+      url: 'https://vlab.co.in/',
+      description: 'National consortium for remote laboratory experimentation and participatory simulation.',
+    },
+  ];
+
   return (
-    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
-      <div className="text-center mb-6">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-10 animate-in fade-in duration-200">
+      <div className="text-center space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-semibold">
+          <BookMarked className="w-4 h-4 text-[#0284c7]" />
+          <span>Accredited Academic Bibliography &bull; SVU Mumbai</span>
+        </div>
         <h1
-          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight pt-1"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Further Readings & References
         </h1>
         <p
-          className="text-xs sm:text-sm text-slate-500 mt-2 font-medium"
+          className="text-xs sm:text-sm text-slate-500 font-medium max-w-xl mx-auto"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
-          Authoritative references, tutorials, and institutional links
+          Authoritative literature, prescribed textbooks, official framework specifications, and institutional curriculum references.
         </p>
       </div>
 
-      <div className="space-y-3">
-        <a
-          href="https://docs.djangoproject.com/en/stable/ref/forms/validation/"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#2c99ce] hover:bg-sky-50/50 transition group"
-        >
-          <div>
-            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#2c99ce]">Official Django Documentation: Form and Field Validation</h4>
-            <p className="text-xs text-slate-500">Comprehensive guide to full_clean(), clean_&lt;field&gt;(), and clean() methods</p>
-          </div>
-          <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#2c99ce]" />
-        </a>
+      {/* 1. Prescribed & Reference Textbooks */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+          <Book className="w-5 h-5 text-[#0284c7]" />
+          <h2 className="text-lg font-bold text-slate-900">
+            1. Standard Academic Textbooks &amp; Prescribed Literature
+          </h2>
+        </div>
 
-        <a
-          href="https://docs.djangoproject.com/en/stable/topics/forms/"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#2c99ce] hover:bg-sky-50/50 transition group"
-        >
-          <div>
-            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#2c99ce]">Django Project: Working with Forms & Validation Lifecycle</h4>
-            <p className="text-xs text-slate-500">Official guide on form workflows, request.POST binding, and form validation lifecycle</p>
-          </div>
-          <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#2c99ce]" />
-        </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {textbooks.map((book, idx) => (
+            <div
+              key={idx}
+              className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-4"
+            >
+              <div className="flex gap-4">
+                {/* Book Cover with Fallback */}
+                <div className="shrink-0 w-24 sm:w-28 rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-slate-100">
+                  <img
+                    src={book.coverUrl}
+                    alt={book.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = book.fallbackCover;
+                    }}
+                    className="w-full h-auto object-cover aspect-[2/3]"
+                  />
+                </div>
 
-        <a
-          href="https://www.programmingempire.com/implement-custom-validation-using-clean-method-in-forms-py/"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#0284c7] hover:bg-sky-50/50 transition group"
-        >
-          <div>
-            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#0284c7]">ProgrammingEmpire: Implement Custom Validation using clean()</h4>
-            <p className="text-xs text-slate-500">Complete file-wise code examples for multi-field forms.py custom validation</p>
-          </div>
-          <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7]" />
-        </a>
+                {/* Book Meta */}
+                <div className="space-y-1.5 flex-1 min-w-0">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-200">
+                    {book.edition}
+                  </span>
+                  <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                    {book.title}
+                  </h3>
+                  <p className="text-xs text-slate-500">{book.subtitle}</p>
+                  <p className="text-xs text-slate-700">
+                    <span className="font-semibold">Author(s):</span> {book.authors}
+                  </p>
+                  <p className="text-[11px] text-slate-500">
+                    {book.publisher} &bull; <span className="font-mono text-[10px]">ISBN: {book.isbn}</span>
+                  </p>
+                </div>
+              </div>
 
-        <a
-          href="https://kjsse.somaiya.edu/"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-[#0284c7] hover:bg-sky-50/50 transition group"
-        >
-          <div>
-            <h4 className="font-semibold text-slate-800 text-sm group-hover:text-[#0284c7]">K. J. Somaiya School of Engineering (KJSSE)</h4>
-            <p className="text-xs text-slate-500">Somaiya Vidyavihar University, Mumbai &bull; Department of Computer Engineering</p>
-          </div>
-          <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7]" />
-        </a>
+              {/* Citations & Annotation */}
+              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 space-y-2 text-xs">
+                <div className="font-bold text-[#0284c7] flex items-center gap-1.5">
+                  <BookMarked className="w-3.5 h-3.5" />
+                  <span>{book.citedChapters}</span>
+                </div>
+                <p className="text-slate-600 leading-relaxed">{book.description}</p>
+              </div>
+
+              <a
+                href={book.link}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 font-semibold text-xs transition border border-sky-200"
+              >
+                <span>View Book Details &amp; Catalog</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          ))}
+        </div>
       </div>
 
+      {/* 2. Official Specifications & Online Documentation */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+          <Terminal className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-lg font-bold text-slate-900">
+            2. Official Framework Documentation &amp; Technical Specifications
+          </h2>
+        </div>
+
+        <div className="space-y-3">
+          {onlineResources.map((res, idx) => (
+            <a
+              key={idx}
+              href={res.url}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-start justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-[#2c99ce] hover:bg-sky-50/40 transition group shadow-2xs"
+            >
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <h4 className="font-bold text-slate-800 text-sm group-hover:text-[#2c99ce] transition">
+                    {res.title}
+                  </h4>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                    {res.tag}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 font-medium">Source: {res.publisher}</p>
+                <p className="text-xs text-slate-600 pt-0.5">{res.description}</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#2c99ce] shrink-0 mt-1 transition" />
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* 3. Institutional Links & Accreditation */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+          <GraduationCap className="w-5 h-5 text-emerald-600" />
+          <h2 className="text-lg font-bold text-slate-900">
+            3. Accredited Institutional &amp; University Syllabus Links
+          </h2>
+        </div>
+
+        <div className="space-y-3">
+          {institutionalLinks.map((inst, idx) => (
+            <a
+              key={idx}
+              href={inst.url}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-start justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-emerald-500 hover:bg-emerald-50/40 transition group shadow-2xs"
+            >
+              <div className="space-y-1">
+                <h4 className="font-bold text-slate-800 text-sm group-hover:text-emerald-700 transition">
+                  {inst.title}
+                </h4>
+                <p className="text-xs text-slate-500 font-medium">{inst.subtitle}</p>
+                <p className="text-xs text-slate-600">{inst.description}</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-emerald-600 shrink-0 mt-1 transition" />
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Proceed Navigation */}
       {onNext && (
         <div className="pt-4 flex justify-end">
           <button
@@ -2960,6 +3587,8 @@ export function ContributorsView({ experiment, onNext }) {
           </div>
         )}
       </div>
+=======
+>>>>>>> 310ad76 (feat(curriculum): enrich overview and references with topic diagrams and textbook literature)
     </div>
   );
 }

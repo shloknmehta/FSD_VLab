@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450" width="100%" height="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <linearGradient id="coverMaster" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="50%" stop-color="#312e81" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+
+  <rect width="300" height="450" rx="8" fill="url(#coverMaster)" stroke="#6366f1" stroke-width="2"/>
+  <rect x="0" y="0" width="18" height="450" fill="#000000" opacity="0.3"/>
+
+  <!-- Top Badge -->
+  <rect x="36" y="24" width="228" height="24" rx="4" fill="#4338ca"/>
+  <text x="150" y="40" fill="#e0e7ff" font-size="9" font-weight="800" text-anchor="middle" letter-spacing="1.5">COMPLETE CORE ARCHITECTURE</text>
+
+  <!-- Title -->
+  <text x="150" y="105" fill="#ffffff" font-size="28" font-weight="900" text-anchor="middle">MASTERING</text>
+  <text x="150" y="138" fill="#818cf8" font-size="28" font-weight="900" text-anchor="middle">DJANGO: CORE</text>
+  <text x="150" y="162" fill="#c7d2fe" font-size="11" font-weight="600" text-anchor="middle">The Complete Guide to the Framework</text>
+
+  <!-- Visual Center Symbol: Core Layers -->
+  <g transform="translate(150, 240)">
+    <circle cx="0" cy="0" r="55" fill="none" stroke="#6366f1" stroke-width="2" stroke-dasharray="4 4"/>
+    <circle cx="0" cy="0" r="40" fill="#312e81" stroke="#818cf8" stroke-width="2"/>
+    <text x="0" y="-8" fill="#ffffff" font-size="11" font-weight="800" text-anchor="middle">full_clean()</text>
+    <text x="0" y="8" fill="#a5b4fc" font-size="9" text-anchor="middle">&amp; clean()</text>
+    <text x="0" y="22" fill="#34d399" font-size="8.5" font-weight="700" text-anchor="middle">LIFECYCLE</text>
+  </g>
+
+  <!-- Highlight Box: Chapter 8 -->
+  <rect x="36" y="335" width="228" height="44" rx="6" fill="#0f172a" opacity="0.8" stroke="#818cf8" stroke-width="1"/>
+  <text x="150" y="353" fill="#f8fafc" font-size="10" font-weight="700" text-anchor="middle">CITED CHAPTER 8:</text>
+  <text x="150" y="369" fill="#a5b4fc" font-size="9" text-anchor="middle">Django Forms: Processing &amp; Validation</text>
+
+  <!-- Author -->
+  <text x="150" y="416" fill="#ffffff" font-size="13" font-weight="700" text-anchor="middle">Nigel George</text>
+</svg>

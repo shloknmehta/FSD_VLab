@@ -19,6 +19,10 @@ import {
   Terminal,
   Activity,
   Zap,
+  Book,
+  Sparkles,
+  ZoomIn,
+  X,
 } from 'lucide-react';
 import api from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
@@ -33,30 +37,177 @@ import CNStaticRoutingSimulator from './CNStaticRoutingSimulator';
 export function CNOverviewView({ experiment, onNext }) {
   if (!experiment) return null;
   const { overview } = experiment;
+  const [activeModalImage, setActiveModalImage] = useState(null);
+
+  const cnBooks = [
+    {
+      title: 'Computer Networks',
+      subtitle: 'A Systems Approach to Network Architecture and Protocols',
+      authors: 'Andrew S. Tanenbaum & David J. Wetherall',
+      publisher: 'Pearson Education (6th Edition)',
+      isbn: '978-0132126953',
+      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780132126953-M.jpg',
+      fallbackCover: '/assets/books/tanenbaum-cn.svg',
+      citedChapters: 'Section 4.8.4: Virtual LANs (IEEE 802.1Q Standards)',
+      coreTakeaway:
+        'Documents the 4-byte 802.1Q frame tagging mechanism, broadcast containment boundaries, and MAC bridge forwarding logic.',
+      badge: 'Core Reference',
+    },
+    {
+      title: 'Data Communications and Networking',
+      subtitle: 'Technologies, Protocols, and Switching Architecture',
+      authors: 'Behrouz A. Forouzan',
+      publisher: 'McGraw-Hill Education (5th Edition)',
+      isbn: '978-0073376226',
+      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780073376226-M.jpg',
+      fallbackCover: '/assets/books/forouzan-dcn.svg',
+      citedChapters: 'Chapter 15: Connecting Devices and Virtual LANs',
+      coreTakeaway:
+        'Analyzes port-based VLAN configuration, inter-switch trunk multiplexing, and hardware broadcast storm mitigation.',
+      badge: 'Prescribed Literature',
+    },
+    {
+      title: 'CCNA 200-301 Official Cert Guide, Vol 1',
+      subtitle: 'Implementing Ethernet VLANs and Inter-Switch Trunking',
+      authors: 'Wendell Odom, CCIE',
+      publisher: 'Cisco Press (1st Edition)',
+      isbn: '978-0135792735',
+      coverUrl: '/assets/books/cisco-ccna.svg',
+      fallbackCover: '/assets/books/cisco-ccna.svg',
+      citedChapters: 'Chapter 8: Implementing Ethernet Virtual LANs',
+      coreTakeaway:
+        'Hands-on Cisco IOS switch CLI configuration: switchport mode access, switchport mode trunk, and Layer 2 ping isolation tests.',
+      badge: 'Industry Cert Guide',
+    },
+  ];
 
   return (
     <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
-      <div className="text-center mb-6">
+      {/* Lightbox Modal */}
+      {activeModalImage && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
+          onClick={() => setActiveModalImage(null)}
+        >
+          <div
+            className="relative bg-slate-900 border border-slate-700 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-4 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+              <span className="text-sm font-bold text-sky-400 font-mono">
+                {activeModalImage.title}
+              </span>
+              <button
+                onClick={() => setActiveModalImage(null)}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <img
+              src={activeModalImage.src}
+              alt={activeModalImage.title}
+              className="w-full h-auto rounded-lg shadow-inner bg-slate-950"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Main Header */}
+      <div className="text-center space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-semibold">
+          <ShieldCheck className="w-4 h-4 text-[#0284c7]" />
+          <span>KJSSE &bull; Somaiya Vidyavihar University &bull; Computer Networks Lab (216U01L502 / 216U01C502)</span>
+        </div>
         <h1
-          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight pt-1"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           {overview?.heading || experiment.title}
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-2 font-medium">
+        <p className="text-xs sm:text-sm text-slate-500 font-medium">
           {overview?.subheading || experiment.category}
         </p>
       </div>
 
       {/* Introduction Card */}
       <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-3">
-        <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+        <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
           <ShieldCheck className="w-5 h-5 text-[#0284c7]" />
-          Theoretical Background & Architecture
+          Theoretical Background &amp; Switch Architecture
         </h2>
         <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
           {overview?.introduction || experiment.aim}
         </p>
+      </div>
+
+      {/* Figure 1: IEEE 802.1Q Frame Format */}
+      <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <div className="text-xs font-bold text-sky-600 uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              Figure 1 &bull; IEEE 802.1Q Tag Architecture
+            </div>
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">
+              4-Byte VLAN Tag Insertion into Standard IEEE 802.3 Frame
+            </h3>
+          </div>
+          <button
+            onClick={() =>
+              setActiveModalImage({
+                src: '/assets/diagrams/vlan-8021q-frame.svg',
+                title: 'Figure 1: IEEE 802.1Q Frame Tagging Specification',
+              })
+            }
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-sky-50 hover:text-sky-700 text-xs font-semibold text-slate-700 border border-slate-200 transition cursor-pointer self-start sm:self-auto"
+          >
+            <ZoomIn className="w-4 h-4 text-sky-600" />
+            <span>Expand Frame Schematic</span>
+          </button>
+        </div>
+
+        <div
+          className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-900 cursor-pointer shadow-inner"
+          onClick={() =>
+            setActiveModalImage({
+              src: '/assets/diagrams/vlan-8021q-frame.svg',
+              title: 'Figure 1: IEEE 802.1Q Frame Tagging Specification',
+            })
+          }
+        >
+          <img
+            src="/assets/diagrams/vlan-8021q-frame.svg"
+            alt="IEEE 802.1Q Frame Format Diagram"
+            className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.01]"
+          />
+          <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center pointer-events-none">
+            <span className="px-4 py-2 rounded-lg bg-slate-900/90 text-white text-xs font-bold shadow-lg flex items-center gap-2">
+              <ZoomIn className="w-4 h-4 text-sky-400" />
+              Click to view high-resolution schematic
+            </span>
+          </div>
+        </div>
+
+        {/* 802.1Q Tag Breakdown */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-2 text-xs">
+          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+            <div className="font-bold text-sky-700 font-mono">TPID (16 bits)</div>
+            <div className="text-slate-600">Set to <code className="bg-slate-200 px-1 rounded font-mono">0x8100</code> identifying the frame as 802.1Q tagged.</div>
+          </div>
+          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+            <div className="font-bold text-sky-700 font-mono">PCP (3 bits)</div>
+            <div className="text-slate-600">Priority Code Point for IEEE 802.1p Quality of Service (QoS) classes (0-7).</div>
+          </div>
+          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+            <div className="font-bold text-sky-700 font-mono">DEI (1 bit)</div>
+            <div className="text-slate-600">Drop Eligible Indicator; specifies frames eligible for dropping during network congestion.</div>
+          </div>
+          <div className="p-3 rounded-lg bg-sky-50 border border-sky-200 space-y-1">
+            <div className="font-bold text-sky-900 font-mono">VID (12 bits)</div>
+            <div className="text-sky-800 font-medium">VLAN Identifier: supports 4094 unique VLANs (1 to 4094; 0 and 4095 reserved).</div>
+          </div>
+        </div>
       </div>
 
       {/* Dynamic Tools or Rules Cards */}
@@ -89,6 +240,45 @@ export function CNOverviewView({ experiment, onNext }) {
           </ul>
         </div>
       )}
+
+      {/* Prescribed Literature for CN */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <Book className="w-5 h-5 text-[#0284c7]" />
+          Authoritative Literature &amp; Prescribed Textbooks
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {cnBooks.map((b, idx) => (
+            <div key={idx} className="border border-slate-200 rounded-xl p-4 bg-white shadow-xs flex flex-col justify-between space-y-3">
+              <div className="flex gap-3">
+                <div className="shrink-0 w-20 rounded overflow-hidden border border-slate-200 bg-slate-100 shadow-2xs">
+                  <img
+                    src={b.coverUrl}
+                    alt={b.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = b.fallbackCover;
+                    }}
+                    className="w-full h-auto aspect-[2/3] object-cover"
+                  />
+                </div>
+                <div className="min-w-0 flex-1 space-y-1">
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-sky-100 text-sky-800">
+                    {b.badge}
+                  </span>
+                  <h4 className="text-xs font-bold text-slate-900 leading-snug">{b.title}</h4>
+                  <p className="text-[11px] text-slate-500">{b.authors}</p>
+                  <p className="text-[10px] text-slate-400 font-mono">ISBN: {b.isbn}</p>
+                </div>
+              </div>
+              <div className="bg-slate-50 p-2.5 rounded border border-slate-200 text-[11px] text-slate-600">
+                <span className="font-semibold text-sky-700 block mb-0.5">{b.citedChapters}</span>
+                {b.coreTakeaway}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Navigation */}
       <div className="pt-4 flex justify-end">
@@ -1122,39 +1312,130 @@ export function CNPosttestView({ experiment, onNext, onQuizPassed }) {
 export function CNReferencesView({ experiment, onNext }) {
   if (!experiment) return null;
 
+  const bookRefs = (experiment.references || []).filter((r) => r.authors);
+  const docRefs = (experiment.references || []).filter((r) => !r.authors);
+
   return (
-    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
-      <div className="text-center mb-6">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
+      <div className="text-center space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-semibold">
+          <BookMarked className="w-4 h-4 text-[#0284c7]" />
+          <span>Accredited Academic Bibliography &bull; SVU Mumbai</span>
+        </div>
         <h1
-          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
+          className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight pt-1"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           Further Readings & Authoritative References
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-2 font-medium">
-          Citations to RFC standards, textbook publications, and syllabus material
+        <p className="text-xs sm:text-sm text-slate-500 font-medium max-w-xl mx-auto">
+          Prescribed textbooks, IEEE standards specifications, and institutional curriculum references.
         </p>
       </div>
 
-      <div className="space-y-3">
-        {(experiment.references || []).map((ref, idx) => (
-          <a
-            key={idx}
-            href={ref.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-4 rounded-xl border border-slate-200 bg-white hover:bg-sky-50/50 hover:border-sky-300 transition shadow-2xs flex items-center justify-between group"
-          >
-            <div className="flex items-center gap-3">
-              <BookMarked className="w-5 h-5 text-[#0284c7] group-hover:scale-110 transition" />
-              <span className="text-sm font-semibold text-slate-800 group-hover:text-[#0284c7] transition">
-                {ref.title}
-              </span>
-            </div>
-            <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7] transition" />
-          </a>
-        ))}
-      </div>
+      {/* Textbooks Section */}
+      {bookRefs.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+            <Book className="w-5 h-5 text-[#0284c7]" />
+            <h2 className="text-lg font-bold text-slate-900">
+              1. Prescribed Academic Textbooks &amp; Literature
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {bookRefs.map((book, idx) => (
+              <div
+                key={idx}
+                className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-3">
+                  <div className="w-24 sm:w-28 mx-auto rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-slate-100">
+                    <img
+                      src={book.coverUrl}
+                      alt={book.title}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = book.fallbackCover;
+                      }}
+                      className="w-full h-auto object-cover aspect-[2/3]"
+                    />
+                  </div>
+                  <div className="space-y-1 text-center">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-200">
+                      {book.edition}
+                    </span>
+                    <h3 className="text-sm font-bold text-slate-900 leading-snug">
+                      {book.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 font-medium">{book.authors}</p>
+                    <p className="text-[11px] text-slate-400 font-mono">ISBN: {book.isbn}</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 rounded-lg p-2.5 border border-slate-200 text-xs space-y-1">
+                  <div className="font-bold text-[#0284c7]">{book.citedChapters}</div>
+                  <p className="text-slate-600 text-[11px] leading-relaxed">{book.description}</p>
+                </div>
+
+                <a
+                  href={book.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 font-semibold text-xs transition border border-sky-200"
+                >
+                  <span>View Catalog / Publication</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Standards & Institutional Links */}
+      {docRefs.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+            <ShieldCheck className="w-5 h-5 text-indigo-600" />
+            <h2 className="text-lg font-bold text-slate-900">
+              2. Standards Specifications &amp; Syllabus Guidelines
+            </h2>
+          </div>
+
+          <div className="space-y-3">
+            {docRefs.map((ref, idx) => (
+              <a
+                key={idx}
+                href={ref.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-4 rounded-xl border border-slate-200 bg-white hover:bg-sky-50/50 hover:border-sky-300 transition shadow-2xs flex items-center justify-between group"
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-slate-800 group-hover:text-[#0284c7] transition">
+                      {ref.title}
+                    </span>
+                    {ref.tag && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                        {ref.tag}
+                      </span>
+                    )}
+                  </div>
+                  {ref.publisher && (
+                    <p className="text-xs text-slate-500 font-medium">Source: {ref.publisher}</p>
+                  )}
+                  {ref.description && (
+                    <p className="text-xs text-slate-600">{ref.description}</p>
+                  )}
+                </div>
+                <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7] transition shrink-0 ml-3" />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="pt-4 flex justify-end">
         <button

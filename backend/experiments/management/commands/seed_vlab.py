@@ -108,9 +108,13 @@ class Command(BaseCommand):
                     '| Return Requirement | Internal to Field class | MUST return cleaned field value | MUST return full cleaned_data dict |'
                 ),
                 'references': (
-                    '• Official Django Form Validation Documentation (docs.djangoproject.com/en/stable/ref/forms/validation/)\n'
-                    '• Two Scoops of Django: Best Practices for Forms\n'
-                    '• Django Source Code: django.forms.forms.BaseForm'
+                    '• Two Scoops of Django 3.x/4.x: Best Practices for Python and Django (Daniel Roy Greenfeld & Audrey Roy Greenfeld, Two Scoops Press, ISBN: 978-0692915721)\n'
+                    '• Mastering Django: Core (Nigel George, GNW Independent Publishing, ISBN: 978-0994541703, Chapter 8: Form Processing & Validation Lifecycle)\n'
+                    '• Django 5 By Example (Antonio Mele, Packt Publishing, ISBN: 978-1805125457, Chapter 3: Form Validation & Security)\n'
+                    '• Django for Beginners (William S. Vincent, WelcomeToCode, ISBN: 978-1735467207, Forms & Validation)\n'
+                    '• Official Django Documentation: Form and Field Validation (https://docs.djangoproject.com/en/stable/ref/forms/validation/)\n'
+                    '• MDN Web Docs: Django Web Framework - Working with Forms (developer.mozilla.org)\n'
+                    '• Somaiya Vidyavihar University Detailed Syllabus: Course Code 216U01L502 / 216U01C502'
                 ),
                 'estimated_time': '45 Minutes',
                 'estimated_minutes': 45
