@@ -402,475 +402,118 @@ export function CNSimulationView({ experiment, onNext }) {
 
 // 6. CN Code Assessment View
 export function CNCodeAssessmentView({ experiment, onNext, onChallengeSolved }) {
+  const [userAnswer, setUserAnswer] = useState('');
+  const [feedback, setFeedback] = useState(null);
+
   const challenges = {
     'cn-network-diagnostics': {
-      title: 'Task: ICMP Echo Type Classifier (Python)',
-      filename: 'icmp_validator.py',
-      prompt: 'Complete the Python function `classify_icmp(icmp_type)` that returns `"Echo Request"` when `icmp_type == 8`, `"Echo Reply"` when `icmp_type == 0`, and `"Other"` otherwise.',
-      starterCode: `def classify_icmp(icmp_type):\n    if icmp_type == 8:\n        return "Echo Request"\n    elif icmp_type == 0:\n        return "Echo Reply"\n    return "Other"`,
-      solutionCode: `def classify_icmp(icmp_type):\n    if icmp_type == 8:\n        return "Echo Request"\n    elif icmp_type == 0:\n        return "Echo Reply"\n    return "Other"`,
-      inputLabel: 'icmp_type (int)',
-      defaultCustomInput: '3',
-      defaultCustomExpected: 'Other',
-      builtInTests: [
-        { name: 'Test 1: ICMP Type 8 -> Echo Request', input: '8', expected: 'Echo Request' },
-        { name: 'Test 2: ICMP Type 0 -> Echo Reply', input: '0', expected: 'Echo Reply' },
-        { name: 'Test 3: ICMP Type 11 -> Other', input: '11', expected: 'Other' },
-      ],
-      evaluate: (code, rawInput) => {
-        const val = parseInt(String(rawInput).trim(), 10);
-        if (!code.includes('def classify_icmp')) throw new Error('Missing function definition: def classify_icmp(icmp_type):');
-        const reqMatch = code.match(/icmp_type\s*==\s*(\d+)[\s\S]*?return\s+['"]([^'"]+)['"]/);
-        const repMatch = code.match(/elif\s+icmp_type\s*==\s*(\d+)[\s\S]*?return\s+['"]([^'"]+)['"]/);
-        const reqCode = reqMatch ? parseInt(reqMatch[1], 10) : -1;
-        const reqLabel = reqMatch ? reqMatch[2] : '';
-        const repCode = repMatch ? parseInt(repMatch[1], 10) : -1;
-        const repLabel = repMatch ? repMatch[2] : '';
-        if (val === reqCode) return reqLabel;
-        if (val === repCode) return repLabel;
-        const fallbackMatch = code.match(/return\s+['"]([^'"]+)['"]\s*$/m);
-        return fallbackMatch ? fallbackMatch[1] : 'Other';
-      },
+      title: 'Task: ICMP Echo Type Identification',
+      prompt: 'What are the two ICMP message type integers for Echo Request and Echo Reply? (Format: Request=X, Reply=Y)',
+      correct: 'Request=8, Reply=0',
+      hint: 'RFC 792 defines Echo Request as 8 and Echo Reply as 0.',
     },
     'cn-hamming-code': {
-      title: 'Task: Hamming (7,4) Even Parity Calculator',
-      filename: 'hamming_parity.py',
-      prompt: 'Write the Python function `calc_parity(d1, d2, d3, d4)` that computes Even Parity bits `(p1, p2, p4)` using XOR (`^`) and returns them as `"p1,p2,p4"`.',
-      starterCode: `def calc_parity(d1, d2, d3, d4):\n    p1 = d1 ^ d2 ^ d4\n    p2 = d1 ^ d3 ^ d4\n    p4 = d2 ^ d3 ^ d4\n    return f"{p1},{p2},{p4}"`,
-      solutionCode: `def calc_parity(d1, d2, d3, d4):\n    p1 = d1 ^ d2 ^ d4\n    p2 = d1 ^ d3 ^ d4\n    p4 = d2 ^ d3 ^ d4\n    return f"{p1},{p2},{p4}"`,
-      inputLabel: '4-bit data (e.g. 1011)',
-      defaultCustomInput: '1101',
-      defaultCustomExpected: '1,0,1',
-      builtInTests: [
-        { name: 'Test 1: Data 1011 -> Parity 0,1,0', input: '1011', expected: '0,1,0' },
-        { name: 'Test 2: Data 1111 -> Parity 1,1,1', input: '1111', expected: '1,1,1' },
-        { name: 'Test 3: Data 0000 -> Parity 0,0,0', input: '0000', expected: '0,0,0' },
-      ],
-      evaluate: (code, rawInput) => {
-        if (!code.includes('def calc_parity')) throw new Error('Missing function definition: def calc_parity(d1, d2, d3, d4):');
-        const bits = String(rawInput).replace(/[^01]/g, '').split('').map(Number);
-        if (bits.length !== 4) throw new Error('Input must be a 4-bit binary string (e.g. 1011)');
-        const [d1, d2, d3, d4] = bits;
-        const hasXor = code.includes('d1 ^ d2 ^ d4') && code.includes('d1 ^ d3 ^ d4') && code.includes('d2 ^ d3 ^ d4');
-        if (!hasXor) throw new Error('Parity equations must XOR the appropriate data bits (d1^d2^d4, d1^d3^d4, d2^d3^d4).');
-        const p1 = d1 ^ d2 ^ d4;
-        const p2 = d1 ^ d3 ^ d4;
-        const p4 = d2 ^ d3 ^ d4;
-        return `${p1},${p2},${p4}`;
-      },
+      title: 'Task: Calculate Parity Bits for 1011',
+      prompt: 'For 4 data bits 1011, enter the calculated parity bits (P1, P2, P4) using Even Parity separated by commas. (e.g. 0,1,0)',
+      correct: '0, 1, 0',
+      hint: 'P1 checks 1,3,5,7; P2 checks 2,3,6,7; P4 checks 4,5,6,7.',
     },
     'cn-ip-subnetting': {
-      title: 'Task: IPv4 Usable Hosts Calculator',
-      filename: 'subnet_calc.py',
-      prompt: 'Write `usable_hosts(prefix_len)` to return the number of usable host IPv4 addresses for a given CIDR prefix length (`2 ** (32 - prefix_len) - 2`).',
-      starterCode: `def usable_hosts(prefix_len):\n    host_bits = 32 - prefix_len\n    return (2 ** host_bits) - 2`,
-      solutionCode: `def usable_hosts(prefix_len):\n    host_bits = 32 - prefix_len\n    return (2 ** host_bits) - 2`,
-      inputLabel: 'CIDR prefix (e.g. 27)',
-      defaultCustomInput: '26',
-      defaultCustomExpected: '62',
-      builtInTests: [
-        { name: 'Test 1: /27 Subnet -> 30 Usable Hosts', input: '27', expected: '30' },
-        { name: 'Test 2: /24 Subnet -> 254 Usable Hosts', input: '24', expected: '254' },
-        { name: 'Test 3: /30 Point-to-Point -> 2 Usable Hosts', input: '30', expected: '2' },
-      ],
-      evaluate: (code, rawInput) => {
-        if (!code.includes('def usable_hosts')) throw new Error('Missing function definition: def usable_hosts(prefix_len):');
-        const prefix = parseInt(String(rawInput).replace('/', '').trim(), 10);
-        const subMatch = code.match(/-\s*(\d+)/g);
-        const subtractReserved = code.includes('- 2') || code.includes('-2');
-        const hostBits = 32 - prefix;
-        const result = Math.pow(2, hostBits) - (subtractReserved ? 2 : (subMatch ? 0 : 0));
-        return String(result);
-      },
+      title: 'Task: Compute Usable Hosts for /27',
+      prompt: 'How many usable host IP addresses exist in a /27 IPv4 subnet? (Enter integer only)',
+      correct: '30',
+      hint: 'Host bits = 32 - 27 = 5. Usable hosts = 2^5 - 2 = 30.',
     },
     'cn-vlan-switching': {
-      title: 'Task: 802.1Q VLAN Frame Forwarding Check',
-      filename: 'vlan_switch.py',
-      prompt: 'Write `can_forward(src_vlan, dst_vlan, is_trunk)` that returns `"FORWARD"` if `is_trunk` is True or `src_vlan == dst_vlan`, else `"DROP"`.',
-      starterCode: `def can_forward(src_vlan, dst_vlan, is_trunk):\n    if is_trunk or src_vlan == dst_vlan:\n        return "FORWARD"\n    return "DROP"`,
-      solutionCode: `def can_forward(src_vlan, dst_vlan, is_trunk):\n    if is_trunk or src_vlan == dst_vlan:\n        return "FORWARD"\n    return "DROP"`,
-      inputLabel: 'src_vlan,dst_vlan,is_trunk',
-      defaultCustomInput: '10,20,False',
-      defaultCustomExpected: 'DROP',
-      builtInTests: [
-        { name: 'Test 1: Same Access VLAN (10,10,False) -> FORWARD', input: '10,10,False', expected: 'FORWARD' },
-        { name: 'Test 2: Different Access VLAN (10,20,False) -> DROP', input: '10,20,False', expected: 'DROP' },
-        { name: 'Test 3: 802.1Q Trunk Link (10,20,True) -> FORWARD', input: '10,20,True', expected: 'FORWARD' },
-      ],
-      evaluate: (code, rawInput) => {
-        if (!code.includes('def can_forward')) throw new Error('Missing function definition: def can_forward(src_vlan, dst_vlan, is_trunk):');
-        const parts = String(rawInput).split(',').map((s) => s.trim());
-        const src = parseInt(parts[0], 10);
-        const dst = parseInt(parts[1], 10);
-        const trunk = parts[2]?.toLowerCase() === 'true';
-        const checksTrunk = code.includes('is_trunk');
-        const checksEq = code.includes('src_vlan == dst_vlan');
-        if ((checksTrunk && trunk) || (checksEq && src === dst)) return 'FORWARD';
-        return 'DROP';
-      },
+      title: 'Task: Cisco IOS Trunk Configuration',
+      prompt: 'Which Cisco IOS interface command sets a switchport to 802.1Q trunking mode?',
+      correct: 'switchport mode trunk',
+      hint: 'Syntax: switchport mode trunk',
     },
     'cn-stop-wait-arq': {
-      title: 'Task: Stop-and-Wait Next ACK Generator',
-      filename: 'stop_and_wait.py',
-      prompt: 'Write `next_ack(seq_num, corrupted)` that returns `"TIMEOUT_RETRANSMIT"` if `corrupted` is True, else returns `f"ACK {1 - seq_num}"`.',
-      starterCode: `def next_ack(seq_num, corrupted):\n    if corrupted:\n        return "TIMEOUT_RETRANSMIT"\n    return f"ACK {1 - seq_num}"`,
-      solutionCode: `def next_ack(seq_num, corrupted):\n    if corrupted:\n        return "TIMEOUT_RETRANSMIT"\n    return f"ACK {1 - seq_num}"`,
-      inputLabel: 'seq_num,corrupted (e.g. 0,False)',
-      defaultCustomInput: '1,False',
-      defaultCustomExpected: 'ACK 0',
-      builtInTests: [
-        { name: 'Test 1: Frame 0 Intact (0,False) -> ACK 1', input: '0,False', expected: 'ACK 1' },
-        { name: 'Test 2: Frame 1 Intact (1,False) -> ACK 0', input: '1,False', expected: 'ACK 0' },
-        { name: 'Test 3: Frame 0 Corrupted (0,True) -> TIMEOUT_RETRANSMIT', input: '0,True', expected: 'TIMEOUT_RETRANSMIT' },
-      ],
-      evaluate: (code, rawInput) => {
-        if (!code.includes('def next_ack')) throw new Error('Missing function definition: def next_ack(seq_num, corrupted):');
-        const parts = String(rawInput).split(',').map((s) => s.trim());
-        const seq = parseInt(parts[0], 10);
-        const corr = parts[1]?.toLowerCase() === 'true';
-        if (corr && code.includes('TIMEOUT_RETRANSMIT')) return 'TIMEOUT_RETRANSMIT';
-        if (code.includes('1 - seq_num') || code.includes('(seq_num + 1) % 2') || code.includes('seq_num ^ 1')) {
-          return `ACK ${1 - seq}`;
-        }
-        return `ACK ${seq}`;
-      },
+      title: 'Task: Next Expected Sequence Number',
+      prompt: 'If the receiver successfully accepts Frame 0, which ACK number does it return? (e.g. ACK 1)',
+      correct: 'ACK 1',
+      hint: 'Stop-and-Wait uses next-expected ACK numbering: ACK 1 requests Frame 1 next.',
     },
     'cn-static-routing': {
-      title: 'Task: Longest Prefix Match Route Resolver',
-      filename: 'static_router.py',
-      prompt: 'Write `select_next_hop(dst_ip)` that returns `"192.168.2.1"` for `"10.1.1."` prefix, `"192.168.1.1"` for `"10.1."` prefix, and `"10.0.0.2"` (Default Route `0.0.0.0/0`) otherwise.',
-      starterCode: `def select_next_hop(dst_ip):\n    if dst_ip.startswith("10.1.1."):\n        return "192.168.2.1"\n    elif dst_ip.startswith("10.1."):\n        return "192.168.1.1"\n    return "10.0.0.2"`,
-      solutionCode: `def select_next_hop(dst_ip):\n    if dst_ip.startswith("10.1.1."):\n        return "192.168.2.1"\n    elif dst_ip.startswith("10.1."):\n        return "192.168.1.1"\n    return "10.0.0.2"`,
-      inputLabel: 'Destination IPv4',
-      defaultCustomInput: '8.8.8.8',
-      defaultCustomExpected: '10.0.0.2',
-      builtInTests: [
-        { name: 'Test 1: Longest Prefix /24 (10.1.1.55) -> 192.168.2.1', input: '10.1.1.55', expected: '192.168.2.1' },
-        { name: 'Test 2: Summary Prefix /16 (10.1.9.10) -> 192.168.1.1', input: '10.1.9.10', expected: '192.168.1.1' },
-        { name: 'Test 3: Default Route 0.0.0.0/0 (172.16.0.4) -> 10.0.0.2', input: '172.16.0.4', expected: '10.0.0.2' },
-      ],
-      evaluate: (code, rawInput) => {
-        if (!code.includes('def select_next_hop')) throw new Error('Missing function definition: def select_next_hop(dst_ip):');
-        const ip = String(rawInput).trim();
-        if (ip.startsWith('10.1.1.') && code.includes('10.1.1.') && code.includes('192.168.2.1')) return '192.168.2.1';
-        if (ip.startsWith('10.1.') && code.includes('10.1.') && code.includes('192.168.1.1')) return '192.168.1.1';
-        const defMatch = code.match(/return\s+['"]([^'"]+)['"]\s*$/m);
-        return defMatch ? defMatch[1] : '10.0.0.2';
-      },
+      title: 'Task: Default Static Route Syntax',
+      prompt: 'Write the Cisco IOS static default route command with next-hop IP 10.0.0.2',
+      correct: 'ip route 0.0.0.0 0.0.0.0 10.0.0.2',
+      hint: 'Syntax: ip route 0.0.0.0 0.0.0.0 <next-hop>',
     },
   };
 
-  const slug = experiment?.slug || 'cn-network-diagnostics';
-  const activeChallenge = challenges[slug] || challenges['cn-network-diagnostics'];
+  const activeChallenge = challenges[experiment?.slug] || challenges['cn-network-diagnostics'];
 
-  const [code, setCode] = useState(activeChallenge.starterCode);
-  const [customTests, setCustomTests] = useState([]);
-  const [newInput, setNewInput] = useState(activeChallenge.defaultCustomInput);
-  const [newExpected, setNewExpected] = useState(activeChallenge.defaultCustomExpected);
-  const [results, setResults] = useState(null);
+  const handleVerify = () => {
+    const cleanUser = userAnswer.trim().toLowerCase().replace(/\s+/g, ' ');
+    const cleanExpected = activeChallenge.correct.trim().toLowerCase().replace(/\s+/g, ' ');
 
-  useEffect(() => {
-    const ch = challenges[experiment?.slug] || challenges['cn-network-diagnostics'];
-    setCode(ch.starterCode);
-    setCustomTests([]);
-    setNewInput(ch.defaultCustomInput);
-    setNewExpected(ch.defaultCustomExpected);
-    setResults(null);
-  }, [experiment?.slug]);
-
-  const handleEditorKeyDown = (e) => {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const start = e.target.selectionStart;
-      const end = e.target.selectionEnd;
-      const updated = code.substring(0, start) + '    ' + code.substring(end);
-      setCode(updated);
-      setTimeout(() => {
-        e.target.selectionStart = e.target.selectionEnd = start + 4;
-      }, 0);
-    }
-  };
-
-  const handleAddCustomTest = () => {
-    if (!newInput.trim()) return;
-    setCustomTests((prev) => [
-      ...prev,
-      {
-        id: `custom-${Date.now()}`,
-        name: `Custom Test #${prev.length + 1} (input: ${newInput.trim()})`,
-        input: newInput.trim(),
-        expected: newExpected.trim(),
-        isCustom: true,
-      },
-    ]);
-  };
-
-  const handleRunTests = () => {
-    const allSuite = [...activeChallenge.builtInTests, ...customTests];
-    const evaluated = allSuite.map((tc) => {
-      try {
-        const actual = String(activeChallenge.evaluate(code, tc.input));
-        const passed = actual.trim().toLowerCase() === tc.expected.trim().toLowerCase();
-        return {
-          ...tc,
-          actual,
-          passed,
-          feedback: passed
-            ? `Output "${actual}" matched expected "${tc.expected}".`
-            : `Expected "${tc.expected}", but your code returned "${actual}".`,
-        };
-      } catch (err) {
-        return {
-          ...tc,
-          actual: 'RuntimeError',
-          passed: false,
-          feedback: err.message || 'Execution error',
-        };
-      }
-    });
-
-    const passedCount = evaluated.filter((r) => r.passed).length;
-    const allPassed = passedCount === evaluated.length;
-    setResults({
-      allPassed,
-      passedCount,
-      totalCount: evaluated.length,
-      cases: evaluated,
-    });
-    if (allPassed && onChallengeSolved) {
-      onChallengeSolved();
+    if (cleanUser === cleanExpected || cleanUser.includes(cleanExpected)) {
+      setFeedback({ success: true, message: 'Excellent! Your answer is correct. Automated verification passed 100%!' });
+      if (onChallengeSolved) onChallengeSolved();
+    } else {
+      setFeedback({ success: false, message: `Incorrect. Hint: ${activeChallenge.hint}` });
     }
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
       <div className="text-center mb-6">
         <h1
           className="text-2xl sm:text-3xl font-extrabold text-[#2c99ce] tracking-tight"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
-          Live Code & Test Runner: {experiment?.shortTitle}
+          Code & Configuration Assessment: {experiment?.shortTitle}
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-2 font-medium">
-          Edit Python network protocol logic and run both built-in and your own custom test cases
+          Practical problem-solving challenge with automated verification
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column: Live Code Editor & Custom Test Builder */}
-        <div className="lg:col-span-7 space-y-4">
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-            <div className="flex items-center justify-between gap-2 mb-1">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-[#0284c7] flex items-center gap-1.5">
-                <Code2 className="w-4 h-4" />
-                {activeChallenge.title}
-              </span>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setCode(activeChallenge.starterCode)}
-                  className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 px-2 py-1 rounded border border-slate-200 bg-white cursor-pointer"
-                >
-                  Reset Code
-                </button>
-              </div>
-            </div>
-            <p className="text-xs text-slate-600 leading-relaxed">{activeChallenge.prompt}</p>
-          </div>
+      <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
+        <h3 className="font-bold text-base text-slate-800 flex items-center gap-2">
+          <Code2 className="w-5 h-5 text-[#0284c7]" />
+          {activeChallenge.title}
+        </h3>
 
-          {/* VS Code Dark Editor */}
-          <div className="rounded-xl overflow-hidden border border-slate-800 bg-[#1e1e1e] shadow-md">
-            <div className="bg-[#252526] px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-amber-400/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
-                <span className="ml-2 text-xs font-mono text-slate-300 font-semibold">
-                  {activeChallenge.filename}
-                </span>
-              </div>
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
-                Python 3.11 • Live Sandbox
-              </span>
-            </div>
+        <p className="text-sm text-slate-700 leading-relaxed font-medium">
+          {activeChallenge.prompt}
+        </p>
 
-            <div className="flex font-mono text-xs sm:text-sm leading-6">
-              <div className="select-none py-4 px-3 text-right bg-[#1e1e1e] text-slate-600 border-r border-slate-800/80 min-w-[2.75rem]">
-                {code.split('\n').map((_, idx) => (
-                  <div key={idx}>{idx + 1}</div>
-                ))}
-              </div>
-              <textarea
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                onKeyDown={handleEditorKeyDown}
-                rows={Math.max(8, code.split('\n').length + 1)}
-                spellCheck="false"
-                className="w-full p-4 bg-[#1e1e1e] text-emerald-300 font-mono text-xs sm:text-sm leading-6 focus:outline-hidden resize-y"
-              />
-            </div>
+        <div className="space-y-3 pt-2">
+          <input
+            type="text"
+            value={userAnswer}
+            onChange={(e) => setUserAnswer(e.target.value)}
+            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm font-mono text-slate-900 focus:outline-hidden focus:border-[#0284c7]"
+            placeholder="Type your solution here..."
+          />
 
-            <div className="bg-[#252526] px-4 py-3 border-t border-slate-800 flex items-center justify-between">
-              <span className="text-[11px] text-slate-400">
-                Supports <code className="text-slate-300">Tab</code> indentation & live custom test cases
-              </span>
-              <button
-                onClick={handleRunTests}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg shadow-xs transition flex items-center gap-1.5 cursor-pointer"
-              >
-                <Zap className="w-3.5 h-3.5" />
-                Run Code & Test Cases ({activeChallenge.builtInTests.length + customTests.length})
-              </button>
-            </div>
-          </div>
-
-          {/* Custom Test Case Builder */}
-          <div className="border border-slate-200 rounded-xl p-4 bg-white shadow-xs space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                <Terminal className="w-4 h-4 text-[#0284c7]" />
-                Add & Run Your Own Custom Test Cases
-              </h4>
-              <span className="text-[11px] font-semibold text-slate-400">
-                {customTests.length} custom test{customTests.length === 1 ? '' : 's'} added
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
-              <div className="sm:col-span-5">
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Input ({activeChallenge.inputLabel})
-                </label>
-                <input
-                  type="text"
-                  value={newInput}
-                  onChange={(e) => setNewInput(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs font-mono bg-slate-50 border border-slate-300 rounded-lg"
-                  placeholder={activeChallenge.defaultCustomInput}
-                />
-              </div>
-              <div className="sm:col-span-5">
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Expected Return Value
-                </label>
-                <input
-                  type="text"
-                  value={newExpected}
-                  onChange={(e) => setNewExpected(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs font-mono bg-slate-50 border border-slate-300 rounded-lg"
-                  placeholder={activeChallenge.defaultCustomExpected}
-                />
-              </div>
-              <div className="sm:col-span-2">
-                <button
-                  type="button"
-                  onClick={handleAddCustomTest}
-                  className="w-full py-1.5 px-3 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold text-xs rounded-lg transition cursor-pointer"
-                >
-                  + Add
-                </button>
-              </div>
-            </div>
-
-            {customTests.length > 0 && (
-              <div className="pt-2 space-y-1.5">
-                {customTests.map((ct) => (
-                  <div
-                    key={ct.id}
-                    className="flex items-center justify-between text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 font-mono"
-                  >
-                    <span className="text-slate-700">
-                      <strong>{ct.name}</strong> → expects <code className="text-[#0284c7]">{ct.expected}</code>
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setCustomTests((prev) => prev.filter((item) => item.id !== ct.id))}
-                      className="text-[11px] text-rose-600 hover:underline font-sans font-semibold cursor-pointer"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <button
+            onClick={handleVerify}
+            className="px-5 py-2.5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold text-xs rounded-lg transition shadow-xs cursor-pointer flex items-center gap-1.5"
+          >
+            <CheckCircle2 className="w-4 h-4" />
+            Verify Solution
+          </button>
         </div>
 
-        {/* Right Column: Unit Test Execution Output */}
-        <div className="lg:col-span-5 border border-slate-200 rounded-xl bg-white shadow-xs overflow-hidden">
-          <div className="bg-slate-800 text-white px-4 py-3 flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-              <Activity className="w-4 h-4 text-emerald-400" />
-              Test Runner Output
-            </span>
-            {results && (
-              <span
-                className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                  results.allPassed ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
-                }`}
-              >
-                {results.passedCount}/{results.totalCount} Passed
-              </span>
-            )}
-          </div>
-
-          <div className="p-4 space-y-3">
-            {!results ? (
-              <div className="py-12 text-center text-slate-400 text-xs space-y-2">
-                <Code2 className="w-8 h-8 mx-auto text-slate-300" />
-                <p>Click <strong>"Run Code & Test Cases"</strong> to execute the test suite against your code.</p>
-              </div>
+        {feedback && (
+          <div
+            className={`p-4 rounded-xl border flex items-start gap-3 mt-4 ${
+              feedback.success ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'
+            }`}
+          >
+            {feedback.success ? (
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
             ) : (
-              <>
-                <div
-                  className={`p-3 rounded-lg border text-xs font-semibold flex items-center gap-2 ${
-                    results.allPassed
-                      ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-                      : 'bg-amber-50 border-amber-200 text-amber-800'
-                  }`}
-                >
-                  {results.allPassed ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  ) : (
-                    <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                  )}
-                  <span>
-                    {results.allPassed
-                      ? 'All built-in & custom unit tests passed!'
-                      : `${results.passedCount} of ${results.totalCount} test cases passed. Inspect failures below.`}
-                  </span>
-                </div>
-
-                <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
-                  {results.cases.map((tc, idx) => (
-                    <div
-                      key={idx}
-                      className={`p-3 rounded-lg border text-xs ${
-                        tc.passed
-                          ? 'bg-emerald-50/50 border-emerald-200 text-emerald-900'
-                          : 'bg-rose-50/60 border-rose-200 text-rose-900'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between font-bold mb-1">
-                        <span className="flex items-center gap-1.5">
-                          {tc.passed ? (
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          ) : (
-                            <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-                          )}
-                          {tc.name}
-                        </span>
-                        <span className="text-[10px] uppercase font-extrabold">
-                          {tc.passed ? 'PASS' : 'FAIL'}
-                        </span>
-                      </div>
-                      <p className="text-[11px] font-mono text-slate-600">{tc.feedback}</p>
-                    </div>
-                  ))}
-                </div>
-              </>
+              <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
             )}
+            <span className="text-xs leading-relaxed font-semibold">{feedback.message}</span>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="pt-4 flex justify-end">
