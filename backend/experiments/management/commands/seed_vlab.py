@@ -15,9 +15,9 @@ class Command(BaseCommand):
             {
                 'username': 'student',
                 'email': 'student@vlab.edu',
-                'password': 'Student@123',
-                'first_name': 'Student',
-                'last_name': 'Demo',
+                'password': 'student',
+                'first_name': 'Shlok',
+                'last_name': 'Mehta',
                 'role': 'STUDENT',
                 'roll_or_faculty_id': '16010124169',
                 'department': 'Computer Engineering',
@@ -26,7 +26,7 @@ class Command(BaseCommand):
             {
                 'username': 'faculty',
                 'email': 'faculty@vlab.edu',
-                'password': 'Faculty@123',
+                'password': 'faculty',
                 'first_name': 'Prof.',
                 'last_name': 'Sharma',
                 'role': 'FACULTY',
@@ -37,7 +37,7 @@ class Command(BaseCommand):
             {
                 'username': 'admin',
                 'email': 'admin@vlab.edu',
-                'password': 'Admin@123',
+                'password': 'admin',
                 'first_name': 'System',
                 'last_name': 'Administrator',
                 'role': 'ADMIN',

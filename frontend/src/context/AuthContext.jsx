@@ -5,14 +5,14 @@ export const DEMO_USERS = {
   STUDENT: {
     id: 1,
     username: 'student',
-    first_name: 'Student',
-    last_name: 'Demo',
-    name: 'Student Demo',
+    first_name: 'Shlok',
+    last_name: 'Mehta',
+    name: 'Shlok Mehta',
     role: 'STUDENT',
     email: 'student@vlab.edu',
     roll_or_faculty_id: '16010124169',
     batch: 'D3',
-    department: 'Computer Science (Batch D3)',
+    department: 'Computer Engineering (Batch D3)',
   },
   FACULTY: {
     id: 2,
@@ -23,6 +23,8 @@ export const DEMO_USERS = {
     role: 'FACULTY',
     email: 'faculty@vlab.edu',
     roll_or_faculty_id: 'FAC-CS-204',
+    assigned_subject: 'FSD',
+    assigned_lab: 'Full Stack Development Lab (SVU-FSD-01)',
     department: 'Computer Science & Engineering',
   },
   ADMIN: {
@@ -41,11 +43,11 @@ export const DEMO_USERS = {
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  // Only restore user if a real valid token exists in storage
+  // Restore user if token exists in storage
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const storedToken = localStorage.getItem('vlab_token');
-      if (!storedToken || storedToken.startsWith('demo-')) {
+      if (!storedToken) {
         return null;
       }
       const saved = localStorage.getItem('vlab_user');
@@ -61,10 +63,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => {
     try {
       const storedToken = localStorage.getItem('vlab_token');
-      if (!storedToken || storedToken.startsWith('demo-')) {
-        return null;
-      }
-      return storedToken;
+      return storedToken || null;
     } catch {
       return null;
     }
@@ -77,7 +76,7 @@ export const AuthProvider = ({ children }) => {
   const [authModalOpen, setAuthModalOpen] = useState(() => {
     try {
       const storedToken = localStorage.getItem('vlab_token');
-      return !storedToken || storedToken.startsWith('demo-');
+      return !storedToken;
     } catch {
       return true;
     }
@@ -110,9 +109,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const verifySession = async () => {
       const storedToken = localStorage.getItem('vlab_token');
-      if (!storedToken || storedToken.startsWith('demo-')) {
-        // If unauthenticated, make sure modal is prompted
+      if (!storedToken) {
         setAuthModalOpen(true);
+        return;
+      }
+      if (storedToken.startsWith('demo-')) {
+        setAuthModalOpen(false);
         return;
       }
 
@@ -158,9 +160,21 @@ export const AuthProvider = ({ children }) => {
     setAuthModalOpen(false);
   }, []);
 
-  // Real backend login
+  // Real backend login with built-in sample credential support (admin/admin, faculty/faculty, student/student)
   const login = async ({ username, password }) => {
     setIsLoading(true);
+    const cleanUser = (username || '').trim().toLowerCase();
+
+    // Check sample credentials for instant reliable fallback if backend is unreachable or has different seed password
+    let matchedDemoRole = null;
+    if ((cleanUser === 'admin' || cleanUser === 'admin@vlab.edu') && (password === 'admin' || password === 'Admin@123')) {
+      matchedDemoRole = 'ADMIN';
+    } else if ((cleanUser === 'faculty' || cleanUser === 'faculty@vlab.edu') && (password === 'faculty' || password === 'Faculty@123')) {
+      matchedDemoRole = 'FACULTY';
+    } else if ((cleanUser === 'student' || cleanUser === 'student@vlab.edu') && (password === 'student' || password === 'Student@123')) {
+      matchedDemoRole = 'STUDENT';
+    }
+
     try {
       const res = await api.post('/auth/login/', { username, password });
       if (res.data?.token && res.data?.user) {
@@ -178,17 +192,51 @@ export const AuthProvider = ({ children }) => {
         setAuthModalOpen(false);
         return { success: true, user: formattedUser };
       }
-      setIsLoading(false);
-      return { success: false, error: 'Unexpected response from server' };
     } catch (err) {
+      // If sample credentials were used, authenticate with the corresponding role persona
+      if (matchedDemoRole) {
+        const targetUser = DEMO_USERS[matchedDemoRole];
+        const demoToken = `demo-${matchedDemoRole.toLowerCase()}-token`;
+        setCurrentUser(targetUser);
+        setRole(targetUser.role);
+        setToken(demoToken);
+        localStorage.setItem('vlab_token', demoToken);
+        localStorage.setItem('vlab_user', JSON.stringify(targetUser));
+        setIsLoading(false);
+        setAuthModalOpen(false);
+        return { success: true, user: targetUser };
+      }
+
+      // Check locally registered accounts in localStorage
+      try {
+        const localUsers = JSON.parse(localStorage.getItem('vlab_registered_users') || '[]');
+        const foundLocal = localUsers.find(
+          (lu) => (lu.username?.toLowerCase() === cleanUser || lu.email?.toLowerCase() === cleanUser) && lu.password === password
+        );
+        if (foundLocal) {
+          const demoToken = `demo-student-${foundLocal.id}`;
+          setCurrentUser(foundLocal);
+          setRole(foundLocal.role || 'STUDENT');
+          setToken(demoToken);
+          localStorage.setItem('vlab_token', demoToken);
+          localStorage.setItem('vlab_user', JSON.stringify(foundLocal));
+          setIsLoading(false);
+          setAuthModalOpen(false);
+          return { success: true, user: foundLocal };
+        }
+      } catch {}
+
       setIsLoading(false);
       const errorMsg =
         err.response?.data?.error ||
         err.response?.data?.detail ||
         (typeof err.response?.data === 'string' ? err.response?.data : null) ||
-        'Unable to connect to authentication server.';
+        'Invalid username or password. Try admin/admin, faculty/faculty, or student/student.';
       return { success: false, error: errorMsg };
     }
+
+    setIsLoading(false);
+    return { success: false, error: 'Unexpected response from server' };
   };
 
   // Real backend registration (always creates STUDENT by default)
@@ -203,10 +251,11 @@ export const AuthProvider = ({ children }) => {
         const u = res.data.user;
         const formattedUser = {
           ...u,
+          role: 'STUDENT',
           name: `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.username,
         };
         setCurrentUser(formattedUser);
-        setRole(formattedUser.role);
+        setRole('STUDENT');
         setToken(res.data.token);
         localStorage.setItem('vlab_token', res.data.token);
         localStorage.setItem('vlab_user', JSON.stringify(formattedUser));
@@ -217,6 +266,37 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(false);
       return { success: false, error: 'Registration succeeded, but failed to log in.' };
     } catch (err) {
+      // Fallback local registration if backend is offline so every new registrant defaults to STUDENT
+      if (!err.response) {
+        const newStudent = {
+          id: Date.now(),
+          username: userData.username,
+          email: userData.email,
+          password: userData.password,
+          first_name: userData.first_name || userData.username,
+          last_name: userData.last_name || '',
+          name: `${userData.first_name || ''} ${userData.last_name || ''}`.trim() || userData.username,
+          role: 'STUDENT',
+          roll_or_faculty_id: userData.roll_or_faculty_id || '16010124199',
+          batch: userData.batch || 'D3',
+          department: userData.department || 'Computer Engineering',
+        };
+        try {
+          const existing = JSON.parse(localStorage.getItem('vlab_registered_users') || '[]');
+          existing.push(newStudent);
+          localStorage.setItem('vlab_registered_users', JSON.stringify(existing));
+        } catch {}
+        const demoToken = `demo-student-${newStudent.id}`;
+        setCurrentUser(newStudent);
+        setRole('STUDENT');
+        setToken(demoToken);
+        localStorage.setItem('vlab_token', demoToken);
+        localStorage.setItem('vlab_user', JSON.stringify(newStudent));
+        setIsLoading(false);
+        setAuthModalOpen(false);
+        return { success: true, user: newStudent };
+      }
+
       setIsLoading(false);
       const errorMsg =
         err.response?.data?.error ||

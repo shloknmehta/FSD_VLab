@@ -165,11 +165,11 @@ Frontend will be accessible at: `http://127.0.0.1:5173/`
 
 ## Default Login Credentials
 
-| Persona | Email | Password | Role | Academic Details |
+| Persona | Username | Password | Role | Academic Details |
 |---|---|---|---|---|
-| **Student** | `student@vlab.edu` | `Student@123` | `STUDENT` | Shlok Mehta, Batch D3, Roll: 16010124169 |
-| **Faculty** | `faculty@vlab.edu` | `Faculty@123` | `FACULTY` | Prof. Sharma (Dept. of CSE) |
-| **Admin** | `admin@vlab.edu` | `Admin@123` | `ADMIN` | System Administrator |
+| **Student (Default)** | `student` | `student` | `STUDENT` | Shlok Mehta, Batch D3, Roll: 16010124169 |
+| **Faculty** | `faculty` | `faculty` | `FACULTY` | Prof. Sharma (Assigned VLab: Full Stack Development) |
+| **Admin** | `admin` | `admin` | `ADMIN` | System Administrator (Full VLab & Faculty Governance) |
 
 ---
 

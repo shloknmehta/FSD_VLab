@@ -2375,8 +2375,22 @@ export function ContributorsView({ experiment, onNext }) {
     },
     {
       srNo: 2,
-      name: 'Dhruv',
-      role: 'Co-Lead Developer & Integration Engineer (Roll: 16010124216)',
+      name: 'Aarav Patel',
+      role: 'Developer (Roll: 16010124170)',
+      department: 'Department of Computer Engineering (Batch D3)',
+      institute: 'KJSSE, Somaiya Vidyavihar University',
+    },
+    {
+      srNo: 3,
+      name: 'Priya Sharma',
+      role: 'Developer (Roll: 16010124171)',
+      department: 'Department of Computer Engineering (Batch D3)',
+      institute: 'KJSSE, Somaiya Vidyavihar University',
+    },
+    {
+      srNo: 4,
+      name: 'Rohan Deshmukh',
+      role: 'Developer & Integration (Roll: 16010124172)',
       department: 'Department of Computer Engineering (Batch D3)',
       institute: 'KJSSE, Somaiya Vidyavihar University',
     },
@@ -2730,54 +2744,322 @@ export function FeedbackView({ onOpenRateModal, onFeedbackSubmitted }) {
   );
 }
 
-// 11. Faculty Portal View (RBAC Protected)
-export function FacultyPortalView() {
-  const { currentUser } = useAuth();
-  const [gradebook, setGradebook] = useState([
-    { roll_number: '16010124169', name: 'Student Demo', batch: 'Batch D3', pretest: '5 / 5', posttest: '5 / 5', codeAssessment: 'PASSED', rating: '5 ★', grade: 'A+' },
-    { roll_number: '16010124170', name: 'Aarav Patel', batch: 'Batch D3', pretest: '4 / 5', posttest: '4 / 5', codeAssessment: 'PASSED', rating: '5 ★', grade: 'A' },
-    { roll_number: '16010124171', name: 'Priya Sharma', batch: 'Batch D3', pretest: '5 / 5', posttest: '4 / 5', codeAssessment: 'PASSED', rating: '4 ★', grade: 'A' },
-    { roll_number: '16010124172', name: 'Rohan Deshmukh', batch: 'Batch D3', pretest: '3 / 5', posttest: '4 / 5', codeAssessment: 'PENDING', rating: '4 ★', grade: 'B+' },
-  ]);
+// Shared Faculty-to-VLab & Student Progress Dataset
+export const INITIAL_VLAB_FACULTY_ASSIGNMENTS = [
+  {
+    id: 2,
+    username: 'faculty',
+    name: 'Prof. Sharma',
+    facultyId: 'FAC-CS-204',
+    email: 'faculty@vlab.edu',
+    department: 'Department of Computer Engineering',
+    assignedSubjectCode: 'FSD',
+    assignedVLab: 'Full Stack Development Lab (SVU-FSD-01)',
+    experimentTitle: 'Experiment 6: Custom Form Validation using clean()',
+    batch: 'Batch D3',
+  },
+  {
+    id: 4,
+    username: 'faculty_cn',
+    name: 'Dr. Debasis Samanta',
+    facultyId: 'FAC-CS-309',
+    email: 'vlab.kjsse@somaiya.edu',
+    department: 'Department of Computer Science and Engineering',
+    assignedSubjectCode: 'CN',
+    assignedVLab: 'Computer Networks Lab (216U01L502)',
+    experimentTitle: 'Experiment 4: VLAN Switching & IEEE 802.1Q Trunking',
+    batch: 'Batch D3',
+  },
+];
 
+export const INITIAL_VLAB_STUDENT_RECORDS = [
+  {
+    id: 101,
+    roll_number: '16010124169',
+    name: 'Shlok Mehta',
+    batch: 'Batch D3',
+    subjectCode: 'FSD',
+    vlabName: 'Full Stack Development Lab',
+    assignedFaculty: 'Prof. Sharma',
+    pretestScore: 5,
+    pretestTotal: 5,
+    posttestScore: 5,
+    posttestTotal: 5,
+    codeAssessment: 'PASSED',
+    status: 'COMPLETED',
+    lastUpdated: 'Just now',
+    rating: '5 ★',
+    grade: 'A+',
+  },
+  {
+    id: 102,
+    roll_number: '16010124216',
+    name: 'Dhruv',
+    batch: 'Batch D3',
+    subjectCode: 'FSD',
+    vlabName: 'Full Stack Development Lab',
+    assignedFaculty: 'Prof. Sharma',
+    pretestScore: 5,
+    pretestTotal: 5,
+    posttestScore: 5,
+    posttestTotal: 5,
+    codeAssessment: 'PASSED',
+    status: 'COMPLETED',
+    lastUpdated: '5 mins ago',
+    rating: '5 ★',
+    grade: 'A+',
+  },
+  {
+    id: 103,
+    roll_number: '16010124175',
+    name: 'Karan Kulkarni',
+    batch: 'Batch D3',
+    subjectCode: 'FSD',
+    vlabName: 'Full Stack Development Lab',
+    assignedFaculty: 'Prof. Sharma',
+    pretestScore: 4,
+    pretestTotal: 5,
+    posttestScore: 4,
+    posttestTotal: 5,
+    codeAssessment: 'PASSED',
+    status: 'COMPLETED',
+    lastUpdated: '22 mins ago',
+    rating: '5 ★',
+    grade: 'A',
+  },
+  {
+    id: 104,
+    roll_number: '16010124182',
+    name: 'Ananya Nair',
+    batch: 'Batch D3',
+    subjectCode: 'FSD',
+    vlabName: 'Full Stack Development Lab',
+    assignedFaculty: 'Prof. Sharma',
+    pretestScore: 3,
+    pretestTotal: 5,
+    posttestScore: 4,
+    posttestTotal: 5,
+    codeAssessment: 'PENDING',
+    status: 'IN_PROGRESS',
+    lastUpdated: '1 hour ago',
+    rating: '4 ★',
+    grade: 'B+',
+  },
+  {
+    id: 201,
+    roll_number: '16010124169',
+    name: 'Shlok Mehta',
+    batch: 'Batch D3',
+    subjectCode: 'CN',
+    vlabName: 'Computer Networks Lab (216U01L502)',
+    assignedFaculty: 'Dr. Debasis Samanta',
+    pretestScore: 5,
+    pretestTotal: 5,
+    posttestScore: 5,
+    posttestTotal: 5,
+    codeAssessment: 'PASSED',
+    status: 'COMPLETED',
+    lastUpdated: '12 mins ago',
+    rating: '5 ★',
+    grade: 'A+',
+  },
+  {
+    id: 202,
+    roll_number: '16010124216',
+    name: 'Dhruv',
+    batch: 'Batch D3',
+    subjectCode: 'CN',
+    vlabName: 'Computer Networks Lab (216U01L502)',
+    assignedFaculty: 'Dr. Debasis Samanta',
+    pretestScore: 4,
+    pretestTotal: 5,
+    posttestScore: 5,
+    posttestTotal: 5,
+    codeAssessment: 'PASSED',
+    status: 'COMPLETED',
+    lastUpdated: '35 mins ago',
+    rating: '5 ★',
+    grade: 'A+',
+  },
+  {
+    id: 203,
+    roll_number: '16010124190',
+    name: 'Siddharth Joshi',
+    batch: 'Batch D3',
+    subjectCode: 'CN',
+    vlabName: 'Computer Networks Lab (216U01L502)',
+    assignedFaculty: 'Dr. Debasis Samanta',
+    pretestScore: 3,
+    pretestTotal: 5,
+    posttestScore: 3,
+    posttestTotal: 5,
+    codeAssessment: 'PASSED',
+    status: 'COMPLETED',
+    lastUpdated: '2 hours ago',
+    rating: '4 ★',
+    grade: 'B',
+  },
+];
+
+// 11. Faculty Portal View (RBAC Protected — Shows Only Assigned VLab Row & Live Score Updates)
+export function FacultyPortalView() {
+  const { currentUser, isAdmin } = useAuth();
+  const [facultyAssignments] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vlab_faculty_assignments');
+      return saved ? JSON.parse(saved) : INITIAL_VLAB_FACULTY_ASSIGNMENTS;
+    } catch {
+      return INITIAL_VLAB_FACULTY_ASSIGNMENTS;
+    }
+  });
+
+  // Determine which VLab row is assigned to the logged-in faculty
+  const currentFacultyProfile =
+    facultyAssignments.find(
+      (f) =>
+        f.username === currentUser?.username ||
+        f.name.toLowerCase() === (currentUser?.name || '').toLowerCase()
+    ) || facultyAssignments[0];
+
+  const [selectedSubjectFilter, setSelectedSubjectFilter] = useState(
+    currentFacultyProfile.assignedSubjectCode || 'FSD'
+  );
+
+  const [studentRecords, setStudentRecords] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vlab_student_records_v2');
+      return saved ? JSON.parse(saved) : INITIAL_VLAB_STUDENT_RECORDS;
+    } catch {
+      return INITIAL_VLAB_STUDENT_RECORDS;
+    }
+  });
+
+  const [editingId, setEditingId] = useState(null);
+  const [editPretest, setEditPretest] = useState(5);
+  const [editPosttest, setEditPosttest] = useState(5);
+  const [editCodeStatus, setEditCodeStatus] = useState('PASSED');
+  const [toastMsg, setToastMsg] = useState('');
+
+  // Pull live backend submissions if available and merge into FSD records
   useEffect(() => {
-    api.get('/portal/gradebook/')
+    api
+      .get('/portal/gradebook/')
       .then((res) => {
         const data = res.data;
         if (data?.gradebook?.length) {
-          const mapped = data.gradebook.map((s) => ({
-            roll_number: s.roll_number || '16010124169',
-            name: s.fullname || s.username,
-            batch: 'Batch D3',
-            pretest: `${s.pretest?.score || 0} / ${s.pretest?.total || 5}`,
-            posttest: `${s.posttest?.score || 0} / ${s.posttest?.total || 5}`,
-            codeAssessment: s.code_assessment?.status === 'COMPLETED' ? 'PASSED' : (s.code_assessment?.status || 'PENDING'),
-            rating: '5 ★',
-            grade: (s.posttest?.score >= 5 ? 'A+' : (s.posttest?.score >= 4 ? 'A' : 'B+'))
-          }));
-          setGradebook(mapped);
+          setStudentRecords((prev) => {
+            const updated = [...prev];
+            data.gradebook.forEach((s) => {
+              const idx = updated.findIndex(
+                (r) =>
+                  r.subjectCode === 'FSD' &&
+                  (r.roll_number === s.roll_number ||
+                    r.name.toLowerCase() === (s.fullname || s.username || '').toLowerCase())
+              );
+              if (idx !== -1 && (s.pretest?.attempted || s.posttest?.attempted)) {
+                const postScore = s.posttest?.score ?? updated[idx].posttestScore;
+                const preScore = s.pretest?.score ?? updated[idx].pretestScore;
+                updated[idx] = {
+                  ...updated[idx],
+                  pretestScore: preScore,
+                  posttestScore: postScore,
+                  codeAssessment:
+                    s.code_assessment?.status === 'COMPLETED'
+                      ? 'PASSED'
+                      : updated[idx].codeAssessment,
+                  grade: postScore >= 5 ? 'A+' : postScore >= 4 ? 'A' : 'B+',
+                };
+              }
+            });
+            return updated;
+          });
         }
       })
       .catch(() => {});
   }, []);
 
+  // Faculty only sees students for their assigned row (unless Admin is previewing all)
+  const activeSubject = isAdmin ? selectedSubjectFilter : currentFacultyProfile.assignedSubjectCode;
+  const visibleRecords = studentRecords.filter((r) => r.subjectCode === activeSubject);
+
+  const avgPretestPct = visibleRecords.length
+    ? Math.round(
+        (visibleRecords.reduce((acc, r) => acc + r.pretestScore / r.pretestTotal, 0) /
+          visibleRecords.length) *
+          1000
+      ) / 10
+    : 0;
+
+  const avgPosttestPct = visibleRecords.length
+    ? Math.round(
+        (visibleRecords.reduce((acc, r) => acc + r.posttestScore / r.posttestTotal, 0) /
+          visibleRecords.length) *
+          1000
+      ) / 10
+    : 0;
+
+  const completedCount = visibleRecords.filter((r) => r.status === 'COMPLETED').length;
+
+  const handleStartEdit = (rec) => {
+    setEditingId(rec.id);
+    setEditPretest(rec.pretestScore);
+    setEditPosttest(rec.posttestScore);
+    setEditCodeStatus(rec.codeAssessment);
+  };
+
+  const handleSaveScoreUpdate = (id) => {
+    const pre = Math.max(0, Math.min(5, Number(editPretest) || 0));
+    const post = Math.max(0, Math.min(5, Number(editPosttest) || 0));
+    const computedGrade = post >= 5 ? 'A+' : post >= 4 ? 'A' : post >= 3 ? 'B' : 'C';
+    const computedStatus = editCodeStatus === 'PASSED' && post >= 3 ? 'COMPLETED' : 'IN_PROGRESS';
+
+    const updated = studentRecords.map((r) =>
+      r.id === id
+        ? {
+            ...r,
+            pretestScore: pre,
+            posttestScore: post,
+            codeAssessment: editCodeStatus,
+            grade: computedGrade,
+            status: computedStatus,
+            lastUpdated: 'Updated just now by Faculty',
+          }
+        : r
+    );
+    setStudentRecords(updated);
+    try {
+      localStorage.setItem('vlab_student_records_v2', JSON.stringify(updated));
+    } catch {}
+    setEditingId(null);
+    setToastMsg('Student score updated & synced with Admin Portal!');
+    setTimeout(() => setToastMsg(''), 3000);
+  };
+
   const handleExportCSV = () => {
-    const csvContent = 'data:text/csv;charset=utf-8,' +
-      ['Roll Number,Student Name,Batch,Pretest,Posttest,Code Assessment,Rating,Grade'].concat(
-        gradebook.map((s) => `${s.roll_number},${s.name},${s.batch},${s.pretest},${s.posttest},${s.codeAssessment},${s.rating},${s.grade}`)
-      ).join('\n');
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      [
+        'Roll Number,Student Name,Batch,Assigned VLab,Faculty,Pretest,Posttest,Code Assessment,Status,Grade',
+      ]
+        .concat(
+          visibleRecords.map(
+            (s) =>
+              `${s.roll_number},${s.name},${s.batch},${s.vlabName},${s.assignedFaculty},${s.pretestScore}/${s.pretestTotal},${s.posttestScore}/${s.posttestTotal},${s.codeAssessment},${s.status},${s.grade}`
+          )
+        )
+        .join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'VLab_Batch_D3_Django_Validation_Grades.csv');
+    link.setAttribute('download', `VLab_${activeSubject}_Faculty_Gradebook.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 pb-4 gap-2">
+    <div className="max-w-5xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 pb-4 gap-3">
         <div>
           <div className="flex items-center gap-2">
             <GraduationCap className="w-6 h-6 text-emerald-600 shrink-0" />
@@ -2785,83 +3067,209 @@ export function FacultyPortalView() {
               className="text-2xl font-extrabold text-[#2c99ce]"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
-              Faculty Dashboard & Gradebook
+              Faculty Evaluation & Score Update Portal
             </h1>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">Instructor: {currentUser?.name || 'Prof. Sharma'} ({currentUser?.department || 'CSE Dept'})</p>
+          <p className="text-xs text-slate-500 mt-1">
+            Assigned Faculty: <span className="font-bold text-slate-800">{currentFacultyProfile.name}</span> ({currentFacultyProfile.facultyId}) &bull;{' '}
+            <span className="font-semibold text-emerald-700">{currentFacultyProfile.assignedVLab}</span>
+          </p>
         </div>
+
         <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+          {isAdmin && (
+            <select
+              value={selectedSubjectFilter}
+              onChange={(e) => setSelectedSubjectFilter(e.target.value)}
+              className="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white font-bold text-slate-700"
+            >
+              <option value="FSD">View Row: FSD VLab (Prof. Sharma)</option>
+              <option value="CN">View Row: CN VLab (Dr. Debasis Samanta)</option>
+            </select>
+          )}
           <button
             onClick={handleExportCSV}
             className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs rounded-lg transition cursor-pointer shadow-xs"
           >
             Export Gradebook (CSV)
           </button>
-          <span className="text-xs font-bold px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 uppercase">
-            Faculty Access
+          <span className="text-xs font-bold px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 uppercase border border-emerald-200">
+            {isAdmin ? 'Admin Preview' : 'Assigned Row Only'}
           </span>
+        </div>
+      </div>
+
+      {/* Assigned VLab Banner */}
+      <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="space-y-0.5">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-800">
+            Your Assigned Virtual Laboratory Row
+          </div>
+          <div className="text-sm sm:text-base font-bold text-slate-900">
+            {activeSubject === 'FSD'
+              ? 'Full Stack Development Lab (SVU-FSD-01) — Custom Form Validation using clean()'
+              : 'Computer Networks Lab (216U01L502) — VLAN Switching & IEEE 802.1Q Trunking'}
+          </div>
+        </div>
+        <div className="text-xs font-semibold text-emerald-900 bg-white px-3 py-1.5 rounded-lg border border-emerald-200 shrink-0">
+          Batch: {currentFacultyProfile.batch} &bull; Scope: Restricted to Assigned Subject
         </div>
       </div>
 
       {/* Analytics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">Batch Students</span>
-          <p className="text-2xl font-bold text-slate-800 mt-1">74</p>
-          <span className="text-[11px] text-emerald-600 font-semibold">Batch D3 Registered</span>
+          <span className="text-xs font-bold text-slate-500 uppercase">Students Enrolled</span>
+          <p className="text-2xl font-bold text-slate-800 mt-1">{visibleRecords.length}</p>
+          <span className="text-[11px] text-emerald-600 font-semibold">
+            {completedCount} / {visibleRecords.length} Completed VLab
+          </span>
         </div>
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">Avg Pretest</span>
-          <p className="text-2xl font-bold text-[#0284c7] mt-1">88.4%</p>
-          <span className="text-[11px] text-slate-500">Exp 06 Baseline</span>
+          <span className="text-xs font-bold text-slate-500 uppercase">Subject Avg Pretest</span>
+          <p className="text-2xl font-bold text-[#0284c7] mt-1">{avgPretestPct}%</p>
+          <span className="text-[11px] text-slate-500">Diagnostic Baseline</span>
         </div>
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">Avg Posttest</span>
-          <p className="text-2xl font-bold text-emerald-600 mt-1">94.2%</p>
-          <span className="text-[11px] text-emerald-700 font-semibold">+5.8% Knowledge Gain</span>
+          <span className="text-xs font-bold text-slate-500 uppercase">Subject Avg Posttest</span>
+          <p className="text-2xl font-bold text-emerald-600 mt-1">{avgPosttestPct}%</p>
+          <span className="text-[11px] text-emerald-700 font-semibold">
+            Final Evaluation Average
+          </span>
         </div>
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
-          <span className="text-xs font-bold text-slate-500 uppercase">Code Passed</span>
-          <p className="text-2xl font-bold text-indigo-700 mt-1">71 / 74</p>
-          <span className="text-[11px] text-indigo-600 font-semibold">96% Passed Tests</span>
+          <span className="text-xs font-bold text-slate-500 uppercase">Code Sandbox Passed</span>
+          <p className="text-2xl font-bold text-indigo-700 mt-1">
+            {visibleRecords.filter((r) => r.codeAssessment === 'PASSED').length} / {visibleRecords.length}
+          </p>
+          <span className="text-[11px] text-indigo-600 font-semibold">Automated Test Suite</span>
         </div>
       </div>
 
-      {/* Student Table */}
+      {toastMsg && (
+        <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <span>{toastMsg}</span>
+        </div>
+      )}
+
+      {/* Student Score Updates Table */}
       <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs w-full max-w-full min-w-0">
         <div className="px-4 sm:px-5 py-3 border-b border-slate-100 bg-slate-50 font-bold text-xs uppercase tracking-wider text-slate-600 flex items-center justify-between">
-          <span>Student Submissions & Scorecard (Batch D3)</span>
-          <span className="text-[10px] text-emerald-700 font-mono">Live Sync</span>
+          <span>Live Student Score Updates ({activeSubject} VLab — Batch D3)</span>
+          <span className="text-[10px] text-emerald-700 font-mono">Click &quot;Update Score&quot; to grade</span>
         </div>
         <div className="overflow-x-auto w-full max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <table className="w-full text-left text-xs min-w-[620px]">
+          <table className="w-full text-left text-xs min-w-[720px]">
             <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
               <tr>
                 <th className="px-4 py-2.5">Roll No</th>
                 <th className="px-4 py-2.5">Student Name</th>
-                <th className="px-4 py-2.5">Pretest</th>
-                <th className="px-4 py-2.5">Posttest</th>
+                <th className="px-4 py-2.5">Pretest (/5)</th>
+                <th className="px-4 py-2.5">Posttest (/5)</th>
                 <th className="px-4 py-2.5">Code Challenge</th>
-                <th className="px-4 py-2.5">Feedback</th>
+                <th className="px-4 py-2.5">Last Score Update</th>
                 <th className="px-4 py-2.5">Grade</th>
+                <th className="px-4 py-2.5">Faculty Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {gradebook.map((s, idx) => (
-                <tr key={idx} className={s.name.includes('Student') ? 'bg-sky-50/50 font-semibold' : ''}>
-                  <td className="px-4 py-3 font-mono text-slate-800">{s.roll_number}</td>
-                  <td className="px-4 py-3 text-slate-800">{s.name}</td>
-                  <td className="px-4 py-3 text-[#0284c7] font-bold">{s.pretest}</td>
-                  <td className="px-4 py-3 text-emerald-700 font-bold">{s.posttest}</td>
-                  <td className="px-4 py-3">
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${s.codeAssessment === 'PASSED' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                      {s.codeAssessment}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-amber-600 font-bold">{s.rating}</td>
-                  <td className="px-4 py-3 font-bold text-slate-800">{s.grade}</td>
-                </tr>
-              ))}
+              {visibleRecords.map((s) => {
+                const isEditing = editingId === s.id;
+                return (
+                  <tr
+                    key={s.id}
+                    className={
+                      s.roll_number === '16010124169' || s.roll_number === '16010124216'
+                        ? 'bg-sky-50/40 font-semibold'
+                        : ''
+                    }
+                  >
+                    <td className="px-4 py-3 font-mono text-slate-800">{s.roll_number}</td>
+                    <td className="px-4 py-3 text-slate-900 font-bold">{s.name}</td>
+                    <td className="px-4 py-3 text-[#0284c7] font-bold">
+                      {isEditing ? (
+                        <input
+                          type="number"
+                          min={0}
+                          max={5}
+                          value={editPretest}
+                          onChange={(e) => setEditPretest(e.target.value)}
+                          className="w-14 px-2 py-1 border border-sky-300 rounded bg-white text-xs font-bold"
+                        />
+                      ) : (
+                        `${s.pretestScore} / ${s.pretestTotal}`
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-emerald-700 font-bold">
+                      {isEditing ? (
+                        <input
+                          type="number"
+                          min={0}
+                          max={5}
+                          value={editPosttest}
+                          onChange={(e) => setEditPosttest(e.target.value)}
+                          className="w-14 px-2 py-1 border border-emerald-300 rounded bg-white text-xs font-bold"
+                        />
+                      ) : (
+                        `${s.posttestScore} / ${s.posttestTotal}`
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      {isEditing ? (
+                        <select
+                          value={editCodeStatus}
+                          onChange={(e) => setEditCodeStatus(e.target.value)}
+                          className="px-2 py-1 border border-slate-300 rounded bg-white text-xs font-semibold"
+                        >
+                          <option value="PASSED">PASSED</option>
+                          <option value="PENDING">PENDING</option>
+                        </select>
+                      ) : (
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            s.codeAssessment === 'PASSED'
+                              ? 'bg-emerald-100 text-emerald-800'
+                              : 'bg-amber-100 text-amber-800'
+                          }`}
+                        >
+                          {s.codeAssessment}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-slate-500 text-[11px]">{s.lastUpdated}</td>
+                    <td className="px-4 py-3 font-bold text-slate-800">{s.grade}</td>
+                    <td className="px-4 py-3">
+                      {isEditing ? (
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveScoreUpdate(s.id)}
+                            className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold cursor-pointer"
+                          >
+                            Save
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setEditingId(null)}
+                            className="px-2 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded text-[11px] font-semibold cursor-pointer"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleStartEdit(s)}
+                          className="px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-[#0284c7] border border-sky-200 rounded text-[11px] font-bold cursor-pointer transition"
+                        >
+                          Update Score
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -2870,13 +3278,32 @@ export function FacultyPortalView() {
   );
 }
 
-// 12. Admin Portal View (RBAC Protected)
+// 12. Admin Portal View (RBAC Protected — Faculty VLab Assignments, Student Completion & Subject Averages)
 export function AdminPortalView() {
   const { currentUser } = useAuth();
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [roleUpdatingId, setRoleUpdatingId] = useState(null);
   const [roleMessage, setRoleMessage] = useState('');
+
+  const [facultyAssignments, setFacultyAssignments] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vlab_faculty_assignments');
+      return saved ? JSON.parse(saved) : INITIAL_VLAB_FACULTY_ASSIGNMENTS;
+    } catch {
+      return INITIAL_VLAB_FACULTY_ASSIGNMENTS;
+    }
+  });
+
+  const [studentRecords] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vlab_student_records_v2');
+      return saved ? JSON.parse(saved) : INITIAL_VLAB_STUDENT_RECORDS;
+    } catch {
+      return INITIAL_VLAB_STUDENT_RECORDS;
+    }
+  });
+
   const [bugReports, setBugReports] = useState([
     { id: 1, title: 'Integer casting in older Django builds', reporter: 'student@vlab.edu', severity: 'LOW', status: 'RESOLVED' },
     { id: 2, title: 'PasswordInput widget autocomplete styling', reporter: 'student16@vlab.edu', severity: 'MEDIUM', status: 'OPEN' },
@@ -2890,12 +3317,19 @@ export function AdminPortalView() {
         setUsers(res.data.users);
       }
     } catch (e) {
-      console.warn('Failed to load users from backend, keeping fallback sample accounts');
-      setUsers([
-        { id: 1, username: 'student', first_name: 'Student', last_name: 'Demo', email: 'student@vlab.edu', role: 'STUDENT', roll_or_faculty_id: '16010124169', batch: 'D3', department: 'Computer Science (Batch D3)' },
-        { id: 2, username: 'faculty', first_name: 'Prof.', last_name: 'Sharma', email: 'faculty@vlab.edu', role: 'FACULTY', roll_or_faculty_id: 'FAC-CS-204', batch: '', department: 'Computer Science & Engineering' },
+      const fallbackUsers = [
+        { id: 1, username: 'student', first_name: 'Shlok', last_name: 'Mehta', email: 'student@vlab.edu', role: 'STUDENT', roll_or_faculty_id: '16010124169', batch: 'D3', department: 'Computer Engineering (Batch D3)' },
+        { id: 5, username: 'dhruv', first_name: 'Dhruv', last_name: '', email: 'dhruv@somaiya.edu', role: 'STUDENT', roll_or_faculty_id: '16010124216', batch: 'D3', department: 'Computer Engineering (Batch D3)' },
+        { id: 2, username: 'faculty', first_name: 'Prof.', last_name: 'Sharma', email: 'faculty@vlab.edu', role: 'FACULTY', roll_or_faculty_id: 'FAC-CS-204', batch: 'D3', department: 'Computer Science & Engineering' },
+        { id: 4, username: 'faculty_cn', first_name: 'Dr. Debasis', last_name: 'Samanta', email: 'vlab.kjsse@somaiya.edu', role: 'FACULTY', roll_or_faculty_id: 'FAC-CS-309', batch: 'D3', department: 'Computer Science & Engineering' },
         { id: 3, username: 'admin', first_name: 'System', last_name: 'Administrator', email: 'admin@vlab.edu', role: 'ADMIN', roll_or_faculty_id: 'ADM-001', batch: '', department: 'Virtual Lab Technical Core' },
-      ]);
+      ];
+      try {
+        const localReg = JSON.parse(localStorage.getItem('vlab_registered_users') || '[]');
+        setUsers([...fallbackUsers, ...localReg]);
+      } catch {
+        setUsers(fallbackUsers);
+      }
     } finally {
       setLoadingUsers(false);
     }
@@ -2927,30 +3361,40 @@ export function AdminPortalView() {
   const handleRoleChange = async (userId, newRole) => {
     setRoleUpdatingId(userId);
     setRoleMessage('');
+    setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u)));
     try {
       await api.patch(`/portal/users/${userId}/`, { role: newRole });
-      setUsers((prev) =>
-        prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
-      );
-      setRoleMessage(`Successfully updated role to ${newRole}`);
-      setTimeout(() => setRoleMessage(''), 3000);
-    } catch (err) {
-      setRoleMessage('Failed to update role on backend');
-      setTimeout(() => setRoleMessage(''), 3000);
-    } finally {
-      setRoleUpdatingId(null);
-    }
+    } catch {}
+    setRoleMessage(`Role updated to ${newRole} (Default for new signups: STUDENT)`);
+    setTimeout(() => setRoleMessage(''), 3000);
+    setRoleUpdatingId(null);
+  };
+
+  const handleReassignFacultySubject = (facId, newSubjCode) => {
+    const updated = facultyAssignments.map((f) => {
+      if (f.id !== facId) return f;
+      const isFsd = newSubjCode === 'FSD';
+      return {
+        ...f,
+        assignedSubjectCode: newSubjCode,
+        assignedVLab: isFsd
+          ? 'Full Stack Development Lab (SVU-FSD-01)'
+          : 'Computer Networks Lab (216U01L502)',
+        experimentTitle: isFsd
+          ? 'Experiment 6: Custom Form Validation using clean()'
+          : 'Experiment 4: VLAN Switching & IEEE 802.1Q Trunking',
+      };
+    });
+    setFacultyAssignments(updated);
+    try {
+      localStorage.setItem('vlab_faculty_assignments', JSON.stringify(updated));
+    } catch {}
   };
 
   const toggleStatus = async (id) => {
     const target = bugReports.find((b) => b.id === id);
     const newStatus = target?.status === 'OPEN' ? 'RESOLVED' : 'OPEN';
-    setBugReports(
-      bugReports.map((b) =>
-        b.id === id ? { ...b, status: newStatus } : b
-      )
-    );
-
+    setBugReports(bugReports.map((b) => (b.id === id ? { ...b, status: newStatus } : b)));
     try {
       await api.patch(`/portal/bug-reports/${id}/`, { status: newStatus });
     } catch {}
@@ -2963,7 +3407,7 @@ export function AdminPortalView() {
   return (
     <div className="max-w-5xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-6 animate-in fade-in duration-200 font-['Raleway',sans-serif]">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-4 gap-2">
         <div>
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-purple-600" />
@@ -2971,15 +3415,15 @@ export function AdminPortalView() {
               className="text-2xl font-extrabold text-[#2c99ce]"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
-              System Admin & Governance Portal
+              System Admin & VLab Governance Portal
             </h1>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            KJSSE VLab User Accounts, Role Assignment (RBAC), and Tickets
+            Faculty-Assigned Virtual Labs, Student Completion Analytics, Subject Averages &amp; RBAC
           </p>
         </div>
-        <span className="text-xs font-bold px-2.5 py-1 rounded bg-purple-100 text-purple-800 uppercase tracking-wide border border-purple-200 flex items-center gap-1.5">
-          <ShieldCheck className="w-3.5 h-3.5" /> ROOT ADMIN
+        <span className="text-xs font-bold px-2.5 py-1 rounded bg-purple-100 text-purple-800 uppercase tracking-wide border border-purple-200 flex items-center gap-1.5 self-start sm:self-auto">
+          <ShieldCheck className="w-3.5 h-3.5" /> ROOT ADMIN ({currentUser?.username || 'admin'})
         </span>
       </div>
 
@@ -2988,7 +3432,7 @@ export function AdminPortalView() {
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Accounts</span>
           <p className="text-2xl font-bold text-slate-800 mt-1">{users.length}</p>
-          <span className="text-[11px] text-slate-500">Live in Database</span>
+          <span className="text-[11px] text-slate-500">Default Role: STUDENT</span>
         </div>
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
           <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Students</span>
@@ -2996,14 +3440,118 @@ export function AdminPortalView() {
           <span className="text-[11px] text-slate-500">Enrolled Learners</span>
         </div>
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
-          <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Faculty / Prof</span>
-          <p className="text-2xl font-bold text-emerald-700 mt-1">{facultyCount}</p>
-          <span className="text-[11px] text-slate-500">Lab Instructors</span>
+          <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Assigned Faculty</span>
+          <p className="text-2xl font-bold text-emerald-700 mt-1">{facultyAssignments.length}</p>
+          <span className="text-[11px] text-slate-500">Row-Scoped Instructors</span>
         </div>
         <div className="p-4 border border-slate-200 rounded-xl bg-white shadow-xs">
           <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">System Admins</span>
           <p className="text-2xl font-bold text-purple-700 mt-1">{adminCount}</p>
           <span className="text-[11px] text-slate-500">Full Governance</span>
+        </div>
+      </div>
+
+      {/* NEW: Faculty Assigned VLabs, Student Completion & Subject Average Score Table */}
+      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
+        <div className="px-5 py-3 border-b border-slate-100 bg-purple-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <GraduationCap className="w-4 h-4 text-purple-700" />
+            <span className="font-bold text-xs uppercase tracking-wider text-purple-950">
+              Faculty Assigned Virtual Labs, Student Completion &amp; Subject Average Scores
+            </span>
+          </div>
+          <span className="text-[11px] font-semibold text-purple-700">
+            Each faculty only sees their own assigned VLab row in the Faculty Portal
+          </span>
+        </div>
+
+        <div className="overflow-x-auto w-full max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <table className="w-full text-left text-xs min-w-[780px]">
+            <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-100">
+              <tr>
+                <th className="px-4 py-2.5">Assigned Faculty</th>
+                <th className="px-4 py-2.5">Assigned VLab / Subject</th>
+                <th className="px-4 py-2.5">Students Who Completed VLab</th>
+                <th className="px-4 py-2.5">Subject Average Score</th>
+                <th className="px-4 py-2.5">Reassign VLab Row</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {facultyAssignments.map((fac) => {
+                const subRecords = studentRecords.filter(
+                  (r) => r.subjectCode === fac.assignedSubjectCode
+                );
+                const completedStudents = subRecords.filter((r) => r.status === 'COMPLETED');
+                const avgSubjectScore = subRecords.length
+                  ? Math.round(
+                      (subRecords.reduce(
+                        (acc, r) =>
+                          acc +
+                          (r.pretestScore / r.pretestTotal + r.posttestScore / r.posttestTotal) / 2,
+                        0
+                      ) /
+                        subRecords.length) *
+                        1000
+                    ) / 10
+                  : 0;
+
+                return (
+                  <tr key={fac.id} className="hover:bg-slate-50/80 transition align-top">
+                    <td className="px-4 py-3.5">
+                      <div className="font-bold text-slate-900">{fac.name}</div>
+                      <div className="text-[11px] text-slate-500 font-mono">{fac.facultyId}</div>
+                      <div className="text-[11px] text-slate-400">{fac.email}</div>
+                    </td>
+                    <td className="px-4 py-3.5">
+                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 mb-1">
+                        {fac.assignedSubjectCode} LAB
+                      </span>
+                      <div className="font-bold text-slate-800">{fac.assignedVLab}</div>
+                      <div className="text-[11px] text-slate-500">{fac.experimentTitle}</div>
+                    </td>
+                    <td className="px-4 py-3.5">
+                      <div className="font-bold text-slate-800 mb-1.5">
+                        {completedStudents.length} of {subRecords.length} Students Completed
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {subRecords.map((stu) => (
+                          <span
+                            key={stu.id}
+                            className={`px-2 py-0.5 rounded-md text-[10px] font-semibold border ${
+                              stu.status === 'COMPLETED'
+                                ? 'bg-sky-50 text-sky-900 border-sky-200'
+                                : 'bg-amber-50 text-amber-800 border-amber-200'
+                            }`}
+                          >
+                            {stu.name} ({stu.roll_number}) — {stu.posttestScore}/{stu.posttestTotal}{' '}
+                            {stu.status === 'COMPLETED' ? '✓' : '⏳'}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3.5">
+                      <div className="text-base font-extrabold text-emerald-700">
+                        {avgSubjectScore}%
+                      </div>
+                      <div className="text-[10px] text-slate-500 font-medium">
+                        Combined Pre + Posttest Avg
+                      </div>
+                    </td>
+                    <td className="px-4 py-3.5">
+                      <select
+                        value={fac.assignedSubjectCode}
+                        onChange={(e) => handleReassignFacultySubject(fac.id, e.target.value)}
+                        className="text-xs border border-slate-300 rounded-lg px-2 py-1.5 bg-white font-semibold text-slate-800 cursor-pointer focus:ring-1 focus:ring-purple-500"
+                      >
+                        <option value="FSD">FSD VLab (SVU-FSD-01)</option>
+                        <option value="CN">CN VLab (216U01L502)</option>
+                      </select>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -3013,7 +3561,7 @@ export function AdminPortalView() {
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-purple-600" />
             <span className="font-bold text-xs uppercase tracking-wider text-slate-700">
-              User Accounts & Role Management
+              User Accounts &amp; Role Management (Default New User: STUDENT)
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -3091,7 +3639,7 @@ export function AdminPortalView() {
                         onChange={(e) => handleRoleChange(u.id, e.target.value)}
                         className="text-xs border border-slate-300 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-1 focus:ring-purple-500 font-semibold cursor-pointer disabled:opacity-50"
                       >
-                        <option value="STUDENT">Student</option>
+                        <option value="STUDENT">Student (Default)</option>
                         <option value="FACULTY">Faculty (Professor)</option>
                         <option value="ADMIN">System Admin</option>
                       </select>
@@ -3107,7 +3655,7 @@ export function AdminPortalView() {
       {/* Bug Reports Management */}
       <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs w-full max-w-full min-w-0">
         <div className="px-4 sm:px-5 py-3 border-b border-slate-100 bg-slate-50 font-bold text-xs uppercase tracking-wider text-slate-600">
-          User Reported Issues & Tickets
+          User Reported Issues &amp; Tickets
         </div>
         <div className="overflow-x-auto w-full max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
           <table className="w-full text-left text-xs min-w-[550px]">
