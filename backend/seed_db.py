@@ -39,8 +39,8 @@ def seed():
             "username": "faculty",
             "email": "faculty@vlab.edu",
             "password": "faculty",
-            "first_name": "Prof.",
-            "last_name": "Sharma",
+            "first_name": "Mrs. Kirti",
+            "last_name": "Mishra",
             "role": "FACULTY",
             "roll_or_faculty_id": "FAC-CS-204",
             "department": "Computer Science & Engineering"

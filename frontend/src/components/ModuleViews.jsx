@@ -2350,7 +2350,7 @@ export function ContributorsView({ experiment, onNext }) {
 
   const subjectMatterExperts = [
     {
-      name: 'Prof. Sharma',
+      name: 'Mrs. Kirti Mishra',
       institute: 'K. J. Somaiya School of Engineering (KJSSE), SVU',
       email: 'faculty.comp@somaiya.edu',
       department: 'Department of Computer Engineering',
@@ -2749,7 +2749,7 @@ export const INITIAL_VLAB_FACULTY_ASSIGNMENTS = [
   {
     id: 2,
     username: 'faculty',
-    name: 'Prof. Sharma',
+    name: 'Mrs. Kirti Mishra',
     facultyId: 'FAC-CS-204',
     email: 'faculty@vlab.edu',
     department: 'Department of Computer Engineering',
@@ -2780,7 +2780,7 @@ export const INITIAL_VLAB_STUDENT_RECORDS = [
     batch: 'Batch D3',
     subjectCode: 'FSD',
     vlabName: 'Full Stack Development Lab',
-    assignedFaculty: 'Prof. Sharma',
+    assignedFaculty: 'Mrs. Kirti Mishra',
     pretestScore: 5,
     pretestTotal: 5,
     posttestScore: 5,
@@ -2798,7 +2798,7 @@ export const INITIAL_VLAB_STUDENT_RECORDS = [
     batch: 'Batch D3',
     subjectCode: 'FSD',
     vlabName: 'Full Stack Development Lab',
-    assignedFaculty: 'Prof. Sharma',
+    assignedFaculty: 'Mrs. Kirti Mishra',
     pretestScore: 5,
     pretestTotal: 5,
     posttestScore: 5,
@@ -2816,7 +2816,7 @@ export const INITIAL_VLAB_STUDENT_RECORDS = [
     batch: 'Batch D3',
     subjectCode: 'FSD',
     vlabName: 'Full Stack Development Lab',
-    assignedFaculty: 'Prof. Sharma',
+    assignedFaculty: 'Mrs. Kirti Mishra',
     pretestScore: 4,
     pretestTotal: 5,
     posttestScore: 4,
@@ -2834,7 +2834,7 @@ export const INITIAL_VLAB_STUDENT_RECORDS = [
     batch: 'Batch D3',
     subjectCode: 'FSD',
     vlabName: 'Full Stack Development Lab',
-    assignedFaculty: 'Prof. Sharma',
+    assignedFaculty: 'Mrs. Kirti Mishra',
     pretestScore: 3,
     pretestTotal: 5,
     posttestScore: 4,
@@ -2906,7 +2906,7 @@ export function FacultyPortalView() {
   const { currentUser, isAdmin } = useAuth();
   const [facultyAssignments] = useState(() => {
     try {
-      const saved = localStorage.getItem('vlab_faculty_assignments');
+      const saved = localStorage.getItem('vlab_faculty_assignments_v2');
       return saved ? JSON.parse(saved) : INITIAL_VLAB_FACULTY_ASSIGNMENTS;
     } catch {
       return INITIAL_VLAB_FACULTY_ASSIGNMENTS;
@@ -2927,7 +2927,7 @@ export function FacultyPortalView() {
 
   const [studentRecords, setStudentRecords] = useState(() => {
     try {
-      const saved = localStorage.getItem('vlab_student_records_v2');
+      const saved = localStorage.getItem('vlab_student_records_v3');
       return saved ? JSON.parse(saved) : INITIAL_VLAB_STUDENT_RECORDS;
     } catch {
       return INITIAL_VLAB_STUDENT_RECORDS;
@@ -3028,7 +3028,7 @@ export function FacultyPortalView() {
     );
     setStudentRecords(updated);
     try {
-      localStorage.setItem('vlab_student_records_v2', JSON.stringify(updated));
+      localStorage.setItem('vlab_student_records_v3', JSON.stringify(updated));
     } catch {}
     setEditingId(null);
     setToastMsg('Student score updated & synced with Admin Portal!');
@@ -3083,7 +3083,7 @@ export function FacultyPortalView() {
               onChange={(e) => setSelectedSubjectFilter(e.target.value)}
               className="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white font-bold text-slate-700"
             >
-              <option value="FSD">View Row: FSD VLab (Prof. Sharma)</option>
+              <option value="FSD">View Row: FSD VLab (Mrs. Kirti Mishra)</option>
               <option value="CN">View Row: CN VLab (Dr. Debasis Samanta)</option>
             </select>
           )}
@@ -3288,7 +3288,7 @@ export function AdminPortalView() {
 
   const [facultyAssignments, setFacultyAssignments] = useState(() => {
     try {
-      const saved = localStorage.getItem('vlab_faculty_assignments');
+      const saved = localStorage.getItem('vlab_faculty_assignments_v2');
       return saved ? JSON.parse(saved) : INITIAL_VLAB_FACULTY_ASSIGNMENTS;
     } catch {
       return INITIAL_VLAB_FACULTY_ASSIGNMENTS;
@@ -3297,7 +3297,7 @@ export function AdminPortalView() {
 
   const [studentRecords] = useState(() => {
     try {
-      const saved = localStorage.getItem('vlab_student_records_v2');
+      const saved = localStorage.getItem('vlab_student_records_v3');
       return saved ? JSON.parse(saved) : INITIAL_VLAB_STUDENT_RECORDS;
     } catch {
       return INITIAL_VLAB_STUDENT_RECORDS;
@@ -3320,7 +3320,7 @@ export function AdminPortalView() {
       const fallbackUsers = [
         { id: 1, username: 'student', first_name: 'Shlok', last_name: 'Mehta', email: 'student@vlab.edu', role: 'STUDENT', roll_or_faculty_id: '16010124169', batch: 'D3', department: 'Computer Engineering (Batch D3)' },
         { id: 5, username: 'dhruv', first_name: 'Dhruv', last_name: '', email: 'dhruv@somaiya.edu', role: 'STUDENT', roll_or_faculty_id: '16010124216', batch: 'D3', department: 'Computer Engineering (Batch D3)' },
-        { id: 2, username: 'faculty', first_name: 'Prof.', last_name: 'Sharma', email: 'faculty@vlab.edu', role: 'FACULTY', roll_or_faculty_id: 'FAC-CS-204', batch: 'D3', department: 'Computer Science & Engineering' },
+        { id: 2, username: 'faculty', first_name: 'Mrs. Kirti', last_name: 'Mishra', email: 'faculty@vlab.edu', role: 'FACULTY', roll_or_faculty_id: 'FAC-CS-204', batch: 'D3', department: 'Computer Science & Engineering' },
         { id: 4, username: 'faculty_cn', first_name: 'Dr. Debasis', last_name: 'Samanta', email: 'vlab.kjsse@somaiya.edu', role: 'FACULTY', roll_or_faculty_id: 'FAC-CS-309', batch: 'D3', department: 'Computer Science & Engineering' },
         { id: 3, username: 'admin', first_name: 'System', last_name: 'Administrator', email: 'admin@vlab.edu', role: 'ADMIN', roll_or_faculty_id: 'ADM-001', batch: '', department: 'Virtual Lab Technical Core' },
       ];
@@ -3387,7 +3387,7 @@ export function AdminPortalView() {
     });
     setFacultyAssignments(updated);
     try {
-      localStorage.setItem('vlab_faculty_assignments', JSON.stringify(updated));
+      localStorage.setItem('vlab_faculty_assignments_v2', JSON.stringify(updated));
     } catch {}
   };
 

@@ -64,7 +64,7 @@ The platform includes built-in role-based access to simulate real academic insti
 | Role | Persona Example | Capabilities & Permissions |
 |---|---|---|
 | **Student** | Shlok Mehta (Batch D3) | Access all experiments, run interactive visualizers and simulations, submit code for sandbox evaluation, take quizzes, and generate verified course certificates. |
-| **Faculty** | Prof. Sharma (Dept. of CSE) | Access student gradebooks, review batch analytics, inspect quiz score distributions, and export grading sheets to CSV. |
+| **Faculty** | Mrs. Kirti Mishra (Dept. of CSE) | Access student gradebooks, review batch analytics, inspect quiz score distributions, and export grading sheets to CSV. |
 | **Admin** | System Administrator | Review system activity, monitor laboratory metrics, inspect bug reports, and manage platform health. |
 
 *(Note: Users can switch seamlessly between personas using the profile menu in the header for testing and evaluation.)*
@@ -168,7 +168,7 @@ Frontend will be accessible at: `http://127.0.0.1:5173/`
 | Persona | Username | Password | Role | Academic Details |
 |---|---|---|---|---|
 | **Student (Default)** | `student` | `student` | `STUDENT` | Shlok Mehta, Batch D3, Roll: 16010124169 |
-| **Faculty** | `faculty` | `faculty` | `FACULTY` | Prof. Sharma (Assigned VLab: Full Stack Development) |
+| **Faculty** | `faculty` | `faculty` | `FACULTY` | Mrs. Kirti Mishra (Assigned VLab: Full Stack Development) |
 | **Admin** | `admin` | `admin` | `ADMIN` | System Administrator (Full VLab & Faculty Governance) |
 
 ---
