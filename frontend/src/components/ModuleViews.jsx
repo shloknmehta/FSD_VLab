@@ -35,10 +35,15 @@ import {
 import api from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import VSCodeBlock from './VSCodeBlock';
+import {
+  DjangoFormLifecycleDiagram,
+  DjangoCleanComparisonDiagram,
+  DjangoRequestResponseDiagram,
+} from './Diagrams';
 
 // 1. Overview View
 export function OverviewView({ onNext }) {
-  const [activeModalImage, setActiveModalImage] = useState(null);
+  const [activeModalDiagram, setActiveModalDiagram] = useState(null);
 
   const literatureBooks = [
     {
@@ -47,8 +52,6 @@ export function OverviewView({ onNext }) {
       authors: 'Daniel Roy Greenfeld & Audrey Roy Greenfeld',
       publisher: 'Two Scoops Press',
       isbn: '978-0692915721',
-      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780692915721-M.jpg',
-      fallbackCover: '/assets/books/two-scoops-django.svg',
       citedChapters: 'Chapter 10: Form Basics & Chapter 11: More Things to Do With Forms',
       coreTakeaway:
         'Always return the cleaned value in clean_<field>(), always call super().clean() first in clean(), and safely access attributes with cleaned_data.get() to guard against prior field validation failures.',
@@ -60,8 +63,6 @@ export function OverviewView({ onNext }) {
       authors: 'Nigel George',
       publisher: 'GNW Independent Publishing',
       isbn: '978-0994541703',
-      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780994541703-M.jpg',
-      fallbackCover: '/assets/books/mastering-django.svg',
       citedChapters: 'Chapter 8: Django Forms: Processing and Validation Lifecycle',
       coreTakeaway:
         'Documents the internal full_clean() algorithm, illustrating how _clean_fields() and _clean_form() partition valid data into cleaned_data while routing invalid states to ErrorDict and ErrorList.',
@@ -73,8 +74,6 @@ export function OverviewView({ onNext }) {
       authors: 'Antonio Mele',
       publisher: 'Packt Publishing',
       isbn: '978-1805125457',
-      coverUrl: '/assets/books/django-5-by-example.svg',
-      fallbackCover: '/assets/books/django-5-by-example.svg',
       citedChapters: 'Chapter 3: Advanced Form Validation, CSRF Protection, and User Input Sanitization',
       coreTakeaway:
         'Enforces secure multi-field cross-validation in production web environments and explains how non-field errors (__all__) are cleanly surfaced in UI form banners.',
@@ -86,8 +85,6 @@ export function OverviewView({ onNext }) {
       authors: 'William S. Vincent',
       publisher: 'WelcomeToCode Publishing',
       isbn: '978-1735467207',
-      coverUrl: 'https://covers.openlibrary.org/b/isbn/9781735467207-M.jpg',
-      fallbackCover: '/assets/books/django-beginners.svg',
       citedChapters: 'User Registration Forms, ValidationError, and Template Error Rendering',
       coreTakeaway:
         'Guides students through wiring custom form validation logic directly to template rendering, using Django errorlist classes for intuitive UX feedback.',
@@ -98,33 +95,33 @@ export function OverviewView({ onNext }) {
   return (
     <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-10 animate-in fade-in duration-200">
       {/* Lightbox Modal for Diagram Zoom */}
-      {activeModalImage && (
+      {activeModalDiagram && (
         <div
-          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
-          onClick={() => setActiveModalImage(null)}
+          className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
+          onClick={() => setActiveModalDiagram(null)}
         >
           <div
-            className="relative bg-slate-900 border border-slate-700 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-4 shadow-2xl"
+            className="relative bg-slate-900 border border-slate-700 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-4 shadow-2xl space-y-3"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
               <span className="text-sm font-bold text-sky-400 font-mono">
-                {activeModalImage.title}
+                {activeModalDiagram.title}
               </span>
               <button
-                onClick={() => setActiveModalImage(null)}
+                onClick={() => setActiveModalDiagram(null)}
                 className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
                 title="Close Fullscreen View"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <img
-              src={activeModalImage.src}
-              alt={activeModalImage.title}
-              className="w-full h-auto rounded-lg shadow-inner bg-slate-950"
-            />
-            <p className="text-xs text-slate-400 mt-3 text-center">
+            <div className="w-full">
+              {activeModalDiagram.id === 'lifecycle' && <DjangoFormLifecycleDiagram />}
+              {activeModalDiagram.id === 'comparison' && <DjangoCleanComparisonDiagram />}
+              {activeModalDiagram.id === 'prg' && <DjangoRequestResponseDiagram />}
+            </div>
+            <p className="text-xs text-slate-400 text-center">
               Click anywhere outside or the close icon to return to the laboratory overview.
             </p>
           </div>
@@ -227,8 +224,8 @@ export function OverviewView({ onNext }) {
           </div>
           <button
             onClick={() =>
-              setActiveModalImage({
-                src: '/assets/diagrams/django-form-lifecycle.svg',
+              setActiveModalDiagram({
+                id: 'lifecycle',
                 title: 'Figure 1: Django Form Validation Pipeline (full_clean() Sequence)',
               })
             }
@@ -240,25 +237,15 @@ export function OverviewView({ onNext }) {
         </div>
 
         <div
-          className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-900 cursor-pointer shadow-inner"
+          className="relative group rounded-xl overflow-hidden cursor-pointer"
           onClick={() =>
-            setActiveModalImage({
-              src: '/assets/diagrams/django-form-lifecycle.svg',
+            setActiveModalDiagram({
+              id: 'lifecycle',
               title: 'Figure 1: Django Form Validation Pipeline (full_clean() Sequence)',
             })
           }
         >
-          <img
-            src="/assets/diagrams/django-form-lifecycle.svg"
-            alt="Django Form Validation Lifecycle Pipeline"
-            className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.01]"
-          />
-          <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center pointer-events-none">
-            <span className="px-4 py-2 rounded-lg bg-slate-900/90 text-white text-xs font-bold shadow-lg flex items-center gap-2">
-              <ZoomIn className="w-4 h-4 text-sky-400" />
-              Click to view high-resolution schematic
-            </span>
-          </div>
+          <DjangoFormLifecycleDiagram />
         </div>
 
         {/* Step-by-Step Breakdown Accordion/Grid */}
@@ -319,8 +306,8 @@ export function OverviewView({ onNext }) {
           </div>
           <button
             onClick={() =>
-              setActiveModalImage({
-                src: '/assets/diagrams/django-clean-comparison.svg',
+              setActiveModalDiagram({
+                id: 'comparison',
                 title: 'Figure 2: clean_<field>() vs clean() Architectural Comparison',
               })
             }
@@ -332,25 +319,15 @@ export function OverviewView({ onNext }) {
         </div>
 
         <div
-          className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-900 cursor-pointer shadow-inner"
+          className="relative group rounded-xl overflow-hidden cursor-pointer"
           onClick={() =>
-            setActiveModalImage({
-              src: '/assets/diagrams/django-clean-comparison.svg',
+            setActiveModalDiagram({
+              id: 'comparison',
               title: 'Figure 2: clean_<field>() vs clean() Architectural Comparison',
             })
           }
         >
-          <img
-            src="/assets/diagrams/django-clean-comparison.svg"
-            alt="Field-Level vs Form-Level Clean Comparison"
-            className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.01]"
-          />
-          <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center pointer-events-none">
-            <span className="px-4 py-2 rounded-lg bg-slate-900/90 text-white text-xs font-bold shadow-lg flex items-center gap-2">
-              <ZoomIn className="w-4 h-4 text-sky-400" />
-              Click to view high-resolution comparison
-            </span>
-          </div>
+          <DjangoCleanComparisonDiagram />
         </div>
 
         {/* Detailed Technical Comparison Table */}
@@ -413,8 +390,8 @@ export function OverviewView({ onNext }) {
           </div>
           <button
             onClick={() =>
-              setActiveModalImage({
-                src: '/assets/diagrams/django-request-response.svg',
+              setActiveModalDiagram({
+                id: 'prg',
                 title: 'Figure 3: Django View Form Workflow and Post/Redirect/Get Pattern',
               })
             }
@@ -426,25 +403,15 @@ export function OverviewView({ onNext }) {
         </div>
 
         <div
-          className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-900 cursor-pointer shadow-inner"
+          className="relative group rounded-xl overflow-hidden cursor-pointer"
           onClick={() =>
-            setActiveModalImage({
-              src: '/assets/diagrams/django-request-response.svg',
+            setActiveModalDiagram({
+              id: 'prg',
               title: 'Figure 3: Django View Form Workflow and Post/Redirect/Get Pattern',
             })
           }
         >
-          <img
-            src="/assets/diagrams/django-request-response.svg"
-            alt="Django View Form Workflow and PRG Pattern"
-            className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.01]"
-          />
-          <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center pointer-events-none">
-            <span className="px-4 py-2 rounded-lg bg-slate-900/90 text-white text-xs font-bold shadow-lg flex items-center gap-2">
-              <ZoomIn className="w-4 h-4 text-sky-400" />
-              Click to view high-resolution PRG pattern
-            </span>
-          </div>
+          <DjangoRequestResponseDiagram />
         </div>
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -472,42 +439,35 @@ export function OverviewView({ onNext }) {
               key={idx}
               className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-4"
             >
-              <div className="flex gap-4">
-                {/* Book Cover Image with Fallback */}
-                <div className="shrink-0 w-24 sm:w-28 rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-slate-100">
-                  <img
-                    src={book.coverUrl}
-                    alt={book.title}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = book.fallbackCover;
-                    }}
-                    className="w-full h-auto object-cover aspect-[2/3]"
-                  />
-                </div>
-
-                {/* Book Details */}
-                <div className="space-y-1.5 flex-1 min-w-0">
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between gap-2">
                   <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 uppercase tracking-wider">
                     {book.badge}
                   </span>
-                  <h4 className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                  <div className="flex items-center gap-1.5 text-slate-400">
+                    <BookOpen className="w-4 h-4 text-sky-600" />
+                    <span className="text-[11px] font-mono font-medium text-slate-500">ISBN: {book.isbn}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-base font-bold text-slate-900 leading-snug">
                     {book.title}
                   </h4>
-                  <p className="text-xs text-slate-500 font-medium">{book.subtitle}</p>
-                  <p className="text-xs text-slate-700">
-                    <span className="font-semibold">Authors:</span> {book.authors}
-                  </p>
-                  <p className="text-[11px] text-slate-500">
-                    <span className="font-semibold text-slate-600">Publisher:</span> {book.publisher} &bull; <span className="font-mono">ISBN: {book.isbn}</span>
-                  </p>
+                  <p className="text-xs text-slate-500 font-medium mt-0.5">{book.subtitle}</p>
+                </div>
+
+                <div className="text-xs text-slate-700 flex flex-wrap items-center gap-y-1 gap-x-2 pt-1 border-t border-slate-100">
+                  <span><strong className="text-slate-900">Authors:</strong> {book.authors}</span>
+                  <span className="text-slate-300">&bull;</span>
+                  <span><strong className="text-slate-900">Publisher:</strong> {book.publisher}</span>
                 </div>
               </div>
 
               {/* Cited Chapters & Core Takeaway */}
-              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 space-y-1.5 text-xs">
+              <div className="bg-slate-50 rounded-lg p-3.5 border border-slate-200 space-y-2 text-xs">
                 <div className="font-semibold text-[#0284c7] flex items-center gap-1.5">
-                  <BookMarked className="w-3.5 h-3.5" />
+                  <BookMarked className="w-3.5 h-3.5 shrink-0" />
                   <span>{book.citedChapters}</span>
                 </div>
                 <p className="text-slate-600 italic leading-relaxed">
@@ -3095,8 +3055,6 @@ export function ReferencesView({ onNext }) {
       edition: '4th Edition',
       publisher: 'Two Scoops Press',
       isbn: '978-0692915721',
-      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780692915721-M.jpg',
-      fallbackCover: '/assets/books/two-scoops-django.svg',
       citedChapters: 'Chapter 10: Form Basics & Chapter 11: More Things to Do With Forms',
       description:
         'The definitive industry manual for idiomatic Django development. Specifically covers custom clean() methods, avoiding common anti-patterns like failing to return cleaned_data, and safe dictionary access using .get().',
@@ -3109,8 +3067,6 @@ export function ReferencesView({ onNext }) {
       edition: '2nd Edition',
       publisher: 'GNW Independent Publishing',
       isbn: '978-0994541703',
-      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780994541703-M.jpg',
-      fallbackCover: '/assets/books/mastering-django.svg',
       citedChapters: 'Chapter 8: Django Forms: Processing and Validation Lifecycle',
       description:
         'A comprehensive deep dive into Django internals. Details the step-by-step execution order of full_clean(), _clean_fields(), and _clean_form(), detailing how ErrorDict and ErrorList instances populate form.errors.',
@@ -3123,8 +3079,6 @@ export function ReferencesView({ onNext }) {
       edition: '5th Edition',
       publisher: 'Packt Publishing',
       isbn: '978-1805125457',
-      coverUrl: '/assets/books/django-5-by-example.svg',
-      fallbackCover: '/assets/books/django-5-by-example.svg',
       citedChapters: 'Chapter 3: Advanced Form Validation, CSRF Protection, and User Input Sanitization',
       description:
         'Practical, project-centric coverage of user form submissions, security boundaries, multi-field password matching validation, and rendering non-field error banners in templates.',
@@ -3137,8 +3091,6 @@ export function ReferencesView({ onNext }) {
       edition: '4th Edition',
       publisher: 'WelcomeToCode Publishing',
       isbn: '978-1735467207',
-      coverUrl: 'https://covers.openlibrary.org/b/isbn/9781735467207-M.jpg',
-      fallbackCover: '/assets/books/django-beginners.svg',
       citedChapters: 'Chapter on Forms, Validation Errors, and Template Rendering',
       description:
         'Step-by-step guide to constructing HTML form flows in Django, binding user submissions to form classes, and handling ValidationError exceptions with intuitive UI feedback.',
@@ -3234,35 +3186,28 @@ export function ReferencesView({ onNext }) {
               key={idx}
               className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-4"
             >
-              <div className="flex gap-4">
-                {/* Book Cover with Fallback */}
-                <div className="shrink-0 w-24 sm:w-28 rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-slate-100">
-                  <img
-                    src={book.coverUrl}
-                    alt={book.title}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = book.fallbackCover;
-                    }}
-                    className="w-full h-auto object-cover aspect-[2/3]"
-                  />
-                </div>
-
-                {/* Book Meta */}
-                <div className="space-y-1.5 flex-1 min-w-0">
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between gap-2">
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-200">
                     {book.edition}
                   </span>
-                  <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                  <div className="flex items-center gap-1.5 text-slate-400">
+                    <BookOpen className="w-4 h-4 text-sky-600" />
+                    <span className="text-[11px] font-mono font-medium text-slate-500">ISBN: {book.isbn}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 leading-snug">
                     {book.title}
                   </h3>
-                  <p className="text-xs text-slate-500">{book.subtitle}</p>
-                  <p className="text-xs text-slate-700">
-                    <span className="font-semibold">Author(s):</span> {book.authors}
-                  </p>
-                  <p className="text-[11px] text-slate-500">
-                    {book.publisher} &bull; <span className="font-mono text-[10px]">ISBN: {book.isbn}</span>
-                  </p>
+                  <p className="text-xs text-slate-500 mt-0.5">{book.subtitle}</p>
+                </div>
+
+                <div className="text-xs text-slate-700 flex flex-wrap items-center gap-y-1 gap-x-2 pt-1 border-t border-slate-100">
+                  <span><strong className="text-slate-900">Author(s):</strong> {book.authors}</span>
+                  <span className="text-slate-300">&bull;</span>
+                  <span><strong className="text-slate-900">Publisher:</strong> {book.publisher}</span>
                 </div>
               </div>
 
@@ -3587,8 +3532,6 @@ export function ContributorsView({ experiment, onNext }) {
           </div>
         )}
       </div>
-=======
->>>>>>> 310ad76 (feat(curriculum): enrich overview and references with topic diagrams and textbook literature)
     </div>
   );
 }

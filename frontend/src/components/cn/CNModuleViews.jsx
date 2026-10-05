@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import api from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
+import { Vlan8021QFrameDiagram } from '../Diagrams';
 import CNDiagnosticsSimulator from './CNDiagnosticsSimulator';
 import CNHammingSimulator from './CNHammingSimulator';
 import CNSubnettingSimulator from './CNSubnettingSimulator';
@@ -37,7 +38,7 @@ import CNStaticRoutingSimulator from './CNStaticRoutingSimulator';
 export function CNOverviewView({ experiment, onNext }) {
   if (!experiment) return null;
   const { overview } = experiment;
-  const [activeModalImage, setActiveModalImage] = useState(null);
+  const [activeModalDiagram, setActiveModalDiagram] = useState(null);
 
   const cnBooks = [
     {
@@ -46,8 +47,6 @@ export function CNOverviewView({ experiment, onNext }) {
       authors: 'Andrew S. Tanenbaum & David J. Wetherall',
       publisher: 'Pearson Education (6th Edition)',
       isbn: '978-0132126953',
-      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780132126953-M.jpg',
-      fallbackCover: '/assets/books/tanenbaum-cn.svg',
       citedChapters: 'Section 4.8.4: Virtual LANs (IEEE 802.1Q Standards)',
       coreTakeaway:
         'Documents the 4-byte 802.1Q frame tagging mechanism, broadcast containment boundaries, and MAC bridge forwarding logic.',
@@ -59,8 +58,6 @@ export function CNOverviewView({ experiment, onNext }) {
       authors: 'Behrouz A. Forouzan',
       publisher: 'McGraw-Hill Education (5th Edition)',
       isbn: '978-0073376226',
-      coverUrl: 'https://covers.openlibrary.org/b/isbn/9780073376226-M.jpg',
-      fallbackCover: '/assets/books/forouzan-dcn.svg',
       citedChapters: 'Chapter 15: Connecting Devices and Virtual LANs',
       coreTakeaway:
         'Analyzes port-based VLAN configuration, inter-switch trunk multiplexing, and hardware broadcast storm mitigation.',
@@ -72,8 +69,6 @@ export function CNOverviewView({ experiment, onNext }) {
       authors: 'Wendell Odom, CCIE',
       publisher: 'Cisco Press (1st Edition)',
       isbn: '978-0135792735',
-      coverUrl: '/assets/books/cisco-ccna.svg',
-      fallbackCover: '/assets/books/cisco-ccna.svg',
       citedChapters: 'Chapter 8: Implementing Ethernet Virtual LANs',
       coreTakeaway:
         'Hands-on Cisco IOS switch CLI configuration: switchport mode access, switchport mode trunk, and Layer 2 ping isolation tests.',
@@ -84,31 +79,32 @@ export function CNOverviewView({ experiment, onNext }) {
   return (
     <div className="max-w-4xl mx-auto py-6 px-3 sm:px-6 md:px-10 text-slate-800 space-y-8 animate-in fade-in duration-200">
       {/* Lightbox Modal */}
-      {activeModalImage && (
+      {activeModalDiagram && (
         <div
-          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
-          onClick={() => setActiveModalImage(null)}
+          className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
+          onClick={() => setActiveModalDiagram(null)}
         >
           <div
-            className="relative bg-slate-900 border border-slate-700 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-4 shadow-2xl"
+            className="relative bg-slate-900 border border-slate-700 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-4 shadow-2xl space-y-3"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
               <span className="text-sm font-bold text-sky-400 font-mono">
-                {activeModalImage.title}
+                {activeModalDiagram.title}
               </span>
               <button
-                onClick={() => setActiveModalImage(null)}
+                onClick={() => setActiveModalDiagram(null)}
                 className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <img
-              src={activeModalImage.src}
-              alt={activeModalImage.title}
-              className="w-full h-auto rounded-lg shadow-inner bg-slate-950"
-            />
+            <div className="w-full">
+              <Vlan8021QFrameDiagram />
+            </div>
+            <p className="text-xs text-slate-400 text-center">
+              Click anywhere outside or the close icon to return to the laboratory overview.
+            </p>
           </div>
         </div>
       )}
@@ -155,8 +151,8 @@ export function CNOverviewView({ experiment, onNext }) {
           </div>
           <button
             onClick={() =>
-              setActiveModalImage({
-                src: '/assets/diagrams/vlan-8021q-frame.svg',
+              setActiveModalDiagram({
+                id: 'vlan',
                 title: 'Figure 1: IEEE 802.1Q Frame Tagging Specification',
               })
             }
@@ -168,25 +164,15 @@ export function CNOverviewView({ experiment, onNext }) {
         </div>
 
         <div
-          className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-900 cursor-pointer shadow-inner"
+          className="relative group rounded-xl overflow-hidden cursor-pointer"
           onClick={() =>
-            setActiveModalImage({
-              src: '/assets/diagrams/vlan-8021q-frame.svg',
+            setActiveModalDiagram({
+              id: 'vlan',
               title: 'Figure 1: IEEE 802.1Q Frame Tagging Specification',
             })
           }
         >
-          <img
-            src="/assets/diagrams/vlan-8021q-frame.svg"
-            alt="IEEE 802.1Q Frame Format Diagram"
-            className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.01]"
-          />
-          <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center pointer-events-none">
-            <span className="px-4 py-2 rounded-lg bg-slate-900/90 text-white text-xs font-bold shadow-lg flex items-center gap-2">
-              <ZoomIn className="w-4 h-4 text-sky-400" />
-              Click to view high-resolution schematic
-            </span>
-          </div>
+          <Vlan8021QFrameDiagram />
         </div>
 
         {/* 802.1Q Tag Breakdown */}
@@ -250,30 +236,30 @@ export function CNOverviewView({ experiment, onNext }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {cnBooks.map((b, idx) => (
             <div key={idx} className="border border-slate-200 rounded-xl p-4 bg-white shadow-xs flex flex-col justify-between space-y-3">
-              <div className="flex gap-3">
-                <div className="shrink-0 w-20 rounded overflow-hidden border border-slate-200 bg-slate-100 shadow-2xs">
-                  <img
-                    src={b.coverUrl}
-                    alt={b.title}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = b.fallbackCover;
-                    }}
-                    className="w-full h-auto aspect-[2/3] object-cover"
-                  />
-                </div>
-                <div className="min-w-0 flex-1 space-y-1">
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-sky-100 text-sky-800">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-1">
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 uppercase tracking-wider">
                     {b.badge}
                   </span>
+                  <div className="flex items-center gap-1 text-slate-400">
+                    <BookOpen className="w-3.5 h-3.5 text-sky-600" />
+                    <span className="text-[10px] font-mono font-medium text-slate-500">ISBN: {b.isbn}</span>
+                  </div>
+                </div>
+                <div>
                   <h4 className="text-xs font-bold text-slate-900 leading-snug">{b.title}</h4>
-                  <p className="text-[11px] text-slate-500">{b.authors}</p>
-                  <p className="text-[10px] text-slate-400 font-mono">ISBN: {b.isbn}</p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">{b.subtitle}</p>
+                </div>
+                <div className="text-[11px] text-slate-700 pt-1 border-t border-slate-100">
+                  <span className="font-medium text-slate-800">Author(s):</span> {b.authors} &bull; <span className="font-medium text-slate-800">Publisher:</span> {b.publisher}
                 </div>
               </div>
-              <div className="bg-slate-50 p-2.5 rounded border border-slate-200 text-[11px] text-slate-600">
-                <span className="font-semibold text-sky-700 block mb-0.5">{b.citedChapters}</span>
-                {b.coreTakeaway}
+              <div className="bg-slate-50 p-2.5 rounded border border-slate-200 text-[11px] text-slate-600 space-y-1">
+                <div className="font-semibold text-sky-700 flex items-center gap-1">
+                  <BookMarked className="w-3.5 h-3.5 shrink-0" />
+                  <span>{b.citedChapters}</span>
+                </div>
+                <p className="italic">"{b.coreTakeaway}"</p>
               </div>
             </div>
           ))}
@@ -1349,27 +1335,32 @@ export function CNReferencesView({ experiment, onNext }) {
                 key={idx}
                 className="border border-slate-200 rounded-xl p-5 bg-white shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-4"
               >
-                <div className="space-y-3">
-                  <div className="w-24 sm:w-28 mx-auto rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-slate-100">
-                    <img
-                      src={book.coverUrl}
-                      alt={book.title}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = book.fallbackCover;
-                      }}
-                      className="w-full h-auto object-cover aspect-[2/3]"
-                    />
-                  </div>
-                  <div className="space-y-1 text-center">
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-200">
                       {book.edition}
                     </span>
-                    <h3 className="text-sm font-bold text-slate-900 leading-snug">
+                    <div className="flex items-center gap-1.5 text-slate-400">
+                      <BookOpen className="w-4 h-4 text-sky-600" />
+                      <span className="text-[11px] font-mono font-medium text-slate-500">ISBN: {book.isbn}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
                       {book.title}
                     </h3>
-                    <p className="text-xs text-slate-600 font-medium">{book.authors}</p>
-                    <p className="text-[11px] text-slate-400 font-mono">ISBN: {book.isbn}</p>
+                    {book.subtitle && <p className="text-xs text-slate-500 mt-0.5">{book.subtitle}</p>}
+                  </div>
+
+                  <div className="text-xs text-slate-700 flex flex-wrap items-center gap-y-1 gap-x-2 pt-1 border-t border-slate-100">
+                    <span><strong className="text-slate-900">Author(s):</strong> {book.authors}</span>
+                    {book.publisher && (
+                      <>
+                        <span className="text-slate-300">&bull;</span>
+                        <span><strong className="text-slate-900">Publisher:</strong> {book.publisher}</span>
+                      </>
+                    )}
                   </div>
                 </div>
 
