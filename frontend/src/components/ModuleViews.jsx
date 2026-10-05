@@ -2376,7 +2376,7 @@ export function ContributorsView({ experiment, onNext }) {
     {
       srNo: 2,
       name: 'Dhruv',
-      role: 'Co-Lead Developer & Integration Engineer',
+      role: 'Co-Lead Developer & Integration Engineer (Roll: 16010124216)',
       department: 'Department of Computer Engineering (Batch D3)',
       institute: 'KJSSE, Somaiya Vidyavihar University',
     },
