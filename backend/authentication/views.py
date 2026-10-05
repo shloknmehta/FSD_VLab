@@ -58,7 +58,7 @@ class LoginView(APIView):
             lower_u = username_or_email.lower()
             sample_accounts = {
                 'admin': ('admin', 'ADMIN', 'System', 'Administrator', 'ADM-001', 'Virtual Lab Technical Core', ['admin', 'Admin@123']),
-                'faculty': ('faculty', 'FACULTY', 'Mrs. Kirti', 'Mishra', 'FAC-CS-204', 'Computer Science & Engineering', ['faculty', 'Faculty@123']),
+                'faculty': ('faculty', 'FACULTY', 'Prof.', 'Sharma', 'FAC-CS-204', 'Computer Science & Engineering', ['faculty', 'Faculty@123']),
                 'student': ('student', 'STUDENT', 'Shlok', 'Mehta', '16010124169', 'Computer Science (Batch D3)', ['student', 'Student@123']),
             }
             for key, (uname, urole, fname, lname, roll_id, dept, valid_pwds) in sample_accounts.items():

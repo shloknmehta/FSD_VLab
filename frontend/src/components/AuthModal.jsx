@@ -261,61 +261,6 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }) {
               >
                 {loading ? 'Signing in...' : 'Sign In'}
               </button>
-
-              {/* Sample Credentials Helper Box */}
-              <div className="pt-2 border-t border-slate-100 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                    Sample Portal Credentials (Click to Fill)
-                  </span>
-                  <span className="text-[10px] text-slate-400 font-medium">
-                    Default Role: Student
-                  </span>
-                </div>
-                <div className="grid grid-cols-3 gap-2 text-left">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLoginUsername('student');
-                      setLoginPassword('student');
-                      setErrorMessage('');
-                    }}
-                    className="p-2 rounded-lg border border-blue-200 bg-blue-50/60 hover:bg-blue-100/70 transition cursor-pointer"
-                  >
-                    <div className="text-[10px] font-bold text-blue-800 uppercase">Student</div>
-                    <div className="text-[11px] font-mono text-slate-700 mt-0.5">user: <span className="font-bold">student</span></div>
-                    <div className="text-[11px] font-mono text-slate-700">pass: <span className="font-bold">student</span></div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLoginUsername('faculty');
-                      setLoginPassword('faculty');
-                      setErrorMessage('');
-                    }}
-                    className="p-2 rounded-lg border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/70 transition cursor-pointer"
-                  >
-                    <div className="text-[10px] font-bold text-emerald-800 uppercase">Faculty</div>
-                    <div className="text-[11px] font-mono text-slate-700 mt-0.5">user: <span className="font-bold">faculty</span></div>
-                    <div className="text-[11px] font-mono text-slate-700">pass: <span className="font-bold">faculty</span></div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLoginUsername('admin');
-                      setLoginPassword('admin');
-                      setErrorMessage('');
-                    }}
-                    className="p-2 rounded-lg border border-purple-200 bg-purple-50/60 hover:bg-purple-100/70 transition cursor-pointer"
-                  >
-                    <div className="text-[10px] font-bold text-purple-800 uppercase">Admin</div>
-                    <div className="text-[11px] font-mono text-slate-700 mt-0.5">user: <span className="font-bold">admin</span></div>
-                    <div className="text-[11px] font-mono text-slate-700">pass: <span className="font-bold">admin</span></div>
-                  </button>
-                </div>
-              </div>
             </form>
           ) : (
             /* ===================== REGISTER FORM ===================== */

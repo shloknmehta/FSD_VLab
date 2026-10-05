@@ -17,9 +17,9 @@ export const DEMO_USERS = {
   FACULTY: {
     id: 2,
     username: 'faculty',
-    first_name: 'Mrs. Kirti',
-    last_name: 'Mishra',
-    name: 'Mrs. Kirti Mishra',
+    first_name: 'Prof.',
+    last_name: 'Sharma',
+    name: 'Prof. Sharma',
     role: 'FACULTY',
     email: 'faculty@vlab.edu',
     roll_or_faculty_id: 'FAC-CS-204',
