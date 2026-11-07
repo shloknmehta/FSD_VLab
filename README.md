@@ -4,8 +4,16 @@
 [![React](https://img.shields.io/badge/React-19_Vite-blue.svg)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4-cyan.svg)](https://tailwindcss.com/)
 [![Virtual Labs](https://img.shields.io/badge/VLab-MoE%20Initiative-orange.svg)](https://www.vlab.co.in/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-An interactive, full-stack **Virtual Laboratory (VLab)** educational platform designed to provide engineering students with remote, hands-on experimentation environments for core Computer Science & Engineering disciplines. Aligned with the pedagogical and visual standards of the **Ministry of Education (MoE, Govt. of India)** Virtual Labs initiative, this platform enables learning through interactive simulations, code sandboxes, visual step-by-step execution traces, and automated assessments—all directly within the browser without requiring local environment configuration.
+An interactive, full-stack **Virtual Laboratory (VLab)** educational platform developed at **K. J. Somaiya School of Engineering (KJSSE)** to provide engineering students with remote, hands-on experimentation environments for core Computer Science & Engineering disciplines. Aligned with the pedagogical and visual standards of the **Ministry of Education (MoE, Govt. of India)** Virtual Labs initiative, this platform enables learning through interactive simulations, live code sandboxes with custom test-case runners, inline architectural vector diagrams, visual step-by-step execution traces, and automated assessments—all directly within the browser without requiring local environment configuration.
+
+---
+
+## Live Demo & Repository
+
+- **Live Platform**: [https://fsd-vlab.vercel.app/](https://fsd-vlab.vercel.app/)
+- **GitHub Repository**: [https://github.com/shloknmehta/FSD_VLab](https://github.com/shloknmehta/FSD_VLab)
 
 ---
 
@@ -14,60 +22,78 @@ An interactive, full-stack **Virtual Laboratory (VLab)** educational platform de
 Traditional engineering computer labs often face challenges including disparate local machine configurations, accessibility limitations outside campus hours, and difficulty visualizing internal runtime lifecycles (such as network packet propagation or backend framework execution pipelines).
 
 This platform bridges that gap by offering:
-- **Zero-Setup Remote Experimentation**: Full access to complex web development and computer networking experiments directly through a modern web browser.
-- **Deep Execution Observability**: Interactive visualizers that unpack "black-box" systems—from the step-by-step call stack of a Django form validation cycle to VLAN tagged packet broadcasts across switch ports.
-- **Formative & Evaluative Assessment**: Pre-experiment diagnostic quizzes, interactive workbenches, automated in-browser code evaluation sandboxes, post-quizzes, and instant certificate generation.
-- **Departmental Breadth**: A scalable, multi-course architecture housed under a unified **Broad Area: Computer Science and Engineering** portal.
+- **Zero-Setup Remote Experimentation**: Full access to web development and computer networking experiments directly through a modern web browser.
+- **Deep Execution Observability**: Interactive visualizers and custom inline SVG architectural diagrams (`Diagrams.jsx`) that unpack "black-box" systems—from the 7-stage call stack of a Django form validation cycle to IEEE 802.1Q VLAN frame tagging, Hamming (7,4) syndrome decoding, and Stop-and-Wait ARQ timelines.
+- **Live Code Editor & Custom Test Case Runner**: Built-in VS Code-style Python sandboxes where students can write/edit validation and protocol functions, run the built-in unit test suite, and **define & execute their own custom test cases** in real time.
+- **Formative & Evaluative Assessment**: Pre-experiment diagnostic quizzes, interactive workbenches, post-experiment quizzes, academic textbook citation cards, and instant verifiable PDF-ready certificate generation.
+- **Role-Based Faculty & Admin Governance**: Dedicated portals where faculty can view and update student scores for their assigned VLab, and administrators can monitor faculty-to-VLab assignments, student completion rosters, and average subject scores across laboratories.
 
 ---
 
 ## Available Laboratories & Experiments
 
 ### 1. Full Stack Web Development (FSD) Lab
-Focuses on enterprise web application development paradigms, backend architecture, and robust server-side processing.
+Focuses on enterprise web application development paradigms, backend architecture, and robust server-side validation pipelines.
 
-- **Featured Experiment**: *Custom Form Validation using `clean()` and `clean_<fieldname>()` in Django*
+- **Featured Experiment**: *Custom Form Validation using `clean()` and `clean_<fieldname>()` in Django* (alongside multi-experiment curriculum modules covering *Django ORM QuerySets*, *JWT & RBAC Middleware*, *DRF Serializers*, *React State & Lifecycle Hooks*, and *CSRF/XSS Security Hardening*).
 - **Pedagogical Workflow & Modules**:
   - **Aim**: Clear learning outcomes, prerequisites, and industry skill mapping.
-  - **Overview**: Architectural breakdown of the Django form validation pipeline (`to_python()`, `validate()`, `run_validators()`), built-in validators, and complete lifecycle flowcharts.
+  - **Overview**: Architectural breakdown of the Django form validation pipeline (`to_python()`, `validate()`, `run_validators()`), inline SVG lifecycle flowcharts, and built-in validator mechanics.
   - **Recap**: Core principles of Django validation—raising `forms.ValidationError`, mutating `cleaned_data`, and cross-field synchronization.
   - **Pretest**: 5-question conceptual diagnostic quiz evaluating form lifecycle readiness.
   - **Step-by-Step Visualizer**: Interactive 7-phase execution tracer displaying real-time call stack progression, syntax-highlighted source code, and live variable state inspector (`self.cleaned_data`, `self.errors`).
-  - **Simulation Playground**: Live form submission workbench with instant field-level and form-wide (`__all__`) error feedback alongside toggleable `forms.py` source previews.
-  - **Code Assessment**: Built-in browser IDE with sandboxed Python code execution and automated test runners validating student-submitted `clean_age()` and cross-field `clean()` logic.
+  - **Simulation Playground**: Live form submission workbench with instant field-level (`errorlist`) and form-wide (`__all__`) error feedback alongside raw HTTP `POST` payload inspection.
+  - **Code Assessment (Live Editor + Custom Tests)**: In-browser Python editor supporting `Tab` indentation, dynamic AST/regex logic evaluation for `clean_age(self)` and `clean(self)`, built-in unit tests, and an interactive **Custom Test Case Builder** for testing student-defined edge cases.
   - **Analysis**: Comparative matrix (Built-in vs Field-level vs Form-level validation) with execution order reference guides.
-  - **Posttest & Certification**: 5-question comprehensive test with dynamic PDF-ready completion certificate issuance upon passing (score $\ge$ 60%).
-  - **Faculty Gradebook**: Real-time instructor portal tracking student batch performance with CSV exports.
+  - **Posttest & Certification**: 5-question comprehensive evaluation with dynamic completion certificate issuance upon passing (score $\ge$ 60%).
+  - **References & Contributors**: Accredited textbook citation cards, official documentation links, and the Contributors & Subject Matter Experts directory.
 
 ---
 
 ### 2. Computer Networks (CN) Lab
-Focuses on data communications, packet forwarding, protocol analysis, and network infrastructure design.
+Focuses on data communications, error control, IPv4 subnetting, layer-2 switching, reliable transport, and layer-3 packet forwarding across **6 interactive experiments**:
 
-- **Featured Experiment**: *VLAN Configuration & Port-based Network Segmentation (VLAN Switching)*
-- **Pedagogical Workflow & Modules**:
-  - **Aim**: Understand broadcast containment, IEEE 802.1Q frame tagging, and switch port modes (Access vs Trunk).
-  - **Theory**: Comprehensive background on layer-2 broadcast domains, collision domains, VLAN tagging headers, and inter-VLAN routing concepts.
-  - **Pretest**: Diagnostic assessment on switch architectures, MAC forwarding tables, and Ethernet frame formats.
-  - **Procedure**: Guided step-by-step configuration manual simulating terminal commands and topology verification.
-  - **Topology Visualizer**: Interactive network topology view showing networked workstations mapped into isolated broadcast domains (VLAN 10: Faculty / VLAN 20: Students) connected through an intelligent switch.
-  - **Simulation Workbench**: Real-time packet generator running intra-VLAN and inter-VLAN ping tests, simulating ARP resolutions, and inspecting live switch MAC address tables (CAM tables).
-  - **Posttest**: Verification quiz testing student comprehension of VLAN isolation and frame tagging.
-  - **References & Feedback**: Curated network engineering standards and student feedback collection.
+1. **Network Diagnostics (`cn-network-diagnostics`)**: *Ping, Traceroute & Netstat Analysis* — ICMP Echo Request/Reply (Type 8 / Type 0) and TTL expiry trace simulation.
+2. **Error Detection & Correction (`cn-hamming-code`)**: *Hamming Code (7,4) Simulator* — Even/Odd parity bit generation, single-bit fault injection, and binary syndrome decoding.
+3. **IPv4 Addressing & Subnetting (`cn-ip-subnetting`)**: *CIDR & VLSM Subnet Calculator* — Bitwise mask visualization, network/broadcast computation, and usable host range analysis.
+4. **VLAN Configuration & Switching (`cn-vlan-switching`)**: *IEEE 802.1Q Port-Based Network Segmentation* — Access vs Trunk port simulation, broadcast containment across VLAN 10/20, and MAC (CAM) table inspection.
+5. **Flow Control Protocols (`cn-stop-wait-arq`)**: *Stop-and-Wait ARQ Interactive Timeline* — Sequence numbering (`Frame 0`/`1`), next-expected `ACK` propagation, frame corruption, and retransmission timeout (RTO) recovery.
+6. **IP Packet Forwarding (`cn-static-routing`)**: *Static Routing & Default Route (`0.0.0.0/0`) Configuration* — Longest Prefix Match (LPM) routing table lookups and Cisco IOS `ip route` CLI verification.
+
+Each CN experiment includes:
+- **Overview & Recap** with custom inline SVG protocol diagrams (`Diagrams.jsx`)
+- **Pretest & Posttest** diagnostic quizzes with instant explanations and completion certificates
+- **Step-by-Step Visualizer & Simulation Workbench**
+- **Live Python Protocol Code Editor & Custom Test Case Runner**
+- **Comparative Analysis & Academic Textbook Reference Cards**
 
 ---
 
 ## User Roles & Access Control (RBAC)
 
-The platform includes built-in role-based access to simulate real academic institute workflows:
+The platform includes role-based access control tailored for academic laboratory management:
 
-| Role | Persona Example | Capabilities & Permissions |
+| Role | Persona | Capabilities & Permissions |
 |---|---|---|
-| **Student** | Shlok Mehta (Batch D3) | Access all experiments, run interactive visualizers and simulations, submit code for sandbox evaluation, take quizzes, and generate verified course certificates. |
-| **Faculty** | Prof. Sharma (Dept. of CSE) | Access student gradebooks, review batch analytics, inspect quiz score distributions, and export grading sheets to CSV. |
-| **Admin** | System Administrator | Review system activity, monitor laboratory metrics, inspect bug reports, and manage platform health. |
+| **Student (Default)** | Shlok Mehta (Batch D3) | Access all FSD & CN experiments, run interactive visualizers and simulations, write code & run custom test cases, take quizzes, and generate verified completion certificates. |
+| **Faculty** | Mrs. Kirti Mishra (KJSSE) | View only their assigned VLab roster, edit and publish live student Pretest/Posttest/Code scores in real time, add new student records, and export batch gradebooks to CSV. |
+| **Admin** | System Administrator | Full multi-VLab oversight: inspect which faculty is assigned to which VLab, view all students who completed each lab, track subject-wise average scores, and filter student rows by assigned faculty/VLab. |
 
-*(Note: Users can switch seamlessly between personas using the profile menu in the header for testing and evaluation.)*
+---
+
+## Contributors & Subject Matter Experts
+
+### Subject Matter Experts
+| Name | Designation / Role | Institution | Department |
+|---|---|---|---|
+| **Mrs. Kirti Mishra** | Professor & Subject Matter Expert | K. J. Somaiya School of Engineering (KJSSE) | Computer Engineering |
+| **Dr. Debasis Samanta** | Professor & Subject Matter Expert | Indian Institute of Technology (IIT), Kharagpur | Computer Science & Engineering |
+
+### Student Contributors (Development Team)
+| Name | Roll Number | Role | Institution | Department |
+|---|---|---|---|---|
+| **Shlok Mehta** | `16010124169` | Lead Developer (UI & Full Stack Simulation) | K. J. Somaiya School of Engineering (KJSSE) | Computer Engineering |
+| **Dhruv** | `16010124216` | Co-Lead Developer (Backend Engine & Curriculum) | K. J. Somaiya School of Engineering (KJSSE) | Computer Engineering |
 
 ---
 
@@ -75,27 +101,33 @@ The platform includes built-in role-based access to simulate real academic insti
 
 ```mermaid
 graph TD
-    User([Student / Faculty / Admin]) --> Frontend[React 19 + Vite + Tailwind CSS]
+    User([Student / Faculty / Admin]) --> Frontend[React 19 + Vite + Tailwind CSS v4]
     
     subgraph Frontend Client
-        BroadArea[Broad Area Home Page]
-        FSDLab[Full Stack Dev Lab]
-        CNLab[Computer Networks Lab]
-        Visualizer[Interactive Visualizers & Simulations]
-        CodeIDE[In-Browser Code Assessment]
+        BroadArea[Broad Area CSE Home Page]
+        FSDLab[Full Stack Dev VLab]
+        CNLab[Computer Networks VLab - 6 Exps]
+        Diagrams[Inline SVG Protocol & Lifecycle Diagrams]
+        CodeIDE[Live Python Code Editor & Custom Test Runner]
+        Portals[Faculty Gradebook & Admin Governance Portals]
     end
 
     Frontend --> BroadArea
     BroadArea --> FSDLab
     BroadArea --> CNLab
+    FSDLab --> Diagrams
+    CNLab --> Diagrams
+    FSDLab --> CodeIDE
+    CNLab --> CodeIDE
+    Frontend --> Portals
 
-    Frontend -->|REST API / JWT| Backend[Django 6.1 Backend API]
+    Frontend -->|REST API / JWT + Local Fallback| Backend[Django 6.1 Backend API]
 
     subgraph Backend Services
         Auth[Authentication & RBAC Service]
         LabService[Experiment & Curriculum Engine]
         Sandbox[Sandboxed Python AST Code Runner]
-        GradeService[Grading & Gradebook Analytics]
+        GradeService[Grading, Telemetry & Gradebook Analytics]
     end
 
     Backend --> Auth
@@ -103,14 +135,14 @@ graph TD
     Backend --> Sandbox
     Backend --> GradeService
 
-    Backend --> DB[(PostgreSQL Database)]
+    Backend --> DB[(PostgreSQL / SQLite Database)]
 ```
 
-### Key Technology Stack:
-- **Frontend**: React 19, Vite, Tailwind CSS v4, Lucide Icons, Canvas/SVG-based network and call-stack visualizers.
+### Key Technology Stack
+- **Frontend**: React 19, Vite 8, Tailwind CSS v4, Lucide Icons, custom SVG architectural & protocol diagrams (`Diagrams.jsx`).
 - **Backend**: Python 3.11+, Django 6.1, Django REST Framework (DRF), SimpleJWT authentication.
-- **Code Execution Sandbox**: Secure Python AST parsing and dynamic assertion runner for client code evaluation.
-- **Database**: PostgreSQL (hosted on Render / Supabase) with local SQLite compatibility for offline testing.
+- **Code Execution Sandbox**: Dual-mode evaluation (Backend Python AST sandbox + client-side dynamic Python validator/protocol runner supporting custom student test cases).
+- **Database**: PostgreSQL (production) / SQLite (local development) with resilient client-side state synchronization.
 - **Deployment**: Frontend deployed on Vercel with automated CI/CD from the `main` branch.
 
 ---
@@ -160,16 +192,6 @@ npm install
 npm run dev
 ```
 Frontend will be accessible at: `http://127.0.0.1:5173/`
-
----
-
-## Default Login Credentials
-
-| Persona | Username | Password | Role | Academic Details |
-|---|---|---|---|---|
-| **Student (Default)** | `student` | `student` | `STUDENT` | Shlok Mehta, Batch D3, Roll: 16010124169 |
-| **Faculty** | `faculty` | `faculty` | `FACULTY` | Prof. Sharma (Assigned VLab: Full Stack Development) |
-| **Admin** | `admin` | `admin` | `ADMIN` | System Administrator (Full VLab & Faculty Governance) |
 
 ---
 
