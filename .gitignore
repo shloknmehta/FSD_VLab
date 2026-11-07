@@ -26,3 +26,11 @@ yarn-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# AI Agent Configs & Internal Notes
+.gemini/
+AGENTS.md
+agents.md
+BACKEND_PLAN.md
+backend.md
+
